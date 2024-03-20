@@ -1,5 +1,4 @@
 # Questions
-
 Source: [Computer Networking: A Top-down Approach](https://gaia.cs.umass.edu/kurose_ross/lectures.php)
 
 ## Core Concepts
@@ -22,8 +21,8 @@ Source: [Computer Networking: A Top-down Approach](https://gaia.cs.umass.edu/kur
 - What are delay, loss, and throughput?
 - OSI Model vs. TCP/IP Protocol Stack. `***`
 - How various protocols stay in the TCP/IP Protocol Stack? `***`
-- How does a packet traverse throguh various layers of TCP/IP Protocol Stack?
-- Types of attack: Sniffing, IP Spoffing, DoS, DDoS.
+- How does a packet traverse through various layers of TCP/IP Protocol Stack?
+- Types of attack: Sniffing, IP Spoofing, DoS, DDoS.
 - Lines of defense: Authentication, Authorization, Confidentiality, Integrity, Firewall.
 
 ## Chapter 2: The Application Layer
@@ -44,8 +43,8 @@ Source: [Computer Networking: A Top-down Approach](https://gaia.cs.umass.edu/kur
 - HTTP Request and Response Message formats. `***`
 - HTTP Verbs/Methods. `***`
 - HTTP respnse status codes. `***`
-- How a client can manage state with cookies? What cookies can be used for?
-- How caching can increase performance?
+- How can a client manage state with cookies? What cookies can be used for?
+- How can caching increase performance?
 - HTTP 2.0. Multiplexing and Demultiplexing with SPDY in HTTP 2.0. How HTTP 2.0 mitigates HOL blocking? `***`
 - Explain prioritization and server push in SPDY. `**`
 - HTTP 3.0 and how QUIC works. How HTTP 3.0 solves HOL blocking. `***`
