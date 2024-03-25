@@ -35,4 +35,75 @@ manner rather than upstream. Which means we are consumer of data rather than pro
 data. Typical cable transmission rates are 40MBPS - 1.2GBs downstream transmission rate,
 30-100Mbps upstream transmission rate. Usually your modem will limit the upstream and the
 downstream limit. Basically, you get what you pay for.
-- 
+
+##### Access networks: digital subscriber line(DSL)
+- Use existing telephone line to central office DSLAM
+    - data over DSL phone line goes to the Internet
+    - voice over DSL phone line goes to telephone net
+- 24-52 Mbps dedicated downstream transmission rate
+- 3.5-16 Mbps dedicated upstream transmission rate
+
+##### Access networks: home networks
+Traditional home network which has a device. It is connected with router and modems.
+
+##### Wireless access networks
+1. Wireless local area network (WLANs)
+- Typically, within or around building (100ft)
+- Typically, standardized by IEEE under the protocols of 802.11 b/g/n.
+
+##### Wide-area cellular access networks
+- provided my mobile, cellular network operator (10's km)
+- 10's Mbps
+- 4G cellular networks (5G coming)
+
+Other access networks are:
+1. Enterprise networks
+2. data center networks
+
+##### Host: Sends packets of data
+host sending function:
+- take an application message
+- breaks into smaller chunks, known as packets, of length L bits
+- transmits packet into access network at `transmission rate R`
+    - link transmission rate, aka link `capacity, aka link bandwidth`
+> packet transmission delay = time needed to transmit an L-bit packet into 
+> a link = L(bits)/R(bits/sec)
+
+##### Links: Physical Media
+1. `bit:` propagates between transmitter/receiver pairs
+2. `physical link:` what lies between transmitter & receiver.
+3. `guided media`: signals propagate in solid media: copper, fiber, coax
+4. `unguided media`: signals propagate freely e.g., radio
+5. `Twisted pair(TP)`: two insulated copper wires
+    - category 5: 100 Mbps, 1Gbps Ethernet
+    - Category 6: 10 Gbps Ethernet
+6. `Coaxial cable:`
+    - two concentric copper conductors
+    - bidirectional
+    - broadband
+      - multiple frequency channels on cable
+      - 100's Mbps per channel
+7. `Fiber optic cable:`
+   - glass fiber carrying light pulses, each pulse a bit
+   - high-speed operation:
+        - high-speed point-to-point transmission (10's - 100's Gbps)
+   - low error rate:
+     - repeaters spaced far apart
+     - immune to electromagnetic noise
+8. `Wireless radio`:
+- signal carried in various "bands" in electromagnetic spectrum.
+- no physical "wire"
+- broadcast, "half-duplex" (sender to receiver)
+- propagation environment effects:
+    - reflection
+    - obstruction by objects
+    - Interference/noise
+9. `Radio link types:`
+- `Wireless LAN(WiFi):` 10-100's Mbps; 10's of meters.
+- `Wide-area (e.g., 4G cellular):` 10's Mbps over ˜10 Km
+- `Bluetooth`: cable replacement
+  - short distances, limited rates
+- `terrestrial microwave:` point-to-point; 45 Mbps channels
+- `Satelite`:
+  - upto 45 Mbps per channel
+  - 270 msec end-end delay
