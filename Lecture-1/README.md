@@ -12,14 +12,15 @@ entities, and actions taken on message transmission, receipt.
 > IETF: **Internet Engineering Task Force** governs the Internet standards using
 **Request for Comments**
 
-*Access network:*
-- Access network is the host, (the device or the end system) that connects to
-the internet.
-*How to connect host systems to edge router?*
+###### Access network
+Access network is the host, (the device or the end system) that connects to
+the internet. <br>
+**How to connect host systems to edge router?** <br>
+*Answer:* Here are some ways:
 - Residential access nets
 - institutional access nets(school, company)
 - mobile access network(Wifi/4G)
-*What to look for*
+**What to look for**
 - transmission rate (bits per second) of access network. AKA how fast is the network.
 - shared or dedicated access among the users (AKA to what degree the network is shared)
 
@@ -43,7 +44,8 @@ downstream limit. Basically, you get what you pay for.
 - 24-52 Mbps dedicated downstream transmission rate
 - 3.5-16 Mbps dedicated upstream transmission rate
 
-##### Access networks: home networks
+#### Access networks
+##### Home networks
 Traditional home network which has a device. It is connected with router and modems.
 
 ##### Wireless access networks
@@ -58,52 +60,53 @@ Traditional home network which has a device. It is connected with router and mod
 
 Other access networks are:
 1. Enterprise networks
-2. data center networks
+2. Data center networks
 
-##### Host: Sends packets of data
+#### Host: Sends packets of data
 host sending function:
 - take an application message
 - breaks into smaller chunks, known as packets, of length L bits
 - transmits packet into access network at `transmission rate R`
     - link transmission rate, aka link `capacity, aka link bandwidth`
 > packet transmission delay = time needed to transmit an L-bit packet into 
-> a link = L(bits)/R(bits/sec)
+a link = L(bits)/R(bits/sec)
 
-##### Links: Physical Media
-1. `bit:` propagates between transmitter/receiver pairs
-2. `physical link:` what lies between transmitter & receiver.
-3. `guided media`: signals propagate in solid media: copper, fiber, coax
-4. `unguided media`: signals propagate freely e.g., radio
-5. `Twisted pair(TP)`: two insulated copper wires
-    - category 5: 100 Mbps, 1Gbps Ethernet
-    - Category 6: 10 Gbps Ethernet
-6. `Coaxial cable:`
-    - two concentric copper conductors
+#### Links: Physical Media
+- `bit:` We transfer bits from transmitter to receiver using a physical media.
+- `physical link:` what lies between transmitter & receiver.
+1. `Guided media`: Signals propagate in solid media: copper, fiber, coax. There are
+couple of guided medias. Some examples of guided media are the following:
+- `Coaxial cable:`
+  - two concentric copper conductors
     - bidirectional
-    - broadband
-      - multiple frequency channels on cable
-      - 100's Mbps per channel
-7. `Fiber optic cable:`
-   - glass fiber carrying light pulses, each pulse a bit
-   - high-speed operation:
+    - broadband, old fashioned internet used to run on this method.
+        - multiple frequency channels on cable
+        - 100's Mbps per channel
+- `Twisted pair(TP)`: two insulated copper wires
+    - Category 5: 100 Mbps, 1Gbps Ethernet
+    - Category 6: 10 Gbps Ethernet
+- `Fiber optic cable:`
+  - glass fiber carrying light pulses, each pulse a bit
+    - high-speed operation:
         - high-speed point-to-point transmission (10's - 100's Gbps)
-   - low error rate:
-     - repeaters spaced far apart
-     - immune to electromagnetic noise
-8. `Wireless radio`:
-- signal carried in various "bands" in electromagnetic spectrum.
+    - low error rate:
+        - repeaters spaced far apart
+        - immune to electromagnetic noise
+2. `Unguided Media:` signals propagate freely e.g., radio <br>
+`Wireless Radio`:
+- signal carried in various "bands" in electro-magnetic spectrum.
 - no physical "wire"
 - broadcast, "half-duplex" (sender to receiver)
 - propagation environment effects:
     - reflection
     - obstruction by objects
     - Interference/noise
-9. `Radio link types:`
-- `Wireless LAN(WiFi):` 10-100's Mbps; 10's of meters.
-- `Wide-area (e.g., 4G cellular):` 10's Mbps over ˜10 Km
-- `Bluetooth`: cable replacement
-  - short distances, limited rates
-- `terrestrial microwave:` point-to-point; 45 Mbps channels
-- `Satelite`:
-  - upto 45 Mbps per channel
-  - 270 msec end-end delay
+`Radio link types:`
+  - `Wireless LAN(WiFi):` 10-100's Mbps; 10's of meters.
+  - `Wide-area (e.g., 4G cellular):` 10's Mbps over ˜10 Km
+  - `Bluetooth:` cable replacement
+    - short distances, limited rates
+  - `Terrestrial microwave:` point-to-point; 45 Mbps channels
+  - `Satelite`:
+    - upto 45 Mbps per channel
+    - 270 msec end-end delay
