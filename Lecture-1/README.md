@@ -1,13 +1,15 @@
 # Lecture-1
-*Q1. What is Internet?*
+##### Internet
 - The Internet is an interconnected network of networks.
+> Exam Question: What is Internet?
 
-*Q2. What is protocol?*
+##### Protocol
 - Sending and Receiving information between Router, Switches and Many other end
 devices is controlled by protocol. Protocol governs everything that happens in a 
 network.
 - Protocols define the format, order of messages sent and received among network
 entities, and actions taken on message transmission, receipt.
+> Exam Question: What is Protocol?
 
 > IETF: **Internet Engineering Task Force** governs the Internet standards using
 **Request for Comments**
@@ -260,6 +262,8 @@ can be transferred over the network in a given amount of time.
 From the picture we can see that the throughput in this connection is
 min(Rc, Rs, R / 10)
 
+> Exam Question: What are delay, loss and throughput
+
 ##### Layering
 Approach to designing/discussing complex systems:
 - Layering helps us in identifying in different pieces of the systems and
@@ -300,10 +304,54 @@ is called encapsulation.
 network layer header H(n) to create a network layer `datagram`.
 - H(n) used by network layer protocol to implements in service. So the final term is H(n)H(t)M
 4. **Link:** Just like the layers above, link layer adds also adds it's own header and makes
-it, `H(I)H(n)H(t)M`.
+it, `H(i)H(n)H(t)M`.
 
 <img src="images/data-flow-diagram.png" style="width:50%;height:50%;">
 
 > As data flows down the stack, headers are progressively added to the segment, and then
 to the datagram and then to the frame and going across the wire. As data goes up the stack,
 those data are progressively read, acted upon and removed.
+
+> Exam Question: How does packet travels with every layer. 
+
+### Network Security
+- Internet was not originally designed with (much) security in mind.
+  - `original vision`: A group of mutually trusting users attached to a transparent network.
+  - Hence, we are still catching up for the network security.
+
+- We now need to think about:
+  - how bad guys can attack computer networks
+  - how we can defend networks against attacks
+  - last but not the least, how we can design the architecture so that they
+  are immune to attacks.
+  
+#### Bad Guys: Packet "sniffing"
+Bad actors can stay between sender and receiver to sniff packets. Such packet sniffing can be
+done using `Wireshark (a packet sniffing tool)`
+
+#### Bad Guys: fake identity
+- `IP Spoofing:` Say, B is sending the data to A. C can stay in between and send the data
+to A and pretent like B is sending the data. This phenomena is called `IP Spoofing
+
+#### Bad guys: denial of service
+- `Denial of service(DoS)`: DoS attack happens when a bad actor bombards the server with fake
+requests that servers memory runs out. Hence, it cannot process new request as the memory is
+full.
+
+##### Lines of defense
+The above mentioned operations could be couple of ways to do bad activites on the internet. In
+order to develop a shield against the attack, we can take couple of ways:
+1. **authentication:** Proving you are who you say you are
+2. **confidentiality:** We can protect data being sniffed via encryption.
+3. **Integrity checks:** We can also check if the data was being tempered with using 
+digital signatures prevent/detect tampering.
+4. **Access restrictions:** Password-protected VPNs
+5. **Firewall:** Thre are specialized pieces of hardware known as firewall which sets in
+between to detect and mitigate attacks.
+- Firewall sets in between in order to let specific packets from restricted senders and
+receivers to do applications.
+- detecting/reacting to DOS attacks
+
+> Exam Question: Explain different lines of defenses. e.g., Authentication, Confidentiality,
+> Integrity checks, Access restrictions and Firewall.
+
