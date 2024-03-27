@@ -249,3 +249,61 @@ traceroute: gaia.cs.umass.edu to www.eurecom.fr <br>
 We have to remember that packet loss can occur even when the router buffer
 fills up and the arriving package has no place to be stored.
 - In congestion scenarios, the losses can be high.
+
+###### Throughput
+Throughput in a network refers to the rate at which data is successfully
+transmitted within the network. It is a measure of amount of data that
+can be transferred over the network in a given amount of time.
+
+<img src="images/Throughput.png" style="width:50%;height:50%;">
+
+From the picture we can see that the throughput in this connection is
+min(Rc, Rs, R / 10)
+
+##### Layering
+Approach to designing/discussing complex systems:
+- Layering helps us in identifying in different pieces of the systems and
+relationship to each other. In other words, we have a clear reference
+how the systems interact with each other.
+- We have really modularized the design by layering. When we think in a
+concrete term, the layer takes information from above (internet), and uses
+the services one layer below to implement it's own service.
+
+###### Layered Internet Protocol stack
+There are 5 layers in the Internet.
+1. **Application:** Application layer consists of protocols which are responsible
+for sending and receiving of applications. e.g. HTTP, IMAP, SMTP, DNS
+2. **Transport:** Transport layer transports application layer messages from one layer
+to another. We saw earlier packets could be lost due to buffer in routers.
+- TCP, UDP
+- Transport layer provides a reliable data transfer guarantee on top of a layer
+which has the possibility of losing the data. That's what internet's TCP protocol
+does.
+3. **Network:** Network layer routes the data from one network device to another sometimes
+reliably and sometimes not. In other words, the network layer does not provide reliable
+transfer from one host to another.
+- IP, routing protocols.
+4. **Link:** Link layer transports data between two network devices that are either ends
+of the same communication link. 
+- Ethernet, 802.11(Wifi), PPP
+5. **Physical:** bits `on the wire`
+
+###### Servicing, Layering and Encapsulation
+1. **Application:** On application layer, the data it exchanges are called message.
+2. **Transport:** What transport layer does is that, it takes a message from application
+layer and adds some additional part. In more concrete terms, Transport layer protocol
+encapsulates an application-layer message, M, with transport layer header H(t) to create a
+transport-layer segment. It also notated as H(t)M
+> Taking data from one network layer and adding more information to the current message 
+is called encapsulation.
+3. **Network:** Network layer protocol `encapsulates` transport layer segment H(t)M with
+network layer header H(n) to create a network layer `datagram`.
+- H(n) used by network layer protocol to implements in service. So the final term is H(n)H(t)M
+4. **Link:** Just like the layers above, link layer adds also adds it's own header and makes
+it, `H(I)H(n)H(t)M`.
+
+<img src="images/data-flow-diagram.png" style="width:50%;height:50%;">
+
+> As data flows down the stack, headers are progressively added to the segment, and then
+to the datagram and then to the frame and going across the wire. As data goes up the stack,
+those data are progressively read, acted upon and removed.
