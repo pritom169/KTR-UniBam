@@ -226,7 +226,9 @@ In other words, time spent at output link for transmission.
 - R: link transmission rate (bps)
 - d(Trans) = L/R
 4. **d(Prop): Propagation delay:** This is the delay when a bit enters the sending side of
-the link and pops out from the receiving side of the link.
+the link and pops out from the receiving side of the link. Propagation delay in a network refers 
+to the time it takes for a signal to travel from the sender to the receiver through the 
+communication medium.
 - d: length of a physical link
 - s: propagation speed(˜2x10ˆ8 m/sec)
 - d(prop) = d/s
