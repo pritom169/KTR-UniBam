@@ -264,7 +264,7 @@ min(Rc, Rs, R / 10)
 
 > Exam Question: What are delay, loss and throughput
 
-##### Layering
+## Layering
 Approach to designing/discussing complex systems:
 - Layering helps us in identifying in different pieces of the systems and
 relationship to each other. In other words, we have a clear reference
@@ -273,7 +273,7 @@ how the systems interact with each other.
 concrete term, the layer takes information from above (internet), and uses
 the services one layer below to implement it's own service.
 
-###### Layered Internet Protocol stack
+### Layered Internet Protocol stack
 There are 5 layers in the Internet.
 1. **Application:** Application layer consists of protocols which are responsible
 for sending and receiving of applications. e.g. HTTP, IMAP, SMTP, DNS
@@ -292,7 +292,7 @@ of the same communication link.
 - Ethernet, 802.11(Wifi), PPP
 5. **Physical:** bits `on the wire`
 
-###### Servicing, Layering and Encapsulation
+### Servicing, Layering and Encapsulation
 1. **Application:** On application layer, the data it exchanges are called message.
 2. **Transport:** What transport layer does is that, it takes a message from application
 layer and adds some additional part. In more concrete terms, Transport layer protocol
@@ -314,7 +314,7 @@ those data are progressively read, acted upon and removed.
 
 > Exam Question: How does packet travels with every layer. 
 
-### Network Security
+## Network Security
 - Internet was not originally designed with (much) security in mind.
   - `original vision`: A group of mutually trusting users attached to a transparent network.
   - Hence, we are still catching up for the network security.
@@ -324,33 +324,36 @@ those data are progressively read, acted upon and removed.
   - how we can defend networks against attacks
   - last but not the least, how we can design the architecture so that they
   are immune to attacks.
-  
-#### Bad Guys: Packet "sniffing"
+
+There are multiple ways bad guys can do harm:
+#### 1. Bad Guys: Packet "sniffing"
 Bad actors can stay between sender and receiver to sniff packets. Such packet sniffing can be
 done using `Wireshark (a packet sniffing tool)`
 
-#### Bad Guys: fake identity
+#### 2. Bad Guys: fake identity
 - `IP Spoofing:` Say, B is sending the data to A. C can stay in between and send the data
-to A and pretent like B is sending the data. This phenomena is called `IP Spoofing
+to A and pretend like B is sending the data. This phenomena is called `IP Spoofing
 
-#### Bad guys: denial of service
+#### 3. Bad guys: denial of service
 - `Denial of service(DoS)`: DoS attack happens when a bad actor bombards the server with fake
 requests that servers memory runs out. Hence, it cannot process new request as the memory is
 full.
 
-##### Lines of defense
-The above mentioned operations could be couple of ways to do bad activites on the internet. In
-order to develop a shield against the attack, we can take couple of ways:
+#### Lines of defense
+The above-mentioned operations could be a couple of ways to do bad activities on the internet. In
+order to develop a shield against the attack, we can take a couple of ways:
 1. **authentication:** Proving you are who you say you are
 2. **confidentiality:** We can protect data being sniffed via encryption.
 3. **Integrity checks:** We can also check if the data was being tempered with using 
-digital signatures prevent/detect tampering.
+digital signatures to prevent/detect tampering.
 4. **Access restrictions:** Password-protected VPNs
-5. **Firewall:** Thre are specialized pieces of hardware known as firewall which sets in
+5. **Firewall:** There are specialized pieces of hardware known as firewall, which sets in
 between to detect and mitigate attacks.
-- Firewall sets in between in order to let specific packets from restricted senders and
+- Firewall sets in between to let specific packets from restricted senders and
 receivers to do applications.
 - detecting/reacting to DOS attacks
+
+> Remembering Technique: AC IAF
 
 > Exam Question: Explain different lines of defenses. e.g., Authentication, Confidentiality,
 > Integrity checks, Access restrictions and Firewall.
