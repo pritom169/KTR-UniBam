@@ -203,7 +203,7 @@ at same time is less than .0004*
 <img src="images/ISP.png" style="width:50%;height:50%;">
 <img src="images/network-map.png" style="width:50%;height:50%;">
 
-#### Performance
+## Performance
 - How do packet delay and loss occur?
 - Packet queue in router buffers, waiting to turn for transmission. It is also known
 as **transmission delay.**
@@ -211,14 +211,14 @@ as **transmission delay.**
   link capacity. AKA **queueing delay**.
 - packet loss occurs when memory to hold queued packets fills up
 
-##### Packet delays
+### Packet delays
 1. **d(PROC): Processing delay:**
 - It is associated with forwarding table look up.
 - Putting packets into the correct switch
 - Also doing some integrity checks.
 - This delays are in the orders of microseconds or less.
 2. **d(QUEUE): Queueing delay:**
-- Queuing delay occurs waiting for packets in the router queue waiting for transmission.
+- Queuing delay occurs the packets wait for transmission the router.
 In other words, time spent at output link for transmission.
 - depends on congestion level.
 3. **d(Tran):Transmission delay:**
@@ -231,7 +231,7 @@ the link and pops out from the receiving side of the link.
 - s: propagation speed(˜2x10ˆ8 m/sec)
 - d(prop) = d/s
 
-###### Packet queueing delay (revisited)
+### Packet queueing delay (revisited)
 - a: average packet arrival rate
 - L: packet length(bits)
 - R: link bandwidth (bit transmission rate)
@@ -243,18 +243,18 @@ La/R = (arrival rate of bits/service rate of bits) ("traffic intensity")
 - La/R>1: more "work" arriving is more than can be serviced - average
 delay infinite!
 
-###### Real Internet delays and routes
+### Real Internet delays and routes
 traceroute: gaia.cs.umass.edu to www.eurecom.fr <br>
 <img src="images/packet-delays.png" style="width:50%;height:50%;">
 
-###### Packet loss
-We have to remember that packet loss can occur even when the router buffer
+### Packet loss
+We have to remember that packet loss can occur when the router buffer
 fills up and the arriving package has no place to be stored.
 - In congestion scenarios, the losses can be high.
 
-###### Throughput
+### Throughput
 Throughput in a network refers to the rate at which data is successfully
-transmitted within the network. It is a measure of amount of data that
+transmitted within the network. It is a measure of the amount of data that
 can be transferred over the network in a given amount of time.
 
 <img src="images/Throughput.png" style="width:50%;height:50%;">
