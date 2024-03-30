@@ -273,3 +273,60 @@ you authorized.
 3. `Recommendations:` On the basis of your previous history tracked through cookies, the server
 can give some recommendations.
 4. `User session state:` It can store of your browsing state.
+
+## Email
+Three major components to Email:
+1. `User agents`: 
+   - The agent that user uses to write email, aka `mail reader`
+   - Composing, editing, and reading mail messages.
+   - e.g., Outlook, iPhone mail client.
+   - outgoing, incoming messages stored on server.
+2. `Mail servers`: The server where a user stores an email. An email server has two
+sets of messages:
+    - `mailbox`: contains incoming messages for user.
+    - `message queue`: It has a queue of messages to the destination SMTP server.
+3. `Simple mail transfer protocol: SMTP`: The protocol that governs the sending and
+receiving of the email between servers. It operates on `client-server` paradigm.
+
+#### Scenario: Alice sends e-mail to Bob
+1. Alice uses User agent to compose e-mail message "to" bob@someschool.edu
+2. When Alice hits sends, Alice's user agents contact alice's mail server
+pushes Alice's message to the mail server in Server-client paradigm using 
+SMTP protocol.
+3. Now a message is sitting on Alice's server. Now Alice's server will contact
+Bob's server and will open a TCP connection.
+4. After establishing the TCP connection, an SMTP client will send Alice's message
+over the TCP connection.
+5. Bob's server puts Alice's mail in Bob's mailbox.
+6. Bob invokes his user agent to read a message.
+
+<img src="images/SMTP.png" style="width:50%;height:50%;"> <br>
+
+### SMTP VS HTTP
+- **HTTP:** HTTP is a pull protocol. Generally an HTTP client pulls data
+from server.
+- **SMTP:** SMTP is a push protocol. SMTP client pushed a message to server.
+- Both **HTTP and SMTP** have ASCII command/response interactions, status code
+that are humanly readable. HTTP took some inspiration from SMTP.
+- **HTTP:** Each object is encapsulated in its own response message.
+- **SMTP:** Multiple objects can be encapsulated into multipart message.
+
+- **SMTP:** 
+  - SMTP uses persistent connection
+  - SMTP requires message (header & body) to be in 7-bit ASCII
+  - SMTP server uses a period(CRLF.CRLF) to determine the end of message.
+
+#### Mail message format
+- SMTP: protocol for exchanging e-mail messages, defined in RFC 5321 (like RFC
+7231 defines HTTP)
+- RFC 2822 defines syntax for e-mail message itself (like HTML defines syntax
+for web documents)
+
+#### Retrieving email: mail access protocols
+- `SMTP:` SMTP protocol is responsible for delivering and storing the e-mail messages
+to receiver's server.
+- Mail access protocol: retrieval from server
+  - **IMAP:** Internet Mail Access Protocol[RFC 3501]:
+    - When messages are stored on server, IMAP provides the rules to retrieve, deletion
+    on server.
+- **HTTP:** We can also use HTTP to retrieve messages from the email server. 
