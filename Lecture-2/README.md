@@ -329,4 +329,185 @@ to receiver's server.
   - **IMAP:** Internet Mail Access Protocol[RFC 3501]:
     - When messages are stored on server, IMAP provides the rules to retrieve, deletion
     on server.
-- **HTTP:** We can also use HTTP to retrieve messages from the email server. 
+- **HTTP:** We can also use HTTP to retrieve messages from the email server.
+
+## DNS: Domain Name System
+`People`: many identifiers:
+- SSN, name, passport #
+
+`Internet hosts, routers:` Internet addresses have two identifiers:
+- **Internet addresses (32 bit):** used for addressing
+    datagrams.
+- **name:** e.g., cs.umass.edu—used by humans.
+
+**Question:** How to map between IP address and name, and vice versa?
+
+### Domain Name System (DNS):
+- **distributed database implemented** in hierarchy of many name servers which
+provides this name translation service.
+- **application-layer protocol:** hosts, DNS servers communicate to resolve
+names (address/name translation)
+  - It is important to note that, DNS is implemented as application layer
+  protocol. It is implemented by the services that sit at the network edge.
+  Rather than routers and switches. It follows the network's core design 
+  philosophy. Keeping the network's core simple.
+- To put complexity at the network's end.
+
+### DNS: service, structure
+- **DNS services:**
+  - It provides hostname-to-IP-addresses translation.
+  - host aliasing
+    - translating from externally facing name cs.umass.edu to something
+    much more complexes.
+  - It also provides service resolution, returning the IP address of the
+  mail server associated with a domain.
+  - Performs load balancing
+    - If one web address is associated with multiple IP addresses
+
+**Question:** Why not designers of the web take a centralized DNS? <br>
+**Answer:** Because,
+- There could be a single point of failure
+- Given that the load of DNS, it will create tremendous control of service.
+- Given how important DNS is, just putting one DNS server will create a long
+RTT delays for the clients who are very far away from the server.
+- It would have been a chaos to maintain one DNS server.
+- `In one word it is not possible to scale`
+
+### Thinking about the DNS
+- humungous distributed database:
+  - billions of records, each simple
+- handles many trillions of queries/day:
+  - many more reads than writes
+  - **performance matters:** almost every
+  Internet transaction interacts with DNS -
+  msec count!
+- organizationally, physically decentralized:
+  - millions of different organizations are 
+  responsible for their records.
+- `bulletproof`: reliability, security
+
+### DNS: a distributed, hierarchical database
+<img src="images/DNS-hiarachy.png" style="width:50%;height:50%;"> <br>
+
+Client wants IP addresses for www.amazon.com; 1st approximation:
+- client queries root server to find .com DNS server.
+- client queries .com DNS server to get amazon.com authoritative DNS server
+- client queries the authoritative DNS server to get IP addresses
+for www.amazon.com
+
+#### DNS: root name servers
+- The root server is the last resort if any name cannot be resolved.
+It cannot provide the IP address, but it is a good starting point.
+- It's an incredibly important function for the internet. Sort of
+like a central nervous system.
+  - The Internet cannot function without it.
+
+#### DNS: Top-level Domain (TLD) servers:
+- responsible for .com, .org, .net, .edu, .aero, .jobs, .museums, and
+all top-level country domains, e.g.: .cn, .uk, .fr, .ca, .jp
+- This server has also been known as internet registries. If you want to register
+a new domain, this is the guys you go to.
+
+#### DNS: Authoritative DNS servers:
+- This server is responsible to resolve the names within the organization.
+- it can be maintained by organization or service provider.
+- The name suggests what it does. What this server says, is the ultimate
+result.
+
+#### Local DNS name servers
+- when host makes a DNS query, it is sent to its local DNS server
+  - Local DNS server returns reply, answering:
+    - from its local cache of recent name-to-address translation pairs
+      - if it's available, it will direct it to the server
+      - if it's not. It will go to DNS hierarchy for resolution.
+
+#### DNS name resolution: iterated query
+<img src="images/DNS-routing.png" style="width:50%;height:50%;"> <br>
+
+1. First engineering.nyu.edu sends a request to dns.nyu.edu server. The
+query message contains a message to translate the gaia.cs.usmass.edu.  
+2. Now it is the job of local DNS server dns.nyu.edu. In order to find this
+message, the local DNS server sends the request to root DNS server.
+3. After receiving the DNS request, with .edu suffix, the root DNS server then
+returns all the TLD servers associated with .edu to dns.nyu.edu.
+4. Then the local dns server forwards the request to one of the TLD Dns server.
+5. The TLD server returns the IP address of the authoritative DNS server in return.
+6. After that, local dns server of nyu gives a request to the authoritative DNS
+server of dns.cs.umass.edu
+7. Now the authoritative dns server of cs.umass.edu returns the IP address of
+gaia.cs.umass.edu.
+8. Then the IP address forwards to engineering.nyu.edu
+
+This query is an Iterative query.
+
+#### DNS name resolution: recursive query
+<img src="images/DNS-recursive-query.png" style="width:50%;height:50%;"> <br>
+
+- In the recursive dns query, the request goes one layer deep.
+- finishes the query and then comes back to the old server.
+
+Recursive query gives a lot of pressure to the top level DNS server. Hence, it
+is not used in practise.
+
+#### Caching DNS Information
+- Once (any) name server learns mapping, it caches mapping, and immediately
+returns a cached mapping in response to a query. It is going to hold the cached
+memory for quite some time. In the future, if the same request comes, it is going to
+return the same request.
+  - caching improves response time
+  - caching entries timeout(disappear) after some time (TTL)
+  - TLD servers typically cached in local name servers
+- cached entries may be **out-of-date**
+  - Note that if a DNS record changes, the cached entries will be out of date. However,
+  DNS does not care about this change even if some inaccurate changes float around.
+    - For example, if a host changes its IP address, it will not be know internet wide,
+    until all the TTLs expire!
+  - So the best effort is to do name-to-address translation.
+
+#### DNS records
+DNS: distributed database storing resource records (RR)
+- RR Format: (name, value, type, ttl)
+
+There are a number of DNS records, but here are the most four popular ones:
+- **Type=A**
+  - name is hostname
+  - value is IP address
+- **Type=NS**
+  - name is domain(e.g., foo.com)
+  - value is hostname of authoritative
+  name server for this domain.
+-  **type=CNAME**
+  - name is alias name for some "canonical"
+    (the real) name
+  - www.ibm.com is really servereast.backup2.ibm.com
+  - value is canonical name
+- **type=MX**
+  - value is the name of SMTP mail server associated with
+  name
+
+#### Getting your info into the DNS
+example: Say you want to start a new startup and name of the
+new startup is `Network Utopia`
+- First, we have to register a network name networkutopia.com at
+DNS registrar (e.g., Network Solution)
+  - Then you need to give an authoritative name to your register.
+  - The register you insert your service name into an NS record and
+   its IP address into a record into your global DNS database.
+- Lastly, you need to bring you authoritative name server and populate
+it with resource records for the servers in your network.
+
+#### DNS security
+- **DDos attacks:**
+  - bombard root servers with traffic
+    - It's not successful to date
+    - traffic filtering
+    - local DNS servers cache IPs of TLD(Top level domain)
+    servers, allowing root server to bypass.
+  - bombard TLD servers
+    - It's potentially more dangerous
+  - DDos attacks can be prevented from using firewalls.
+- **Spoofing attacks:**
+  - intercept DNS queries, returning bogus replies.
+    - Only way to prevent it from accepting services from an
+    authenticated request.
+    - TC4033: DNSSEC provides authentication services
