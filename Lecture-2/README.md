@@ -497,7 +497,9 @@ DNS registrar (e.g., Network Solution)
 it with resource records for the servers in your network.
 
 #### DNS security
-- **DDos attacks:**
+- **DDos attacks:** A DDoS (Distributed Denial of Service) attack is a malicious 
+attempt to disrupt normal traffic of a targeted server, service, or network by 
+overwhelming it with a flood of internet traffic from multiple sources.
   - bombard root servers with traffic
     - It's not successful to date
     - traffic filtering
@@ -506,8 +508,64 @@ it with resource records for the servers in your network.
   - bombard TLD servers
     - It's potentially more dangerous
   - DDos attacks can be prevented from using firewalls.
-- **Spoofing attacks:**
+- **Spoofing attacks:** Spoofing attacks, on the other hand, involve falsifying information 
+in order to deceive systems, networks, or individuals. This can take various forms, 
+such as IP address spoofing, email spoofing, or caller ID spoofing.
   - intercept DNS queries, returning bogus replies.
     - Only way to prevent it from accepting services from an
     authenticated request.
     - TC4033: DNSSEC provides authentication services
+
+## Video streaming, CDNs
+- A video is a sequence of images displayed at a constant rate.
+    - e.g., 24 images/sec
+- each image is a matrix of pixels. Those pixels are encoded
+to reduce the size of the images. Thus reducing the size of
+the video by exploiting image redundancy.
+- There are couple of coding methods.
+  - **Spatial coding:** When a part of the image has same color, we
+  utilize spatial coding. Instead of storing N values of the same color,
+  the coding sends two values (color value (purple) and number of repeated
+  values (N))
+  - **Temporal coding example:** When there are no major changes between 
+  frames, the coding algorithm only stores the differences between the
+  frames. It is know as temporal coding.
+
+- **CBR: (constant bit rate:)** video encoding rate fixed.
+- **VBR: (variable bit rate:)** video encoding rate changes as number of
+spatial and temporal coding changes.
+- **Examples:**
+  - **MPEG 1 (CD_ROM):** 1.5Mbps
+  - **MPEG 2 (DVD):** 3-6Mbps
+  - **MPEG 4 (often used in Internet, 64Kbps-12Mbps)**
+
+### Streaming stored video
+When doing streaming stored video in line, we can face multiple challenges.
+Some challenges are:
+- server-to-client bandwidth will vary over time
+with changing network congestion levels (in house, access network, network core,
+video server).
+- packet loss, delay due to congestion will play a major role in delay. Now,
+the delay from client side to server side will vary, and we need to adapt to that.
+
+There are three steps of streaming a video:
+1. The video has been recorded.
+2. The video has been sent by the server.
+3. The video is played on the client side.
+
+<img src="images/streaming-stored-video.png" style="width:50%;height:50%;"> <br>
+
+For the sake of the example, let's assume when recording the video and playing the
+video on the client side, both are happening in 30frames/sec. We can see that, when
+server puts 10th second of video, the user is seeing the 1.5th second of the video.
+
+### Streaming stored video: challenges
+- `continous playout constraint:` during client video playout, playout timing must
+match original timing.
+  - but network delays are variable (leads to jitter), so will need client side 
+  buffer to match continuous playout constraint.
+- **other challenges:**
+  - client interactivity: pause, fast-forward, rewind, jump through video.
+  - video packets may be lost. If it's streaming over TCP connection,
+  it needs to be retransmitted.
+
