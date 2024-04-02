@@ -343,3 +343,31 @@ the server can give some recommendations.
         - Only way to prevent it from accepting services from an
           authenticated request.
         - TC4033: DNSSEC provides authentication services
+
+16. **What is CDN? How CDN can be sued to increase the performance of a
+website?
+- A Content Delivery Network (CDN) is a network of servers distributed 
+geographically, designed to deliver web content and pages to users based on 
+their location, the origin of the webpage, and the server closest to them. 
+Here's how a CDN can be used to increase the performance of a website:
+
+1. **Caching**: CDNs store cached versions of content in multiple locations,
+allowing users to access data from the nearest server, which reduces 
+latency and speeds up content delivery.
+
+2. **Reduced Bandwidth Costs**: By serving cached content, CDNs can reduce 
+the amount of data an origin server must provide, thus lowering hosting 
+costs.
+
+3. **Load Balancing**: CDNs distribute traffic among different servers, 
+preventing any one server from becoming overloaded, which helps maintain 
+website performance during traffic spikes.
+
+4. **Optimizations**: CDNs can perform optimizations such as minification
+and file compression to reduce file sizes, leading to faster load times. 
+They can also optimize TLS/SSL handshakes and connections.
+
+5. **Security**: CDNs can improve security by providing DDoS mitigation, 
+improving security certificates, and other optimizations that help protect 
+against common attacks.
+
