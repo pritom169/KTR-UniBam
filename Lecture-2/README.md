@@ -1,7 +1,8 @@
-# Application Layer
-## Client-server paradigm
-- Host
-1. Always-on host
+# The Application Layer
+## General Questions
+### 1.What is Client-server architecture?**
+- Host/Server
+1. The host is always on.
 2. Most of the time they have permanent IP address
 3. Often can be found in colleges, data centers for scaling.
 
@@ -10,562 +11,501 @@
 2. The Client will be intermittently connected with the server.
 3. Hence, they will not have a permanent IP address. They will be rather having dynamic addresses.
 4. Most important, clients do not communicate with each other. Rather, they will
-communicate with server.
+   communicate with server.
 5. Examples: HTTP, IMPA, FTP
 
-### Peer-peer architecture
-1. In peer to peer, there is no always on server.
-2. Instead, they request service from other peers. In return, they provide service from other peers
-also.
-   - `Self Scalability:` New peers bring new service capacity, as well as new service demands.
-   - We can see the same thing in File sharing, where peer receives files from one peers and
-   shares it with other peers.
-3. Peers are going to be intermittently with the internet. Hence, they are going to change
-the IP address.
-    - Hence, the coming and going architecture is much more complex than server systems.
-4. Example: P2P file sharing.
+### 2. Explain URI, URL, URN and URC
+- URI (Uniform Resource Identifier):
+    - A URI is a string of characters used to identify a resource. It can refer
+      to a web resource, such as a document or image, or any other resource such
+      as a book or a person.
+    - URIs can be further classified into two types: URLs and URNs.
 
-### Process communicating
-As we have seen, network entities will consist of a set of interactive pieces whether that is in
-client server module or peer-to-peer model. So, there will not be a single standalone program rather
-there will be multiple programs. When these programs are running, they are instantiated with a
-process.
-- If the processes are running within the same host(computer), it is called inter-process
-communication (defined by OS).
-- When processes run on different hosts, they communicate using messages.
+- **URL (Uniform Resource Locator):**
+    - A URL is a specific type of URI that provides the means to access a resource
+      on the internet. It typically includes
+        - the protocol used to access the resource (e.g., HTTP, HTTPS),
+        - the domain name or IP address where the resource is located
+        - the specific path to the resource on that server.
+    - For example, in the URL "https://www.example.com/index.html"
+        - "https://" is the protocol,
+        - "www.example.com" is the domain name,
+        - and "/index.html" is the path to the resource.
 
-### Sockets
-The application programming interfaces (API), bound to the transport layer, use an abstraction
-called socket. 
+- **URN (Uniform Resource Name):**
+    - A URN is another type of URI that is used to uniquely identify a resource
+      without specifying its location or access method.
+        - Unlike URLs, which may change over time or be specific to a particular location,
+          URNs provide a persistent identifier for the resource.
+    - An example of a URN is the ISBN (International Standard Book Number) for
+      books. Each book has a unique ISBN that serves as a persistent identifier for
+      that book, regardless of where it is located or how it is accessed.
+
+- **URC (Uniform Resource Citation):**
+    - A URC is not as commonly known as the other three. The goal of URCs is to
+      provide a structured and consistent way to reference
+      online resources, including web pages, articles, videos, and more.
+    -  This can be particularly useful in academic and research contexts where
+       proper citation is important for acknowledging sources and avoiding plagiarism.
+
+### 3. What is Peer-peer(P2P) architecture?
+- Peer-to-peer (P2P) architecture is a decentralized network model where
+  participants, or peers, communicate and collaborate directly with each other
+  without the need for a centralized server.
+    - P2P networks, each peer can act as both a client and a server, sharing
+      resources and services with other peers in the network.
+    - `Self Scalability:` New peers bring new service capacity, as well as new
+      service demands.
+        - We can see the same thing in File sharing, where peer receives files from
+          one peers and shares it with other peers.
+    - Peers are going to be intermittently with the internet. Hence, they are
+      going to change the IP address.
+        - Hence, the coming and going architecture is much more complex than
+          server systems.
+### 4. What is a socket?
+- The application programming interfaces (API), bound to the transport layer,
+  use an abstraction called socket.
 - Processes going to send and receive messages using `Socket.`
-- Socket analogous to a door
-  - We send messages to the door and receive messages out of the door.
-  - The sending and receiving of messages is going to rely on underlying infrastructure (transport
-  layer, network layer or link layer), from a socket in the sending end to the receiving end.
-  - It is also important to know, there will be two sockets involved. One in the sending side and
-  one on the receiving side.
+    - The sending and receiving of messages is going to rely on underlying infrastructure
+      (transport layer, network layer or link layer), from a socket in the sending
+      end to the receiving end.
+    - It is also important to know, there will be two sockets involved. One on the
+      sending side and one on the receiving side.
 
-> Exam Question: What is a socket?
+### 5. **How does a Socket work?**
+- Sockets operate based on a client-server model where two programs
+  (a client and a server) communicate over a network. Here's a simplified
+  explanation of how sockets work:
 
-### Addressing process
-When you want to communicate with someone, you need some addressing information. If you are sending
-them a letter, you need the address in which City or town they live in. If you are calling someone,
-you need a phone number or country code.
-- It is the same thing when trying to communicate using a socket. We need some methodology to communicate
-with the other end point of the socket.
+- **Server Creation**:
+    - The server program creates a socket by specifying the transport protocol
+      (TCP/UDP) and binds it to a specific port number.
+    - It then listens for incoming connections on that port.
 
-When we create a socket, there will be two important pieces of information associated with it.
-1. The IP address
-2. The port number
-   - Example port number:
-     - To connect with the HTTP server: Port number 80
-     - To connect with the mail server: Port number 25
+- **Client Connection**:
+    - The client program also creates a socket and initiates a connection
+      request to the server's IP address and port number.
+    - If using TCP, the server accepts the connection, establishing a
+      communication link.
 
-#### An application-layer protocol defines:
-Protocol defines the format, the order message received among network entities, actions taken a message received
-and transmission. So to define an application layer protocol, we need to define
-1. `Types of messages` that has been exchanged.
-2. `Message syntax`: What are the fields of the messages.
-3. `Message semantics:` What are the meaning the of fields.
-4. `Rules:` On what actions have been taken before and after
-sending a message.
+- **Data Transfer**:
+    - Once the connection is established, both the client and server can send
+      and receive data.
+    - For TCP sockets, data is sent in a continuous stream, while UDP sockets
+      send data in discrete packets.
 
-There are two types of protocols:
-1. `Open protocols:` They are open in a sense that, their message syntax, message semantics and actions
-are publicly available. All internet protocols are publicly available, RFC (Request for comments)
-2. `Proprietary protocols:` Their applications are not publicly known, e.g.: Skype, Zoom
+- **Closing the Connection**:
+    - After the communication is complete, either side can close the connection.
+    - For TCP, a four-way handshake process ensures the connection is
+      terminated gracefully.
 
-#### What transport layer services does an app need?
-##### Data Integrity
-- Some services need reliable (100%) data transfer e.g., File Transfer, Web Transactions
-- Other services may tolerate some packet loss, e.g., Audio
-
-##### Timing
-- Some applications need a timing guarantee to be effective, e.g., Internet Games
-
-##### Throughput
-- Other applications need a certain amount of throughout to be effective. e.g., multimedia or streaming videos,
-as it requires a certain amount of throughput.
-
-##### Security
-- The Transport layer may provide some security services like encryption on given data.
-
-### Internet transport protocols services
-|                         | TCP Service                                                                                  | UDP Service                                                                     |
-|-------------------------|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| **Reliable Transport**  | TCP provides reliable transport between<br/> sending and receiving process                   | UDP has a unreliable data transfer between<br/> sending and receiving processes |
-| **Flow Control**        | TCP guarantees that sender will not overwhelm <br/>receiver                                  | Does not provide flow control                                                   |
-| **Congestion Control**  | TCP sender is also congestion controlled when <br/>network is overloaded                     | Does not provide congestion control                                             |
-| **Connection Oriented** | TCP also connection oriented means handshakes is <br> before data from sender<br/>to receiver| Does not provide connection control                                             |
-| **Does not provide**    | TCP does not provide timiing, minimum throughput <br> gurantee, security                     | --------------                                                                  |
+### 6. Tell me the differences in TCP and UDP.
+- **Reliable Transport:**
+    - TCP provides reliable transport between sending and receiving a process
+    - UDP has a unreliable data transfer between sending and receiving processes
+- **Flow Control:**
+    - TCP guarantees that sender will not overwhelm the receiver
+    - Does not provide flow control
+- **Congestion Control:**
+    - TCP sender is also congestion controlled when the network is overloaded
+    - Does not provide congestion control
+- **Connection Oriented:**
+    - TCP also connection oriented means handshakes are needed
+      before data from sender to receiver.
+    - Does not provide connection control
+- **Does not provide:**
+    - TCP does not provide timing, minimum throughput guarantee, security
+    - UDP also does not provide any of the support either.
 
 **Question:** You might be wondering, for which cases do we need UDP? <br>
-**Answer:** We can start with UDP and start adding other services for example, Flow control and Congestion control
-on top of UDP. <br>
+**Answer:** We can start with UDP and start adding other services, for example,
+Flow control and Congestion control on top of UDP. <br>
 
-<img src="images/TCP&UDP.png" style="width:50%;height:50%;">
-
-> Exam Question: TCP vs UDP
-
-## Web and HTTP—Part-1
-First, a quick review...
-- Web page consists of **objects**, each of which can be stored on different Web servers.
-- Object can be HTML file, JPEG image, Java applet, audio file,.....
-- Web page consists of **base HTML-file** which includes **several referenced objects,
-each** addressable by a **URL,** e.g. www.someschool.edu/comeDept/pic.gif
-  - www.someschool.edu -> host name
-  - someDept/pic.gif -> path name
-
-### HTTP overview
-HTTP - `Hypertext transfer protocol`
+### 7. What is HTTP? Features of HTTP.
+- HTTP - `Hypertext transfer protocol`
 - Web's application layer protocol. HTTP follows the client and server model:
-  - `Client:` The typical example of a client is the browser. In addition,
-  there could be some other devices that can act as a client, for example,
-  mobile apps.
-  - `Server:` Web server sends (using HTTP protocol) objects in response to
-  requests.
+    - `Client:` The typical example of a client is the browser. In addition,
+      there could be some other devices that can act as a client, for example,
+      mobile apps.
+    - `Server:` Web server sends (using HTTP protocol) objects in response to
+      requests.
 
-#### HTTP uses TCP
-- HTTP clients open a TCP connection using a web server on port 80 whether 
-through browser or other device.
-- One or more HTTP messages are exchanged between a client and server.
-- Then TCP connection is closed.
+- HTTP uses TCP
+    - HTTP clients open a TCP connection using a web server on port 80 whether
+      through browser or other device.
+    - One or more HTTP messages are exchanged between a client and server.
+    - Then TCP connection is closed.
 
-#### HTTP is "stateless"
-- the server maintains no information about past client requests.
-> Now you might ask why is that. Because, the protocols that hold 
+- HTTP is "stateless"
+    - the server maintains no information about past client requests.
+> Now you might ask why is that. Because, the protocols that hold
 previous states have to go through a rigorous process of cleaning
 previous statues, if one state in between fails.
 
-#### HTTP connections: Two types
-| Non-persistent HTTP                                            | Persistent HTTP                                                                                                      |
-|----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| 1. A TCP connection is opened                                  | 1. A TCP connection opened to a server.                                                                              |
-| 2. At most one object sent over TCP connection                 | 2. This time, multiple objects can be transferred<br/>with a single TCP connection<br/>between the client and server |
-| 3. TCP connection closed                                       | 3. When multiple objects have been transferred, now<br/>TCP connection has been closed.                              |
-| Downloading multiple objects required multiple<br/>connections | Persistent HTTP refers to HTTP1.1 which is the most<br/>common HTTP version used today.                              | |
+## HTTP Questions
+### 8. Tell me the difference in Persistent and Non-Persistent HTTP. This question
+is also the answer between HTTP/1.1 and HTTP/1.0.
 
-#### Non-persistent HTTP: example
-1. HTTP `client` initiates TCP connection to HTTP server (process) at 
-www.someSchool.edu on port 80
-2. HTTP `server at host www.someSchool.edu waiting for TCP connection at
-port 80 "accepts" connection, notifying the client.
-> Notice: In step 1 and 2, no HTTP connection has been flowed yet. That
-happens in STEP: 3
-3. HTTP `client` sends an HTTP request message (containing URL) into TCP connection.
-This http message indicates that the client wants to receive the base html file. 
-someDepartment/home.index
-4. Now HTTP `server` receives a request message, forms `response message` containing
-a requested object, and sends a message into its socket.
-5. After sending the response message, the HTTP `server` closes the TCP connection.
-6. HTTP client receives a response message containing html file, displays.html. Finds,
-10 references jpeg objects.
-7. Now, all the steps from 1 to six have to be repeated for each of 10jpeg objects.
+- **Persistent TCP (HTTP/1.1)**:
+    - **Connection**: The TCP connection remains open after sending a response,
+      allowing multiple requests and responses between the same client and server
+      over the same connection.
+    - **Round Trip Times (RTTs)**: Only (one RTT + file transmission time) is
+      needed for all referenced objects, reducing the time to initiate subsequent
+      requests.
+    - **Network Traffic**: Less network traffic due to fewer connections being
+      opened and closed.
+    - **CPU Overhead**: Lower CPU overhead because a single connection handles
+      multiple objects.
 
-#### Non-persistent HTTP: response time
-- `RTT(Round trip time):` Very small-time needed for a packet to travel from client to server
-and back.
-- `HTTP response time (per object):` 
-  - one RTT to initiate TCP connection. (Step 1 and 2)
-  - one RTT for HTTP request and the first few bytes of HTTP response to return. (Step 3 and 4)
-  - object/file transmission time.
-`Non-persistent HTTP response time = 2RTT + file transmission time.`
+- **Non-Persistent TCP (HTTP/1.0)**:
+    - **Connection**: Each object requires a new TCP connection, which is
+      terminated after the object is transferred.
+    - **Round Trip Times (RTTs)**: Two RTTs + file transmission time are
+      required per object—one for the TCP connection and another for the
+      HTTP request/response.
+    - **Network Traffic**: More network traffic due to the frequent opening
+      and closing of connections.
+    - **CPU Overhead**: Higher CPU overhead for handling multiple connections
+      , as each object requires a separate connection.
 
-#### Persistent HTTP
-As we have seen with the Non-persistent HTTP, we need 2RTT for a single object to be transferred.
-But we can do it better. That's where persistent HTTP comes into play. In persistent Http we need
-around 1RTT. It is also used in the modern web servers.
-- server leaves connection open after sending response
-- subsequent HTTP messages between the same client/server sent over open connection without waiting 
-for RTT to establish a new connection.
-- Client sends requests as soon as it encounters a referenced object.
-- From this we can see we have just reduced the timing to 1RTT
+### 9. Tell me how a Non-Persistent HTTP and Persistent HTTP works.
+- Non-Persistent HTTP:
+  1. HTTP `client` initiates TCP connection to HTTP server (process) at
+     www.someSchool.edu on port 80
+  2. HTTP `server at host www.someSchool.edu waiting for TCP connection at
+    port 80 "accepts" connection, notifying the client.
+    > Notice: In step 1 and 2, no HTTP connection has been flowed yet. That
+   happens in STEP: 3
+  3. HTTP `client` sends an HTTP request message (containing URL) into TCP connection.
+    This http message indicates that the client wants to receive the base html file.
+    someDepartment/home.index
+  4. Now HTTP `server` receives a request message, forms `response message` containing
+    a requested object, and sends a message into its socket.
+  5. After sending the response message, the HTTP `server` closes the TCP connection.
+  6. HTTP client receives a response message containing html file, displays.html. Finds,
+    10 references jpeg objects.
+  7. Now, all the steps from 1 to six have to be repeated for each of 10jpeg objects.
 
-### HTTP messages
+- Persistent HTTP:
+  - Step 1–4 is the same. 
+  - In step 5 after sending the object, the TCP connection is not closed in
+  persistent HTTP.
+  - Hence, the response time reduces to 1 RTT + file transmission time.
+
+### 10. **HTTP Request and Response Message formats.**
 - two types of HTTP messages: request, response
-- **HTTP request message:** 
-  - ASCII (human-readable format)
+- **HTTP request message:**
+    - ASCII (human-readable format)
 
 <img src="images/HTTPRequests.png" style="width:50%;height:50%;"> <br>
 
 A sample HTTP request has been given:
 1. `Request line (GET, POST, HEAD Commands):` GET /index.html HTTP/1.1\r\n
 2. `Header lines:`
-   - **Host:** in this case www-net.cs.umass.edu\r\n
-   - **User-Agent:** Mozilla
-   - **Accept:** It is accepting application xml
-   - **Accept-Language:** The language it accepts
-   - **Accept-Encoding:** gzip, deflate\r\n
-   - **Connection:** keep-alive\r\n, which states to keep the connection alive even
-   after establishing.
+    - **Host:** in this case www-net.cs.umass.edu\r\n
+    - **User-Agent:** Mozilla
+    - **Accept:** It is accepting application xml
+    - **Accept-Language:** The language it accepts
+    - **Accept-Encoding:** gzip, deflate\r\n
+    - **Connection:** keep-alive\r\n, which states to keep the connection alive even
+      after establishing.
 3. `Entity body:` In this example we didn't need something in the entity body.
-But for POST request, we may need this part.
+   But for POST request, we may need this part.
 
-#### Other HTTP request messages
-##### GET Method
-- includes user data in the URL field of HTTP GET request message (following a '?'):
-  - www.somesite.com/animalsearch?monkeys&banana
-
-##### POST Method
-- Web page includes form input
-- user input sent from client to server in `entity body` of an HTTP POST request message.
-
-##### PUT Method
-- uploads new file (object) to server
-- completely replaces file that exists at specified URL with content in `entity body`
-of POST HTTP request message.
-
-##### HEAD method
-- asks for requests identical to head method, which is identical to GET method without
-the response body.
-- It could be used to get the size of the object without retrieving the size of the
-object.
-
-#### HTTP response message
+- **HTTP response message** <br>
 <img src="images/HTTPResponse.png" style="width:50%;height:50%;"> <br>
 
-#### HTTP response status codes
-- status code appears in the 1st line in a server-to-client message.
-- some sample codes:
-    - **200 OK**
-      - request succeeded, requested object later in this message
-    - **301 Moved Permanently**
-      - requested object moved, new location specified later in this message (in Location: field)
-    - **400 Bad Request**
-      - request message not understood by server
-    - **404 Not Found**
-      - requested document not found on this server
-    - **505 HTTP Version not Supported**
+HTTP responses also have 3 Part:
+1. `Status line`: It has the name of the protocol and the status code.
+2. `Header Line`: Just like request message response also has similar attributes.
+Example: Date, SServer, Last-Modified, ETag, Accept-Ranges, Content-Length
+Content-Type.
+3. `Data`: In this part the requested data in HTML.
 
-### Maintaining user/server state: cookies
-As mentioned above, HTTP is a stateless protocol, means it does not hold previous states.
-When information from the previous states is necessary, Web sites and client browser use
-**cookies** to maintain some state between transactions.
+### 11. What are some HTTP verbs or methods?
+- **GET Method**
+  - includes user data in the URL field of HTTP GET a request message (following a '?'):
+      - www.somesite.com/animalsearch?monkeys&banana
+
+- **POST Method**
+  - Web page includes form input
+  - user input sent from client to server in `entity body` of an HTTP POST 
+  request message.
+
+- **PUT Method**
+  - uploads new file (object) to server
+  - completely replaces file that exists at specified URL with content in 
+  `entity body` of a PUT HTTP request message.
+
+- **HEAD method**
+  - asks for requests identical GET method without the response body.
+  - It could be used to get the size of the object without retrieving the 
+  object.
+
+There are other methods such as **DELETE, CONNECT, OPTIONS, TRACE, PATCH**
+
+### 12. What are cookies and what cookies can be used for?
+- As mentioned above, HTTP is a stateless protocol, which means it does not 
+hold previous states. When information from the previous states is necessary, 
+Websites and client browsers use**cookies** to maintain some state between 
+transactions.
 
 - Four components to cookies:
-  1. At some point, the server is going to send the client a cookie. The cookie will hold
-  a number.
-  2. The next time, the client is going to send the number to Server in the cooking
-  header line.
-  3. The server will remember the requests and responses associated with the cookie value.
-  So it will have a history of interaction with the user.
-
-#### An example:
+    1. At some point, the server is going to send the client a cookie. 
+  The cookie will hold a number.
+    2. The next time, the client is going to send the number to the Server 
+  in the cookie header line.
+    3. The server will remember the requests and responses associated with 
+  the cookie value. So it will have a history of interaction with the user.
+  
+**An example:** <br>
 <img src="images/Cookie.png" style="width:50%;height:50%;"> <br>
-
 1. In the first step ebay `client` gives a request to amazon server.
-   - Amazon `server` accepts the request, creates a cookie ID-1678, enters the information into
-   the backend database and gives an HTTP response with cookie ID-1678.
-   - For example, First time the client may be looking for some workout accessories. The server
-   stores the history of workout accessories with the cookie ID-1678.
+    - Amazon `server` accepts the request, creates a cookie ID-1678, enters the information into
+      the backend database and gives an HTTP response with cookie ID-1678.
+    - For example, First time the client may be looking for some workout accessories. The server
+      stores the history of workout accessories with the cookie ID-1678.
 2. The next time, `client` gives a request to the amazon server, it does some cookie-specific actions.
-   - It returns a traditional HTTP response.
-   - For example, this time the `server` remembers the previous history using the cookie ID. Hence,
-   it recommends users to buy specific workout accessories.
-3. One week later, when the user gives another HTTP request with 1678 cookie-ID, the amazon server 
-  does another cookie-specific action. 
-   - It may remind user that, you forgot to buy workout accessories.
+    - It returns a traditional HTTP response.
+    - For example, this time the `server` remembers the previous history using the cookie ID. Hence,
+      it recommends users to buy specific workout accessories.
+3. One week later, when the user gives another HTTP request with 1678 cookie-ID, the amazon server
+   does another cookie-specific action.
+    - It may remind user that, you forgot to buy workout accessories.
 
-#### What cookies can be used for:
-1. `Authorization:` It can be used for authorization. The sever can remember through cookies that
-you authorized.
-2. `Shopping carts:` The server can keep a memory of what was in your shopping cart using cookie.
-3. `Recommendations:` On the basis of your previous history tracked through cookies, the server
-can give some recommendations.
+- What cookies can be used for:
+1. `Authorization:` It can be used for authorization. The sever can remember
+through cookies that you authorized.
+2. `Shopping carts:` The server can keep a memory of what was in your shopping
+cart using cookie.
+3. `Recommendations:` based on your previous history tracked through cookies, 
+the server can give some recommendations.
 4. `User session state:` It can store of your browsing state.
 
-## Email
-Three major components to Email:
-1. `User agents`: 
-   - The agent that user uses to write email, aka `mail reader`
-   - Composing, editing, and reading mail messages.
-   - e.g., Outlook, iPhone mail client.
-   - outgoing, incoming messages stored on server.
-2. `Mail servers`: The server where a user stores an email. An email server has two
-sets of messages:
-    - `mailbox`: contains incoming messages for user.
-    - `message queue`: It has a queue of messages to the destination SMTP server.
-3. `Simple mail transfer protocol: SMTP`: The protocol that governs the sending and
-receiving of the email between servers. It operates on `client-server` paradigm.
+### 13. Sequential and pipelined orders in TCP connection. This question can also be asked as sequential and persistent connection in HTTP/1.0 and HTTP/1.1
+- In the context of TCP and HTTP, "sequential" and "pipelined" orders refer 
+to how client requests are processed and responded to by a server.
 
-#### Scenario: Alice sends e-mail to Bob
-1. Alice uses User agent to compose e-mail message "to" bob@someschool.edu
-2. When Alice hits sends, Alice's user agents contact alice's mail server
-pushes Alice's message to the mail server in Server-client paradigm using 
-SMTP protocol.
-3. Now a message is sitting on Alice's server. Now Alice's server will contact
-Bob's server and will open a TCP connection.
-4. After establishing the TCP connection, an SMTP client will send Alice's message
-over the TCP connection.
-5. Bob's server puts Alice's mail in Bob's mailbox.
-6. Bob invokes his user agent to read a message.
+- **Sequential Order:**
+- In a sequential order, each client request is processed one at a time. The 
+server must send a response to the current request before it can read and 
+process the next request. This is the traditional model used in HTTP/1.0, 
+where each request/response pair is handled in turn.
 
-<img src="images/SMTP.png" style="width:50%;height:50%;"> <br>
+- **Pipelined Order:**
+- Pipelining allows a client to send multiple requests to the server without 
+waiting for each response. The server reads multiple requests in the order 
+they were received and processes them sequentially. However, the responses 
+must still be sent in the same order that the requests were received. This 
+can improve performance in high-latency environments by making better use 
+of TCP connections. It's a feature of HTTP/1.1, which supports persistent 
+connections.
 
-### SMTP VS HTTP
-- **HTTP:** HTTP is a pull protocol. Generally an HTTP client pulls data
-from server.
-- **SMTP:** SMTP is a push protocol. SMTP client pushed a message to server.
-- Both **HTTP and SMTP** have ASCII command/response interactions, status code
-that are humanly readable. HTTP took some inspiration from SMTP.
-- **HTTP:** Each object is encapsulated in its own response message.
-- **SMTP:** Multiple objects can be encapsulated into multipart message.
+### 14. HOL blocking in persistent TCP connection. Also HOL blocking in HTTP/1.1
+- Head-of-line (HOL) blocking is a phenomenon that can occur in networking 
+when a sequence of packets is delayed due to the first packet being held up. 
+In the context of persistent TCP connections, this can impact performance, 
+especially when using HTTP pipelining.
+- In HTTP/1.1, which supports persistent connections, HOL blocking can occur 
+because the protocol requires responses to be sent in the same order as 
+requests were received. If one request takes a long time to process or needs
+to be retransmitted, it can delay all subsequent responses, even if they 
+are ready. 
 
-- **SMTP:** 
-  - SMTP uses persistent connection
-  - SMTP requires message (header & body) to be in 7-bit ASCII
-  - SMTP server uses a period(CRLF.CRLF) to determine the end of message.
+### 15. Explain Multiplexing and Demultiplexing with SPDY in HTTP 2.0. How HTTP 2.0 mitigates HOL blocking?
+- HTTP/2, which was inspired by Google’s SPDY protocol, introduced several 
+improvements over HTTP/1.1 to enhance web performance. One of the key 
+features of HTTP/2 is multiplexing, which allows multiple requests and 
+responses to be sent over a single TCP connection simultaneously. 
+This is achieved through the use of frames that can interleave multiple 
+streams of messages, allowing for the concurrent transmission of requests 
+and responses.
+- Demultiplexing refers to the process on the receiving end, where these 
+interleaved frames are separated and reassembled into the original messages.
+This allows a server to process multiple requests in parallel and send out 
+responses as soon as they are ready, without having to wait for other 
+responses to be sent first.
+- HTTP/2’s multiplexing capability significantly mitigates the issue of 
+Head-of-Line (HOL) blocking that was present in HTTP/1.1. In HTTP/1.1, if 
+a request was slow to process, subsequent requests had to wait, creating 
+a bottleneck. With HTTP/2, different requests are independent; if one is 
+slow, others can still proceed without waiting.
+- However, while HTTP/2 reduces HOL blocking at the application layer, it 
+does not eliminate it at the transport layer. If a packet is lost in the 
+TCP stream, all streams still have to wait for that packet to be 
+retransmitted and received due to TCP’s in-order delivery requirement. 
+This is why the newer HTTP/3 protocol is being developed to run over QUIC, 
+which allows for out-of-order delivery at the transport layer, further 
+reducing the impact of HOL blocking.
 
-#### Mail message format
-- SMTP: protocol for exchanging e-mail messages, defined in RFC 5321 (like RFC
-7231 defines HTTP)
-- RFC 2822 defines syntax for e-mail message itself (like HTML defines syntax
-for web documents)
+### 16. Explain prioritization and server push in SPDY.
+- SPDY, the predecessor to HTTP/2, introduced several key features to 
+improve web performance, including **prioritization** and **server push**.
 
-#### Retrieving email: mail access protocols
-- `SMTP:` SMTP protocol is responsible for delivering and storing the e-mail messages
-to receiver's server.
-- Mail access protocol: retrieval from server
-  - **IMAP:** Internet Mail Access Protocol[RFC 3501]:
-    - When messages are stored on server, IMAP provides the rules to retrieve, deletion
-    on server.
-- **HTTP:** We can also use HTTP to retrieve messages from the email server.
+- **Prioritization** in SPDY allows clients to inform the server about which 
+resources are more important than others. This means that the server can 
+prioritize sending critical resources first, ensuring that they are loaded 
+as quickly as possible. This feature helps to address the 'first-in, 
+first-out' problem of traditional HTTP, where all requests are treated 
+equally, regardless of their importance to the page load.
 
-## DNS: Domain Name System
-`People`: many identifiers:
-- SSN, name, passport #
+- **Server Push** is another significant feature of SPDY. It enables the 
+server to send resources to the client proactively, without waiting for an 
+explicit request from the client. This is based on the server's assumption 
+that the client will need certain resources to complete the page rendering. 
+For example, if the server knows that a particular image or stylesheet is 
+required to render a page, it can push that resource to the client as soon 
+as the initial HTML is requested. This can save a round trip and speed up 
+the page load time. However, if the client already has the resource cached,
+the push can be redundant and wasteful.
 
-`Internet hosts, routers:` Internet addresses have two identifiers:
-- **Internet addresses (32 bit):** used for addressing
-    datagrams.
-- **name:** e.g., cs.umass.edu—used by humans.
+### 17. Tell me the differences between HTTP/1.1 and HTTP/2.0
+**HTTP/1.1:**
+- **Text-based Protocol**: HTTP/1.1 uses a text-based format for requests 
+and responses, which can be less efficient for parsing and interpreting.
+- **One Request at a Time**: It processes one request per TCP connection 
+at a time, which can lead to significant latency due to the creation of 
+multiple connections and the "head-of-line" blocking problem.
+- **No Prioritization**: There is no built-in mechanism for prioritizing 
+requests, which means all requests are considered with equal importance.
 
-**Question:** How to map between IP address and name, and vice versa?
+**HTTP/2.0:**
+- **Binary Protocol**: HTTP/2 uses a binary framing layer, which 
+encapsulates messages in a binary format, making it more efficient and 
+less error-prone.
+- **Multiplexing**: Multiple requests and responses can be sent in 
+parallel over a single TCP connection, reducing latency and improving 
+page load times.
+- **Stream Prioritization**: HTTP/2 allows clients to prioritize requests,
+enabling more important resources to be sent first.
+- **Server Push**: Servers can push resources proactively to the client's 
+cache before they are explicitly requested, further improving performance.
+- **Header Compression**: HTTP/2 uses HPACK compression for headers, 
+reducing overhead.
 
-### Domain Name System (DNS):
-- **distributed database implemented** in hierarchy of many name servers which
-provides this name translation service.
-- **application-layer protocol:** hosts, DNS servers communicate to resolve
-names (address/name translation)
-  - It is important to note that, DNS is implemented as application layer
-  protocol. It is implemented by the services that sit at the network edge.
-  Rather than routers and switches. It follows the network's core design 
-  philosophy. Keeping the network's core simple.
-- To put complexity at the network's end.
+### 18. HTTP 3.0 and how QUIC works. How HTTP 3.0 solves HOL blocking.
+HTTP/3 is the fourth major version of the Hypertext Transfer Protocol (HTTP), 
+which is used to exchange information on the World Wide Web. It represents
+a significant evolution from the previous versions, HTTP/1.1 and HTTP/2, 
+primarily because it utilizes the QUIC protocol instead of TCP.
 
-### DNS: service, structure
-- **DNS services:**
-  - It provides hostname-to-IP-addresses translation.
-  - host aliasing
-    - translating from externally facing name cs.umass.edu to something
-    much more complexes.
-  - It also provides service resolution, returning the IP address of the
-  mail server associated with a domain.
-  - Performs load balancing
-    - If one web address is associated with multiple IP addresses
+**QUIC** stands for Quick UDP Internet Connections. It is a transport 
+layer network protocol designed to provide secure and reliable connections 
+that are faster than traditional TCP connections. QUIC operates over UDP 
+(User Datagram Protocol), which is inherently faster than TCP because it 
+does not require a handshake for each connection, thus reducing latency.
 
-**Question:** Why not designers of the web take a centralized DNS? <br>
-**Answer:** Because,
-- There could be a single point of failure
-- Given that the load of DNS, it will create tremendous control of service.
-- Given how important DNS is, just putting one DNS server will create a long
-RTT delays for the clients who are very far away from the server.
-- It would have been a chaos to maintain one DNS server.
-- `In one word it is not possible to scale`
+Here's how HTTP/3 and QUIC work together to solve the Head-of-Line (HOL) 
+blocking issue:
 
-### Thinking about the DNS
-- humungous distributed database:
-  - billions of records, each simple
-- handles many trillions of queries/day:
-  - many more reads than writes
-  - **performance matters:** almost every
-  Internet transaction interacts with DNS -
-  msec count!
-- organizationally, physically decentralized:
-  - millions of different organizations are 
-  responsible for their records.
-- `bulletproof`: reliability, security
+- **Multiplexing without HOL Blocking**: HTTP/3 uses QUIC to multiplex 
+multiple streams of data over a single connection. Unlike TCP, QUIC is 
+aware of these individual streams. If one stream suffers from packet 
+loss, only that stream is affected and needs to wait for retransmission. 
+Other streams can continue without delay, effectively eliminating HOL 
+blocking at the application layer.
 
-### DNS: a distributed, hierarchical database
-<img src="images/DNS-hiarachy.png" style="width:50%;height:50%;"> <br>
+- **Stream Independence**: QUIC treats each stream independently. This 
+means that if there's an issue with one data stream, it doesn't affect the 
+others. Each stream can proceed at its own pace, which is not possible 
+with TCP's single byte-stream model.
 
-Client wants IP addresses for www.amazon.com; 1st approximation:
-- client queries root server to find .com DNS server.
-- client queries .com DNS server to get amazon.com authoritative DNS server
-- client queries the authoritative DNS server to get IP addresses
-for www.amazon.com
+- **Faster Connection Establishment**: QUIC reduces the time it takes to 
+establish a connection by combining the transport and cryptographic 
+handshakes. It also supports 0-RTT (Zero Round Trip Time) resumption for 
+previously connected clients, which allows them to send data without 
+waiting for a handshake to complete.
 
-#### DNS: root name servers
+## DNS Question
+### 19. What is DNS? Why is DNS decentralized?
+- DNS(Domain name system) in hierarchy of many name servers, which
+  provides domain name to IP address translation.
+- **DNS is decentralized**
+    - There could be a single point of failure
+    - Given that the load of DNS, it will create tremendous control of service.
+    - Given how important DNS is, just putting one DNS server will create a long
+      RTT delays for the clients who are very far away from the server.
+    - It would have been chaos to maintain one DNS server.
+    - `In one word it is not possible to scale`
+
+### 20. Explain the Root, TLD, and Authoritative DNS server.
+1. **DNS: root name servers**
 - The root server is the last resort if any name cannot be resolved.
-It cannot provide the IP address, but it is a good starting point.
+  It cannot provide the IP address, but it is a good starting point.
 - It's an incredibly important function for the internet. Sort of
-like a central nervous system.
-  - The Internet cannot function without it.
+  like a central nervous system.
+    - The Internet cannot function without it.
 
-#### DNS: Top-level Domain (TLD) servers:
+2. **DNS: Top-level Domain (TLD) servers:**
 - responsible for .com, .org, .net, .edu, .aero, .jobs, .museums, and
-all top-level country domains, e.g.: .cn, .uk, .fr, .ca, .jp
+  all top-level country domains, e.g.: .cn, .uk, .fr, .ca, .jp
 - This server has also been known as internet registries. If you want to register
-a new domain, this is the guys you go to.
+  a new domain, this is the guys you go to.
 
-#### DNS: Authoritative DNS servers:
+3. **DNS: Authoritative DNS servers:**
 - This server is responsible to resolve the names within the organization.
 - it can be maintained by organization or service provider.
 - The name suggests what it does. What this server says, is the ultimate
-result.
+  result.
 
-#### Local DNS name servers
-- when host makes a DNS query, it is sent to its local DNS server
-  - Local DNS server returns reply, answering:
-    - from its local cache of recent name-to-address translation pairs
-      - if it's available, it will direct it to the server
-      - if it's not. It will go to DNS hierarchy for resolution.
-
-#### DNS name resolution: iterated query
-<img src="images/DNS-routing.png" style="width:50%;height:50%;"> <br>
-
-1. First engineering.nyu.edu sends a request to dns.nyu.edu server. The
-query message contains a message to translate the gaia.cs.usmass.edu.  
-2. Now it is the job of local DNS server dns.nyu.edu. In order to find this
-message, the local DNS server sends the request to root DNS server.
-3. After receiving the DNS request, with .edu suffix, the root DNS server then
-returns all the TLD servers associated with .edu to dns.nyu.edu.
-4. Then the local dns server forwards the request to one of the TLD Dns server.
-5. The TLD server returns the IP address of the authoritative DNS server in return.
-6. After that, local dns server of nyu gives a request to the authoritative DNS
-server of dns.cs.umass.edu
-7. Now the authoritative dns server of cs.umass.edu returns the IP address of
-gaia.cs.umass.edu.
-8. Then the IP address forwards to engineering.nyu.edu
-
-This query is an Iterative query.
-
-#### DNS name resolution: recursive query
-<img src="images/DNS-recursive-query.png" style="width:50%;height:50%;"> <br>
-
-- In the recursive dns query, the request goes one layer deep.
-- finishes the query and then comes back to the old server.
-
-Recursive query gives a lot of pressure to the top level DNS server. Hence, it
-is not used in practise.
-
-#### Caching DNS Information
-- Once (any) name server learns mapping, it caches mapping, and immediately
-returns a cached mapping in response to a query. It is going to hold the cached
-memory for quite some time. In the future, if the same request comes, it is going to
-return the same request.
-  - caching improves response time
-  - caching entries timeout(disappear) after some time (TTL)
-  - TLD servers typically cached in local name servers
-- cached entries may be **out-of-date**
-  - Note that if a DNS record changes, the cached entries will be out of date. However,
-  DNS does not care about this change even if some inaccurate changes float around.
-    - For example, if a host changes its IP address, it will not be know internet wide,
-    until all the TTLs expire!
-  - So the best effort is to do name-to-address translation.
-
-#### DNS records
-DNS: distributed database storing resource records (RR)
-- RR Format: (name, value, type, ttl)
-
-There are a number of DNS records, but here are the most four popular ones:
+### 21. Explain the different DNS records. A, NS, CNAME, and MX records.
 - **Type=A**
-  - name is hostname
-  - value is IP address
+    - name is hostname
+    - value is IP address
 - **Type=NS**
-  - name is domain(e.g., foo.com)
-  - value is hostname of authoritative
-  name server for this domain.
+    - name is domain(e.g., foo.com)
+    - value is hostname of authoritative
+      name server for this domain.
 -  **type=CNAME**
-  - name is alias name for some "canonical"
-    (the real) name
-  - www.ibm.com is really servereast.backup2.ibm.com
-  - value is canonical name
+- name is alias name for some "canonical"
+  (the real) name
+    - www.ibm.com is really servereast.backup2.ibm.com
+    - value is canonical name
 - **type=MX**
-  - value is the name of SMTP mail server associated with
-  name
+    - value is the name of SMTP mail server associated with
+      name
 
-#### Getting your info into the DNS
-example: Say you want to start a new startup and name of the
-new startup is `Network Utopia`
-- First, we have to register a network name networkutopia.com at
-DNS registrar (e.g., Network Solution)
-  - Then you need to give an authoritative name to your register.
-  - The register you insert your service name into an NS record and
-   its IP address into a record into your global DNS database.
-- Lastly, you need to bring you authoritative name server and populate
-it with resource records for the servers in your network.
+### 22. What is DDos attack and Spoofing attacks in DNS?
+- ** Distributed Denial-of-Service(DDos) attacks:**
+    - bombard root servers with traffic
+        - It's not successful to date
+        - traffic filtering
+        - local DNS servers cache IPs of TLD(Top level domain)
+          servers, allowing root server to bypass.
+    - bombard TLD servers
+        - It's potentially more dangerous
+    - DDos attacks can be prevented from using firewalls.
+- **Spoofing attacks:**
+    - intercept DNS queries, returning bogus replies.
+        - Only way to prevent it from accepting services from an
+          authenticated request.
+        - TC4033: DNSSEC provides authentication services
 
-#### DNS security
-- **DDos attacks:** A DDoS (Distributed Denial of Service) attack is a malicious 
-attempt to disrupt normal traffic of a targeted server, service, or network by 
-overwhelming it with a flood of internet traffic from multiple sources.
-  - bombard root servers with traffic
-    - It's not successful to date
-    - traffic filtering
-    - local DNS servers cache IPs of TLD(Top level domain)
-    servers, allowing root server to bypass.
-  - bombard TLD servers
-    - It's potentially more dangerous
-  - DDos attacks can be prevented from using firewalls.
-- **Spoofing attacks:** Spoofing attacks, on the other hand, involve falsifying information 
-in order to deceive systems, networks, or individuals. This can take various forms, 
-such as IP address spoofing, email spoofing, or caller ID spoofing.
-  - intercept DNS queries, returning bogus replies.
-    - Only way to prevent it from accepting services from an
-    authenticated request.
-    - TC4033: DNSSEC provides authentication services
+## CDN Question
+### 23. What is CDN? How can CDN be used to increase the performance of awebsite?
+- A Content Delivery Network (CDN) is a network of servers distributed
+  geographically, designed to deliver web content and pages to users based on
+  their location, the origin of the webpage, and the server closest to them.
+  Here's how a CDN can be used to increase the performance of a website:
 
-## Video streaming, CDNs
-- A video is a sequence of images displayed at a constant rate.
-    - e.g., 24 images/sec
-- each image is a matrix of pixels. Those pixels are encoded
-to reduce the size of the images. Thus reducing the size of
-the video by exploiting image redundancy.
-- There are couple of coding methods.
-  - **Spatial coding:** When a part of the image has same color, we
-  utilize spatial coding. Instead of storing N values of the same color,
-  the coding sends two values (color value (purple) and number of repeated
-  values (N))
-  - **Temporal coding example:** When there are no major changes between 
-  frames, the coding algorithm only stores the differences between the
-  frames. It is know as temporal coding.
+1. **Caching**: CDNs store cached versions of content in multiple locations,
+   allowing users to access data from the nearest server, which reduces
+   latency and speeds up content delivery.
 
-- **CBR: (constant bit rate:)** video encoding rate fixed.
-- **VBR: (variable bit rate:)** video encoding rate changes as number of
-spatial and temporal coding changes.
-- **Examples:**
-  - **MPEG 1 (CD_ROM):** 1.5Mbps
-  - **MPEG 2 (DVD):** 3-6Mbps
-  - **MPEG 4 (often used in Internet, 64Kbps-12Mbps)**
+2. **Reduced Bandwidth Costs**: By serving cached content, CDNs can reduce
+   the amount of data an origin server must provide, thus lowering hosting
+   costs.
 
-### Streaming stored video
-When doing streaming stored video in line, we can face multiple challenges.
-Some challenges are:
-- server-to-client bandwidth will vary over time
-with changing network congestion levels (in house, access network, network core,
-video server).
-- packet loss, delay due to congestion will play a major role in delay. Now,
-the delay from client side to server side will vary, and we need to adapt to that.
+3. **Load Balancing**: CDNs distribute traffic among different servers,
+   preventing any one server from becoming overloaded, which helps maintain
+   website performance during traffic spikes.
 
-There are three steps of streaming a video:
-1. The video has been recorded.
-2. The video has been sent by the server.
-3. The video is played on the client side.
+4. **Optimizations**: CDNs can perform optimizations such as minification
+   and file compression to reduce file sizes, leading to faster load times.
+   They can also optimize TLS/SSL handshakes and connections.
 
-<img src="images/streaming-stored-video.png" style="width:50%;height:50%;"> <br>
-
-For the sake of the example, let's assume when recording the video and playing the
-video on the client side, both are happening in 30frames/sec. We can see that, when
-server puts 10th second of video, the user is seeing the 1.5th second of the video.
-
-### Streaming stored video: challenges
-- `continous playout constraint:` during client video playout, playout 
-timing must match original timing.
-  - but network delays are variable (leads to jitter), so will need client side 
-  buffer to match continuous playout constraint.
-- **other challenges:**
-  - client interactivity: pause, fast-forward, rewind, jump through video.
-  - video packets may be lost. If it's streaming over TCP connection,
-  it needs to be retransmitted.
+5. **Security**: CDNs can improve security by providing DDoS mitigation,
+   improving security certificates, and other optimizations that help protect
+   against common attacks.
 
