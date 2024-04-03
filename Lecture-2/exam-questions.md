@@ -1,4 +1,6 @@
-1. **What is Client-server architecture?**
+# The Application Layer
+## General Questions
+### 1.What is Client-server architecture?**
 - Host/Server
 1. The host is always on.
 2. Most of the time they have permanent IP address
@@ -12,114 +14,114 @@
    communicate with server.
 5. Examples: HTTP, IMPA, FTP
 
-2. Explain URI, URL, URN and URC
+### 2. Explain URI, URL, URN and URC
 - URI (Uniform Resource Identifier):
-   - A URI is a string of characters used to identify a resource. It can refer 
-  to a web resource, such as a document or image, or any other resource such 
-  as a book or a person.
-   - URIs can be further classified into two types: URLs and URNs.
+    - A URI is a string of characters used to identify a resource. It can refer
+      to a web resource, such as a document or image, or any other resource such
+      as a book or a person.
+    - URIs can be further classified into two types: URLs and URNs.
 
-- URL (Uniform Resource Locator):
-   - A URL is a specific type of URI that provides the means to access a resource 
-  on the internet. It typically includes 
-     - the protocol used to access the resource (e.g., HTTP, HTTPS), 
-     - the domain name or IP address where the resource is located
-     - the specific path to the resource on that server.
-   - For example, in the URL "https://www.example.com/index.html"
-     - "https://" is the protocol, 
-     - "www.example.com" is the domain name, 
-     - and "/index.html" is the path to the resource.
+- **URL (Uniform Resource Locator):**
+    - A URL is a specific type of URI that provides the means to access a resource
+      on the internet. It typically includes
+        - the protocol used to access the resource (e.g., HTTP, HTTPS),
+        - the domain name or IP address where the resource is located
+        - the specific path to the resource on that server.
+    - For example, in the URL "https://www.example.com/index.html"
+        - "https://" is the protocol,
+        - "www.example.com" is the domain name,
+        - and "/index.html" is the path to the resource.
 
-- URN (Uniform Resource Name):
-   - A URN is another type of URI that is used to uniquely identify a resource 
-  without specifying its location or access method. 
-     - Unlike URLs, which may change over time or be specific to a particular location, 
-     URNs provide a persistent identifier for the resource.
-   - An example of a URN is the ISBN (International Standard Book Number) for 
-  books. Each book has a unique ISBN that serves as a persistent identifier for 
-  that book, regardless of where it is located or how it is accessed.
+- **URN (Uniform Resource Name):**
+    - A URN is another type of URI that is used to uniquely identify a resource
+      without specifying its location or access method.
+        - Unlike URLs, which may change over time or be specific to a particular location,
+          URNs provide a persistent identifier for the resource.
+    - An example of a URN is the ISBN (International Standard Book Number) for
+      books. Each book has a unique ISBN that serves as a persistent identifier for
+      that book, regardless of where it is located or how it is accessed.
 
-- URC (Uniform Resource Citation):
-   - A URC is not as commonly known as the other three. The goal of URCs is to 
-   provide a structured and consistent way to reference
-   online resources, including web pages, articles, videos, and more.
-   -  This can be particularly useful in academic and research contexts where 
-   proper citation is important for acknowledging sources and avoiding plagiarism.
+- **URC (Uniform Resource Citation):**
+    - A URC is not as commonly known as the other three. The goal of URCs is to
+      provide a structured and consistent way to reference
+      online resources, including web pages, articles, videos, and more.
+    -  This can be particularly useful in academic and research contexts where
+       proper citation is important for acknowledging sources and avoiding plagiarism.
 
-3. What is Peer-peer(P2P) architecture?
-- Peer-to-peer (P2P) architecture is a decentralized network model where 
-participants, or peers, communicate and collaborate directly with each other 
-without the need for a centralized server.
-  - P2P networks, each peer can act as both a client and a server, sharing 
-  resources and services with other peers in the network.
-  - `Self Scalability:` New peers bring new service capacity, as well as new 
-  service demands.
-    - We can see the same thing in File sharing, where peer receives files from 
-    one peers and shares it with other peers.
-  - Peers are going to be intermittently with the internet. Hence, they are 
-  going to change the IP address.
-    - Hence, the coming and going architecture is much more complex than 
-      server systems.
-4. What is a socket?
-- The application programming interfaces (API), bound to the transport layer, 
-use an abstraction called socket.
+### 3. What is Peer-peer(P2P) architecture?
+- Peer-to-peer (P2P) architecture is a decentralized network model where
+  participants, or peers, communicate and collaborate directly with each other
+  without the need for a centralized server.
+    - P2P networks, each peer can act as both a client and a server, sharing
+      resources and services with other peers in the network.
+    - `Self Scalability:` New peers bring new service capacity, as well as new
+      service demands.
+        - We can see the same thing in File sharing, where peer receives files from
+          one peers and shares it with other peers.
+    - Peers are going to be intermittently with the internet. Hence, they are
+      going to change the IP address.
+        - Hence, the coming and going architecture is much more complex than
+          server systems.
+### 4. What is a socket?
+- The application programming interfaces (API), bound to the transport layer,
+  use an abstraction called socket.
 - Processes going to send and receive messages using `Socket.`
-  - The sending and receiving of messages is going to rely on underlying infrastructure 
-  (transport layer, network layer or link layer), from a socket in the sending 
-  end to the receiving end.
-  - It is also important to know, there will be two sockets involved. One on the 
-  sending side and one on the receiving side.
+    - The sending and receiving of messages is going to rely on underlying infrastructure
+      (transport layer, network layer or link layer), from a socket in the sending
+      end to the receiving end.
+    - It is also important to know, there will be two sockets involved. One on the
+      sending side and one on the receiving side.
 
-5. **How does a Socket work?**
-- Sockets operate based on a client-server model where two programs 
-(a client and a server) communicate over a network. Here's a simplified 
-explanation of how sockets work:
+### 5. **How does a Socket work?**
+- Sockets operate based on a client-server model where two programs
+  (a client and a server) communicate over a network. Here's a simplified
+  explanation of how sockets work:
 
 - **Server Creation**:
-    - The server program creates a socket by specifying the transport protocol 
-   (TCP/UDP) and binds it to a specific port number.
+    - The server program creates a socket by specifying the transport protocol
+      (TCP/UDP) and binds it to a specific port number.
     - It then listens for incoming connections on that port.
 
 - **Client Connection**:
-    - The client program also creates a socket and initiates a connection 
-   request to the server's IP address and port number.
-    - If using TCP, the server accepts the connection, establishing a 
-   communication link.
+    - The client program also creates a socket and initiates a connection
+      request to the server's IP address and port number.
+    - If using TCP, the server accepts the connection, establishing a
+      communication link.
 
 - **Data Transfer**:
-    - Once the connection is established, both the client and server can send 
-   and receive data.
-    - For TCP sockets, data is sent in a continuous stream, while UDP sockets 
-   send data in discrete packets.
+    - Once the connection is established, both the client and server can send
+      and receive data.
+    - For TCP sockets, data is sent in a continuous stream, while UDP sockets
+      send data in discrete packets.
 
 - **Closing the Connection**:
     - After the communication is complete, either side can close the connection.
-    - For TCP, a four-way handshake process ensures the connection is 
-   terminated gracefully.
+    - For TCP, a four-way handshake process ensures the connection is
+      terminated gracefully.
 
-6. Tell me the differences in TCP and UDP.
-- **Reliable Transport:** 
-  - TCP provides reliable transport between sending and receiving a process
-  - UDP has a unreliable data transfer between sending and receiving processes
+### 6. Tell me the differences in TCP and UDP.
+- **Reliable Transport:**
+    - TCP provides reliable transport between sending and receiving a process
+    - UDP has a unreliable data transfer between sending and receiving processes
 - **Flow Control:**
-  - TCP guarantees that sender will not overwhelm the receiver
-  - Does not provide flow control
+    - TCP guarantees that sender will not overwhelm the receiver
+    - Does not provide flow control
 - **Congestion Control:**
-  - TCP sender is also congestion controlled when the network is overloaded
-  - Does not provide congestion control
+    - TCP sender is also congestion controlled when the network is overloaded
+    - Does not provide congestion control
 - **Connection Oriented:**
-  - TCP also connection oriented means handshakes are needed
-    before data from sender to receiver.
-  - Does not provide connection control
+    - TCP also connection oriented means handshakes are needed
+      before data from sender to receiver.
+    - Does not provide connection control
 - **Does not provide:**
-  - TCP does not provide timing, minimum throughput guarantee, security
-  - UDP also does not provide any of the support either.
+    - TCP does not provide timing, minimum throughput guarantee, security
+    - UDP also does not provide any of the support either.
 
 **Question:** You might be wondering, for which cases do we need UDP? <br>
-**Answer:** We can start with UDP and start adding other services, for example, 
+**Answer:** We can start with UDP and start adding other services, for example,
 Flow control and Congestion control on top of UDP. <br>
 
-7. What is HTTP? Features of HTTP.
+### 7. What is HTTP? Features of HTTP.
 - HTTP - `Hypertext transfer protocol`
 - Web's application layer protocol. HTTP follows the client and server model:
     - `Client:` The typical example of a client is the browser. In addition,
@@ -129,44 +131,45 @@ Flow control and Congestion control on top of UDP. <br>
       requests.
 
 - HTTP uses TCP
-  - HTTP clients open a TCP connection using a web server on port 80 whether
-    through browser or other device.
-  - One or more HTTP messages are exchanged between a client and server.
-  - Then TCP connection is closed.
+    - HTTP clients open a TCP connection using a web server on port 80 whether
+      through browser or other device.
+    - One or more HTTP messages are exchanged between a client and server.
+    - Then TCP connection is closed.
 
 - HTTP is "stateless"
-  - the server maintains no information about past client requests.
+    - the server maintains no information about past client requests.
 > Now you might ask why is that. Because, the protocols that hold
 previous states have to go through a rigorous process of cleaning
 previous statues, if one state in between fails.
 
-8. Tell me the difference in Persistent and Non-Persistent HTTP. This question
+## HTTP Questions
+### 8. Tell me the difference in Persistent and Non-Persistent HTTP. This question
 is also the answer between HTTP/1.1 and HTTP/1.0.
 
 - **Persistent TCP (HTTP/1.1)**:
-    - **Connection**: The TCP connection remains open after sending a response, 
-  allowing multiple requests and responses between the same client and server 
-  over the same connection.
-    - **Round Trip Times (RTTs)**: Only (one RTT + file transmission time) is 
-  needed for all referenced objects, reducing the time to initiate subsequent 
-  requests.
+    - **Connection**: The TCP connection remains open after sending a response,
+      allowing multiple requests and responses between the same client and server
+      over the same connection.
+    - **Round Trip Times (RTTs)**: Only (one RTT + file transmission time) is
+      needed for all referenced objects, reducing the time to initiate subsequent
+      requests.
     - **Network Traffic**: Less network traffic due to fewer connections being
-  opened and closed.
-  - **CPU Overhead**: Lower CPU overhead because a single connection handles
-  multiple objects.
+      opened and closed.
+    - **CPU Overhead**: Lower CPU overhead because a single connection handles
+      multiple objects.
 
 - **Non-Persistent TCP (HTTP/1.0)**:
-    - **Connection**: Each object requires a new TCP connection, which is 
-  terminated after the object is transferred.
-    - **Round Trip Times (RTTs)**: Two RTTs + file transmission time are 
-  required per object—one for the TCP connection and another for the 
-  HTTP request/response.
-    - **Network Traffic**: More network traffic due to the frequent opening 
-  and closing of connections.
+    - **Connection**: Each object requires a new TCP connection, which is
+      terminated after the object is transferred.
+    - **Round Trip Times (RTTs)**: Two RTTs + file transmission time are
+      required per object—one for the TCP connection and another for the
+      HTTP request/response.
+    - **Network Traffic**: More network traffic due to the frequent opening
+      and closing of connections.
     - **CPU Overhead**: Higher CPU overhead for handling multiple connections
-  , as each object requires a separate connection.
+      , as each object requires a separate connection.
 
-9. Tell me how a Non-Persistent HTTP and Persistent HTTP works.
+### 9. Tell me how a Non-Persistent HTTP and Persistent HTTP works.
 - Non-Persistent HTTP:
   1. HTTP `client` initiates TCP connection to HTTP server (process) at
      www.someSchool.edu on port 80
@@ -190,7 +193,7 @@ is also the answer between HTTP/1.1 and HTTP/1.0.
   persistent HTTP.
   - Hence, the response time reduces to 1 RTT + file transmission time.
 
-10. **HTTP Request and Response Message formats.**
+### 10. **HTTP Request and Response Message formats.**
 - two types of HTTP messages: request, response
 - **HTTP request message:**
     - ASCII (human-readable format)
@@ -210,7 +213,7 @@ A sample HTTP request has been given:
 3. `Entity body:` In this example we didn't need something in the entity body.
    But for POST request, we may need this part.
 
-- **HTTP response message**
+- **HTTP response message** <br>
 <img src="images/HTTPResponse.png" style="width:50%;height:50%;"> <br>
 
 HTTP responses also have 3 Part:
@@ -220,7 +223,7 @@ Example: Date, SServer, Last-Modified, ETag, Accept-Ranges, Content-Length
 Content-Type.
 3. `Data`: In this part the requested data in HTML.
 
-10. **What are some HTTP verbs or methods?**
+### 11. What are some HTTP verbs or methods?
 - **GET Method**
   - includes user data in the URL field of HTTP GET a request message (following a '?'):
       - www.somesite.com/animalsearch?monkeys&banana
@@ -242,7 +245,7 @@ Content-Type.
 
 There are other methods such as **DELETE, CONNECT, OPTIONS, TRACE, PATCH**
 
-11. **What are cookies and what cookies can be used for?**
+### 12. What are cookies and what cookies can be used for?
 - As mentioned above, HTTP is a stateless protocol, which means it does not 
 hold previous states. When information from the previous states is necessary, 
 Websites and client browsers use**cookies** to maintain some state between 
@@ -280,100 +283,7 @@ cart using cookie.
 the server can give some recommendations.
 4. `User session state:` It can store of your browsing state.
 
-12. **What is DNS? Why is DNS decentralized?**
-- DNS(Domain name system) in hierarchy of many name servers, which
-  provides domain name to IP address translation.
-- **DNS is decentralized**
-  - There could be a single point of failure
-  - Given that the load of DNS, it will create tremendous control of service.
-  - Given how important DNS is, just putting one DNS server will create a long
-  RTT delays for the clients who are very far away from the server.
-  - It would have been chaos to maintain one DNS server.
-  - `In one word it is not possible to scale`
-
-13. **Explain the Root, TLD, and Authoritative DNS server.**
-1. **DNS: root name servers**
-- The root server is the last resort if any name cannot be resolved.
-  It cannot provide the IP address, but it is a good starting point.
-- It's an incredibly important function for the internet. Sort of
-  like a central nervous system.
-    - The Internet cannot function without it.
-
-2. **DNS: Top-level Domain (TLD) servers:**
-- responsible for .com, .org, .net, .edu, .aero, .jobs, .museums, and
-  all top-level country domains, e.g.: .cn, .uk, .fr, .ca, .jp
-- This server has also been known as internet registries. If you want to register
-  a new domain, this is the guys you go to.
-
-3. **DNS: Authoritative DNS servers:**
-- This server is responsible to resolve the names within the organization.
-- it can be maintained by organization or service provider.
-- The name suggests what it does. What this server says, is the ultimate
-  result.
-
-14. **Explain the different DNS records. A, NS, CNAME, and MX records.**
-- **Type=A**
-    - name is hostname
-    - value is IP address
-- **Type=NS**
-    - name is domain(e.g., foo.com)
-    - value is hostname of authoritative
-      name server for this domain.
--  **type=CNAME**
-  - name is alias name for some "canonical"
-    (the real) name
-    - www.ibm.com is really servereast.backup2.ibm.com
-    - value is canonical name
-- **type=MX**
-    - value is the name of SMTP mail server associated with
-      name
-
-15. **What is DDos attack and Spoofing attacks in DNS?**
-- ** Distributed Denial-of-Service(DDos) attacks:**
-    - bombard root servers with traffic
-        - It's not successful to date
-        - traffic filtering
-        - local DNS servers cache IPs of TLD(Top level domain)
-          servers, allowing root server to bypass.
-    - bombard TLD servers
-        - It's potentially more dangerous
-    - DDos attacks can be prevented from using firewalls.
-- **Spoofing attacks:**
-    - intercept DNS queries, returning bogus replies.
-        - Only way to prevent it from accepting services from an
-          authenticated request.
-        - TC4033: DNSSEC provides authentication services
-
-16. **What is CDN? How can CDN be used to increase the performance of a
-website?
-- A Content Delivery Network (CDN) is a network of servers distributed 
-geographically, designed to deliver web content and pages to users based on 
-their location, the origin of the webpage, and the server closest to them. 
-Here's how a CDN can be used to increase the performance of a website:
-
-1. **Caching**: CDNs store cached versions of content in multiple locations,
-allowing users to access data from the nearest server, which reduces 
-latency and speeds up content delivery.
-
-2. **Reduced Bandwidth Costs**: By serving cached content, CDNs can reduce 
-the amount of data an origin server must provide, thus lowering hosting 
-costs.
-
-3. **Load Balancing**: CDNs distribute traffic among different servers, 
-preventing any one server from becoming overloaded, which helps maintain 
-website performance during traffic spikes.
-
-4. **Optimizations**: CDNs can perform optimizations such as minification
-and file compression to reduce file sizes, leading to faster load times. 
-They can also optimize TLS/SSL handshakes and connections.
-
-5. **Security**: CDNs can improve security by providing DDoS mitigation, 
-improving security certificates, and other optimizations that help protect 
-against common attacks.
-
-17. **Sequential and pipelined orders in TCP connection. This question
-can also be asked as sequential and persistent connection in HTTP/1.0 and
-HTTP/1.1**
+### 13. Sequential and pipelined orders in TCP connection. This question can also be asked as sequential and persistent connection in HTTP/1.0 and HTTP/1.1
 - In the context of TCP and HTTP, "sequential" and "pipelined" orders refer 
 to how client requests are processed and responded to by a server.
 
@@ -392,7 +302,7 @@ can improve performance in high-latency environments by making better use
 of TCP connections. It's a feature of HTTP/1.1, which supports persistent 
 connections.
 
-18. **HOL blocking in persistent TCP connection.**
+### 14. HOL blocking in persistent TCP connection. Also HOL blocking in HTTP/1.1
 - Head-of-line (HOL) blocking is a phenomenon that can occur in networking 
 when a sequence of packets is delayed due to the first packet being held up. 
 In the context of persistent TCP connections, this can impact performance, 
@@ -403,8 +313,7 @@ requests were received. If one request takes a long time to process or needs
 to be retransmitted, it can delay all subsequent responses, even if they 
 are ready. 
 
-19. **Explain Multiplexing and Demultiplexing with SPDY in HTTP 2.0. How
-HTTP 2.0 mitigates HOL blocking?**
+### 15. Explain Multiplexing and Demultiplexing with SPDY in HTTP 2.0. How HTTP 2.0 mitigates HOL blocking?
 - HTTP/2, which was inspired by Google’s SPDY protocol, introduced several 
 improvements over HTTP/1.1 to enhance web performance. One of the key 
 features of HTTP/2 is multiplexing, which allows multiple requests and 
@@ -430,7 +339,7 @@ This is why the newer HTTP/3 protocol is being developed to run over QUIC,
 which allows for out-of-order delivery at the transport layer, further 
 reducing the impact of HOL blocking.
 
-20. **Explain prioritization and server push in SPDY.**
+### 16. Explain prioritization and server push in SPDY.
 - SPDY, the predecessor to HTTP/2, introduced several key features to 
 improve web performance, including **prioritization** and **server push**.
 
@@ -451,7 +360,7 @@ as the initial HTML is requested. This can save a round trip and speed up
 the page load time. However, if the client already has the resource cached,
 the push can be redundant and wasteful.
 
-##### Tell me the differences between HTTP/1.1 and HTTP/2.0
+### 17. Tell me the differences between HTTP/1.1 and HTTP/2.0
 **HTTP/1.1:**
 - **Text-based Protocol**: HTTP/1.1 uses a text-based format for requests 
 and responses, which can be less efficient for parsing and interpreting.
@@ -475,7 +384,7 @@ cache before they are explicitly requested, further improving performance.
 - **Header Compression**: HTTP/2 uses HPACK compression for headers, 
 reducing overhead.
 
-##### HTTP 3.0 and how QUIC works. How HTTP 3.0 solves HOL blocking.
+### 18. HTTP 3.0 and how QUIC works. How HTTP 3.0 solves HOL blocking.
 HTTP/3 is the fourth major version of the Hypertext Transfer Protocol (HTTP), 
 which is used to exchange information on the World Wide Web. It represents
 a significant evolution from the previous versions, HTTP/1.1 and HTTP/2, 
@@ -507,3 +416,96 @@ establish a connection by combining the transport and cryptographic
 handshakes. It also supports 0-RTT (Zero Round Trip Time) resumption for 
 previously connected clients, which allows them to send data without 
 waiting for a handshake to complete.
+
+## DNS Question
+### 19. What is DNS? Why is DNS decentralized?
+- DNS(Domain name system) in hierarchy of many name servers, which
+  provides domain name to IP address translation.
+- **DNS is decentralized**
+    - There could be a single point of failure
+    - Given that the load of DNS, it will create tremendous control of service.
+    - Given how important DNS is, just putting one DNS server will create a long
+      RTT delays for the clients who are very far away from the server.
+    - It would have been chaos to maintain one DNS server.
+    - `In one word it is not possible to scale`
+
+### 20. Explain the Root, TLD, and Authoritative DNS server.
+1. **DNS: root name servers**
+- The root server is the last resort if any name cannot be resolved.
+  It cannot provide the IP address, but it is a good starting point.
+- It's an incredibly important function for the internet. Sort of
+  like a central nervous system.
+    - The Internet cannot function without it.
+
+2. **DNS: Top-level Domain (TLD) servers:**
+- responsible for .com, .org, .net, .edu, .aero, .jobs, .museums, and
+  all top-level country domains, e.g.: .cn, .uk, .fr, .ca, .jp
+- This server has also been known as internet registries. If you want to register
+  a new domain, this is the guys you go to.
+
+3. **DNS: Authoritative DNS servers:**
+- This server is responsible to resolve the names within the organization.
+- it can be maintained by organization or service provider.
+- The name suggests what it does. What this server says, is the ultimate
+  result.
+
+### 21. Explain the different DNS records. A, NS, CNAME, and MX records.
+- **Type=A**
+    - name is hostname
+    - value is IP address
+- **Type=NS**
+    - name is domain(e.g., foo.com)
+    - value is hostname of authoritative
+      name server for this domain.
+-  **type=CNAME**
+- name is alias name for some "canonical"
+  (the real) name
+    - www.ibm.com is really servereast.backup2.ibm.com
+    - value is canonical name
+- **type=MX**
+    - value is the name of SMTP mail server associated with
+      name
+
+### 22. What is DDos attack and Spoofing attacks in DNS?
+- ** Distributed Denial-of-Service(DDos) attacks:**
+    - bombard root servers with traffic
+        - It's not successful to date
+        - traffic filtering
+        - local DNS servers cache IPs of TLD(Top level domain)
+          servers, allowing root server to bypass.
+    - bombard TLD servers
+        - It's potentially more dangerous
+    - DDos attacks can be prevented from using firewalls.
+- **Spoofing attacks:**
+    - intercept DNS queries, returning bogus replies.
+        - Only way to prevent it from accepting services from an
+          authenticated request.
+        - TC4033: DNSSEC provides authentication services
+
+## CDN Question
+### 23. What is CDN? How can CDN be used to increase the performance of awebsite?
+- A Content Delivery Network (CDN) is a network of servers distributed
+  geographically, designed to deliver web content and pages to users based on
+  their location, the origin of the webpage, and the server closest to them.
+  Here's how a CDN can be used to increase the performance of a website:
+
+1. **Caching**: CDNs store cached versions of content in multiple locations,
+   allowing users to access data from the nearest server, which reduces
+   latency and speeds up content delivery.
+
+2. **Reduced Bandwidth Costs**: By serving cached content, CDNs can reduce
+   the amount of data an origin server must provide, thus lowering hosting
+   costs.
+
+3. **Load Balancing**: CDNs distribute traffic among different servers,
+   preventing any one server from becoming overloaded, which helps maintain
+   website performance during traffic spikes.
+
+4. **Optimizations**: CDNs can perform optimizations such as minification
+   and file compression to reduce file sizes, leading to faster load times.
+   They can also optimize TLS/SSL handshakes and connections.
+
+5. **Security**: CDNs can improve security by providing DDoS mitigation,
+   improving security certificates, and other optimizations that help protect
+   against common attacks.
+
