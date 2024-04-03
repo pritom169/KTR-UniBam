@@ -141,7 +141,7 @@ previous states have to go through a rigorous process of cleaning
 previous statues, if one state in between fails.
 
 8. Tell me the difference in Persistent and Non-Persistent HTTP. This question
-is also the answer between Persistent TCP and non-persistent TCP.
+is also the answer between HTTP/1.1 and HTTP/1.0.
 
 - **Persistent TCP (HTTP/1.1)**:
     - **Connection**: The TCP connection remains open after sending a response, 
@@ -344,7 +344,7 @@ the server can give some recommendations.
           authenticated request.
         - TC4033: DNSSEC provides authentication services
 
-16. **What is CDN? How CDN can be sued to increase the performance of a
+16. **What is CDN? How can CDN be used to increase the performance of a
 website?
 - A Content Delivery Network (CDN) is a network of servers distributed 
 geographically, designed to deliver web content and pages to users based on 
@@ -371,3 +371,139 @@ They can also optimize TLS/SSL handshakes and connections.
 improving security certificates, and other optimizations that help protect 
 against common attacks.
 
+17. **Sequential and pipelined orders in TCP connection. This question
+can also be asked as sequential and persistent connection in HTTP/1.0 and
+HTTP/1.1**
+- In the context of TCP and HTTP, "sequential" and "pipelined" orders refer 
+to how client requests are processed and responded to by a server.
+
+- **Sequential Order:**
+- In a sequential order, each client request is processed one at a time. The 
+server must send a response to the current request before it can read and 
+process the next request. This is the traditional model used in HTTP/1.0, 
+where each request/response pair is handled in turn.
+
+- **Pipelined Order:**
+- Pipelining allows a client to send multiple requests to the server without 
+waiting for each response. The server reads multiple requests in the order 
+they were received and processes them sequentially. However, the responses 
+must still be sent in the same order that the requests were received. This 
+can improve performance in high-latency environments by making better use 
+of TCP connections. It's a feature of HTTP/1.1, which supports persistent 
+connections.
+
+18. **HOL blocking in persistent TCP connection.**
+- Head-of-line (HOL) blocking is a phenomenon that can occur in networking 
+when a sequence of packets is delayed due to the first packet being held up. 
+In the context of persistent TCP connections, this can impact performance, 
+especially when using HTTP pipelining.
+- In HTTP/1.1, which supports persistent connections, HOL blocking can occur 
+because the protocol requires responses to be sent in the same order as 
+requests were received. If one request takes a long time to process or needs
+to be retransmitted, it can delay all subsequent responses, even if they 
+are ready. 
+
+19. **Explain Multiplexing and Demultiplexing with SPDY in HTTP 2.0. How
+HTTP 2.0 mitigates HOL blocking?**
+- HTTP/2, which was inspired by Google’s SPDY protocol, introduced several 
+improvements over HTTP/1.1 to enhance web performance. One of the key 
+features of HTTP/2 is multiplexing, which allows multiple requests and 
+responses to be sent over a single TCP connection simultaneously. 
+This is achieved through the use of frames that can interleave multiple 
+streams of messages, allowing for the concurrent transmission of requests 
+and responses.
+- Demultiplexing refers to the process on the receiving end, where these 
+interleaved frames are separated and reassembled into the original messages.
+This allows a server to process multiple requests in parallel and send out 
+responses as soon as they are ready, without having to wait for other 
+responses to be sent first.
+- HTTP/2’s multiplexing capability significantly mitigates the issue of 
+Head-of-Line (HOL) blocking that was present in HTTP/1.1. In HTTP/1.1, if 
+a request was slow to process, subsequent requests had to wait, creating 
+a bottleneck. With HTTP/2, different requests are independent; if one is 
+slow, others can still proceed without waiting.
+- However, while HTTP/2 reduces HOL blocking at the application layer, it 
+does not eliminate it at the transport layer. If a packet is lost in the 
+TCP stream, all streams still have to wait for that packet to be 
+retransmitted and received due to TCP’s in-order delivery requirement. 
+This is why the newer HTTP/3 protocol is being developed to run over QUIC, 
+which allows for out-of-order delivery at the transport layer, further 
+reducing the impact of HOL blocking.
+
+20. **Explain prioritization and server push in SPDY.**
+- SPDY, the predecessor to HTTP/2, introduced several key features to 
+improve web performance, including **prioritization** and **server push**.
+
+- **Prioritization** in SPDY allows clients to inform the server about which 
+resources are more important than others. This means that the server can 
+prioritize sending critical resources first, ensuring that they are loaded 
+as quickly as possible. This feature helps to address the 'first-in, 
+first-out' problem of traditional HTTP, where all requests are treated 
+equally, regardless of their importance to the page load.
+
+- **Server Push** is another significant feature of SPDY. It enables the 
+server to send resources to the client proactively, without waiting for an 
+explicit request from the client. This is based on the server's assumption 
+that the client will need certain resources to complete the page rendering. 
+For example, if the server knows that a particular image or stylesheet is 
+required to render a page, it can push that resource to the client as soon 
+as the initial HTML is requested. This can save a round trip and speed up 
+the page load time. However, if the client already has the resource cached,
+the push can be redundant and wasteful.
+
+##### Tell me the differences between HTTP/1.1 and HTTP/2.0
+**HTTP/1.1:**
+- **Text-based Protocol**: HTTP/1.1 uses a text-based format for requests 
+and responses, which can be less efficient for parsing and interpreting.
+- **One Request at a Time**: It processes one request per TCP connection 
+at a time, which can lead to significant latency due to the creation of 
+multiple connections and the "head-of-line" blocking problem.
+- **No Prioritization**: There is no built-in mechanism for prioritizing 
+requests, which means all requests are considered with equal importance.
+
+**HTTP/2.0:**
+- **Binary Protocol**: HTTP/2 uses a binary framing layer, which 
+encapsulates messages in a binary format, making it more efficient and 
+less error-prone.
+- **Multiplexing**: Multiple requests and responses can be sent in 
+parallel over a single TCP connection, reducing latency and improving 
+page load times.
+- **Stream Prioritization**: HTTP/2 allows clients to prioritize requests,
+enabling more important resources to be sent first.
+- **Server Push**: Servers can push resources proactively to the client's 
+cache before they are explicitly requested, further improving performance.
+- **Header Compression**: HTTP/2 uses HPACK compression for headers, 
+reducing overhead.
+
+##### HTTP 3.0 and how QUIC works. How HTTP 3.0 solves HOL blocking.
+HTTP/3 is the fourth major version of the Hypertext Transfer Protocol (HTTP), 
+which is used to exchange information on the World Wide Web. It represents
+a significant evolution from the previous versions, HTTP/1.1 and HTTP/2, 
+primarily because it utilizes the QUIC protocol instead of TCP.
+
+**QUIC** stands for Quick UDP Internet Connections. It is a transport 
+layer network protocol designed to provide secure and reliable connections 
+that are faster than traditional TCP connections. QUIC operates over UDP 
+(User Datagram Protocol), which is inherently faster than TCP because it 
+does not require a handshake for each connection, thus reducing latency.
+
+Here's how HTTP/3 and QUIC work together to solve the Head-of-Line (HOL) 
+blocking issue:
+
+- **Multiplexing without HOL Blocking**: HTTP/3 uses QUIC to multiplex 
+multiple streams of data over a single connection. Unlike TCP, QUIC is 
+aware of these individual streams. If one stream suffers from packet 
+loss, only that stream is affected and needs to wait for retransmission. 
+Other streams can continue without delay, effectively eliminating HOL 
+blocking at the application layer.
+
+- **Stream Independence**: QUIC treats each stream independently. This 
+means that if there's an issue with one data stream, it doesn't affect the 
+others. Each stream can proceed at its own pace, which is not possible 
+with TCP's single byte-stream model.
+
+- **Faster Connection Establishment**: QUIC reduces the time it takes to 
+establish a connection by combining the transport and cryptographic 
+handshakes. It also supports 0-RTT (Zero Round Trip Time) resumption for 
+previously connected clients, which allows them to send data without 
+waiting for a handshake to complete.

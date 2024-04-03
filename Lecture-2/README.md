@@ -560,8 +560,8 @@ video on the client side, both are happening in 30frames/sec. We can see that, w
 server puts 10th second of video, the user is seeing the 1.5th second of the video.
 
 ### Streaming stored video: challenges
-- `continous playout constraint:` during client video playout, playout timing must
-match original timing.
+- `continous playout constraint:` during client video playout, playout 
+timing must match original timing.
   - but network delays are variable (leads to jitter), so will need client side 
   buffer to match continuous playout constraint.
 - **other challenges:**
