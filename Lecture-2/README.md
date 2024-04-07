@@ -121,6 +121,7 @@
 **Answer:** We can start with UDP and start adding other services, for example,
 Flow control and Congestion control on top of UDP. <br>
 
+## HTTP Questions
 ### 7. What is HTTP? Features of HTTP.
 - HTTP - `Hypertext transfer protocol`
 - Web's application layer protocol. HTTP follows the client and server model:
@@ -142,9 +143,7 @@ Flow control and Congestion control on top of UDP. <br>
 previous states have to go through a rigorous process of cleaning
 previous statues, if one state in between fails.
 
-## HTTP Questions
-### 8. Tell me the difference in Persistent and Non-Persistent HTTP. This question
-is also the answer between HTTP/1.1 and HTTP/1.0.
+### 8. Tell me the difference in Persistent and Non-Persistent HTTP. This question is also the answer between HTTP/1.1 and HTTP/1.0.
 
 - **Persistent TCP (HTTP/1.1)**:
     - **Connection**: The TCP connection remains open after sending a response,
@@ -417,7 +416,7 @@ handshakes. It also supports 0-RTT (Zero Round Trip Time) resumption for
 previously connected clients, which allows them to send data without 
 waiting for a handshake to complete.
 
-## DNS Question
+## DNS Questions
 ### 19. What is DNS? Why is DNS decentralized?
 - DNS(Domain name system) in hierarchy of many name servers, which
   provides domain name to IP address translation.
@@ -482,7 +481,7 @@ waiting for a handshake to complete.
           authenticated request.
         - TC4033: DNSSEC provides authentication services
 
-## CDN Question
+## CDN Questions
 ### 23. What is CDN? How can CDN be used to increase the performance of awebsite?
 - A Content Delivery Network (CDN) is a network of servers distributed
   geographically, designed to deliver web content and pages to users based on
