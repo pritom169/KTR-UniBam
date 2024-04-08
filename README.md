@@ -56,23 +56,23 @@ Source: [Computer Networking: A Top-down Approach](https://gaia.cs.umass.edu/kur
 
 ## Chapter 3: The Transport Layer
 
-- ~~Multiplexing and Demultiplexing in TCP~~. `***`
-- ~~UDP Packet format~~. `***`
-- Features of TCP: ~~Connection oriented~~, ~~MUX & DEMUX~~, P2P, Reliability with 
+- Multiplexing and Demultiplexing in TCP. `***`
+- UDP Packet format. `***`
+- Features of TCP: Connection oriented, MUX & DEMUX, P2P, Reliability with 
 in-order and retransmission, congestion, and flow control. `***`
 - TCP Segment Structure. `***`
 - TCP sequence number and ackowledgement number. `***`
 - Congestion control vs. flow control.
-- TCP ~~flow control~~ and congestion control. `***`
-- ~~3-way handshake in TCP.~~ `***`
+- TCP flow control and congestion control. `***`
+- 3-way handshake in TCP.`***`
 - Closing a TCP connection. `***`
 - QUIC.
-- Well known ports: HTTP 80, HTTP 443, FTP 21, SMTP 25, and IPSec 500.
+- Well-known ports: HTTP 80, HTTP 443, FTP 21, SMTP 25, and IPSec 500.
 
 ## Chapter 4: The Network Layer: the Data Plane
 
 - Data plane vs. control plane. `***`
-- Two control plane approaches: Per-router control plane and SDN. `***`
+- Two control planes approaches: Per-router control plane and SDN. `***`
 - Router architecture. `***`
 - Input port functions. Lookup, forwarding, and queuing in input port. `**`
 - Destination-based forwarding. `***`

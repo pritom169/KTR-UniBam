@@ -1,4 +1,5 @@
 # The Transport Layer
+## General Question
 ### Explain Multiplexing and Demultiplexing at TCP and UDP
 - **Multiplexing at sender:** 
   - Handle data from multiple sockets
@@ -8,7 +9,7 @@
   - Use header info to deliver received segments to correct Socket.
 
 - **Connectionless demultiplexing at UDP:**
-  - when creating datagram to send into UDP socket, must specify
+  - when creating a datagram to send into UDP socket, must specify
     - destination IP address
     - destination port number
   - When receiving host receives UDP segment:
@@ -38,6 +39,7 @@
 We can see in the picture, even if the server send data into the same port
 the port then is being multiplexed into different sockets.
 
+## UDP Questions
 ### Explain the UDP packet format.
 - **UDP (User datagram protocol):**
   - UDP is a no frill protocol.
@@ -74,7 +76,7 @@ Now one might ask HTTP needs reliability. How come UDP is used in there
   - IP then does it's job and sends it to the network.
   
 - **UDP receiver actions:**
-  - In the receiver side, the IP layer removes it's header and passes the message
+  - On the receiver side, the IP layer removes it's header and passes the message
   to the UDP side.
   - When it receives the UDP layer, the UDP checks the checksum. Whether
   the message has been corrupted or not. If the check passes the UDP
@@ -89,7 +91,7 @@ Now one might ask HTTP needs reliability. How come UDP is used in there
 4. It also has a payload, which is a message from application.
 
 #### Checksum
-The purpose of the checksum to detect errors
+The purpose of the checksum is to detect errors
 
 <img src="images/UDP-Segment.png" style="width:50%;height:50%;"> <br>
 
@@ -132,17 +134,18 @@ Now internet checksum can be weak way to check the authenticity of data.
   - the whole sum stays the same even though the sum is the same
   - Hence, weak security.
 
+## TCP Questions
 ### TCP segment structure
 1. TCP has a source port and a destination port.
-2. TCP has a 32 bit sequence number
-3. TCP has a 32 bit acknowledgement number
-4. TCP has a Internet checksum
-5. TCP also have options which is not fixed. aka variable.
+2. TCP has a 32-bit sequence number
+3. TCP has a 32-bit acknowledgement number
+4. TCP has an Internet checksum
+5. TCP also has options which are not fixed. aka variable.
 6. There is a field in the Header for flow control.
    (the number of bites it is willing to accept)
 7. There are RST, SYN, FIN (R,S,F) bits are used for connection management.
-8. Two bits in the header for congestion notification (C,E).
-9. There is 2 bits for urgent field, which are not used in practise.
+8. Two bits in the header for congestion notification (C, E).
+9. There are 2 bits for urgent field, which are not used in practice.
 
 ### TCP: Sequence number and acknowledgement number
 - **Sequence Number:** TCP implements byte stream abstraction.
@@ -200,7 +203,8 @@ the sender and the receiver.
   Hence, it sends the connection request again and the server also returns
   the acknowledgement.
   - In this scenario, it has created a half-open connection.
-    <img src="images/2-way-handshake-2.png" style="width:50%;height:50%;"> <br>
+  
+  <img src="images/2-way-handshake-2.png" style="width:50%;height:50%;"> <br>
 
 - **3rd scenario:**
   - In the third scenario, the client terminates it's connection after
@@ -247,11 +251,11 @@ How to set TCP timeout?
 - `DevRTT`: EWMA of `SampleRTT` deviation from `Estimated RTT:
   - `DevRTT = (1-ß) * DevRTT + ß * (Sample RTT - Estimated RTT)`
 
-### TCP: Congestion Control
+### Congestion Control
 Informally, `too many resources sending too much data at too fast for
 network too handle`
 
-#### Causes congestion
+#### Causes of congestion
 ##### Ideal scenario: some perfect knowledge
   - Packets can be lost (dropped at routers) due to full buffers.
   - sender knows when a packet has been dropped: only resends packets when
@@ -307,6 +311,141 @@ Hence, blue throughput gets close to 0. So, it cannot get any close
 than 0 throughput.
 - When packets dropped, any upstream transmission capacity used for
 buffering used for the packet, will be lost.
+
+### TCP: Congestion Control
+- `Approach:` The principal of congestion control is:
+  - Increase the sending rate until packet loss occurs.
+  - Decrease the sending rate until loss of event happens.
+
+- The algorithm that controls the increase and decrease of the
+of sending the packet rates is called `Additive Increase Multiplicative
+Decrease (AIMD)`
+  - `Additive Increase:` Increase sending rate by 1 maximum segment
+  - `Multiplicate Decrease:` Cut sending rate half of each at loss
+  segment.
+
+<img src="images/TCP-congestion-control.png" style="width:50%;height:50%;"> <br>
+
+1. There are segments that are acknowledged shown in `Green` mark.
+2. The segments that have been sent but not yet acknowledged have been shown
+in `Yellow` here.
+3. There are segments that could be sent, congestion control algorithm would
+allow this to be sent if they were data. They are marked by `Blue` color.
+4. This `Blue` and `Yellow` are called congestion window.
+5. The size of the window is controlled by `AIMD` window.
+
+#### TCP: Congestion Control: Details
+Now there is a direct relationship between the window size and TCP user's
+sending rate.
+- TCP rate: (cwnd/RTT) bytes/sec data. Means TCP sending this amount of data
+per second.
+
+##### TCP: CUBIC
+`TCP CUBIC` works as follows:
+1. `TCP CUBIC` uses a cubic function to grow the congestion window (cwnd), 
+which determines how much data can be sent before waiting for an 
+acknowledgment. After a packet loss (which signals congestion), CUBIC 
+resets the cwnd and then begins to grow it again following a cubic curve.
+2. The window size under CUBIC grows quickly after a packet loss but slows 
+down as it approaches the previous maximum window size before the loss. 
+This behavior allows for rapid recovery while avoiding sudden congestion.
+
+More specifically:
+- K: point in time when TCP window size will reach W(max)
+  - K itself is Tunable
+- increase W as a function of the `cube` of the distance between current
+time and K
+  - larger increase when further away from K
+  - smaller increase when near to K
+
+- `TCP cubic is the most widely used congestion control algorithm.
+
+#### TCP: the congested "Bottleneck Link"
+- We have seen in the `AIMD, and CUBIC` TCP increase it's sending rate
+until packet loss occurs.
+- Now packet loss occurs at some router's output: It is also called `the
+Bottleneck`
+
+#### Delay-based congestion control
+AIMD would fill the buffer's bottleneck link until loss occurs. Now let's
+think what will happen if the bottleneck link is congested.
+- If the bottleneck link is always busy, there is no point increasing
+the user's sending rate.
+- Router can only deliver R/bits per second on the congested output link.
+- If the TCP sender sends faster, it still cannot deliver more than R/bits
+per second.
+- So we want to keep the router busy, but not too much busy as it starts to 
+loose packet.
+- That is the insight
+
+Here is short brief how delay-based congestion control works:
+- measured throughput = (# bytes sent in last RTT interval / RTT(measured))
+- RTT(min)—minimum observed RTT(uncongested RTT)
+- uncongested throughput with congestion window cwnd/RTT(min) `(This is the
+throughput with no congestion)`
+  - If measured throughput `very close` to uncongested throughput
+  - Means in current throughput, we are absolutely sure that
+  there will be no congestion control.
+    - increase `cwnd` linearly
+  - Else if measure throughput `far below` to uncongested throughput
+  - Means, current throughput is very close to congestion
+    - decrease `cwnd` linearly
+
+#### Explicit congestion notification
+ECN is a network assisted congestion control that involves TCP Header
+and Receiver as well as routers. It avoids congestion without letting
+the router drive into a loss scenario. 
+
+- As shown in figure below, ECN congested network router will set a bit
+in IP datagram Header, which will indicate if the router is congested or not.
+- TCP receiver then sends the TCP sender about this congestion information
+by setting
+- TCP sender then reacts to this congestion window.
+
+### Closing TCP connection
+Closing a TCP connection is a four-step process, often referred to as the 
+four-way handshake. Here's how it works step by step:
+
+1. **FIN from the Client:** The client decides to close the connection and 
+sends a FIN (finish) segment to the server. This tells the server that the 
+client has finished sending data, but can still receive data from the server.
+
+2. **ACK from the Server:** Upon receiving the FIN segment, the server sends
+back an ACK (acknowledgment) segment to the client. The server then enters 
+a CLOSE_WAIT state, indicating it has received the client's request to close
+the connection but may still need to send its own data.
+
+3. **FIN from the Server:** Once the server has finished sending its 
+remaining data, it sends its own FIN segment to the client to signal that 
+it has finished sending data.
+
+4. **ACK from the Client:** The client responds with an ACK to the server's
+FIN segment. After this step, the client enters a TIME_WAIT state to ensure
+the server's ACK was received and to wait for any packets that may have been
+delayed in the network. The server, upon receiving the final ACK, closes 
+the connection.
+
+## Other Questions
+### Some well-known Ports
+- **HTTP 80:** Port 80 is the default port for Hypertext Transfer Protocol 
+(HTTP), which is used for unencrypted web traffic. When you access a website
+with `http://`, it uses port 80.
+
+- **HTTPS 443:** Port 443 is used for HTTP Secure (HTTPS). It's the default 
+port for websites that use SSL/TLS encryption. When you visit a website with
+`https://`, it uses port 443 to secure the communication.
+
+- **FTP 21:** Port 21 is used for File Transfer Protocol (FTP) control 
+(commands). FTP is a standard network protocol used for the transfer of 
+computer files between a client and server on a computer network.
+
+- **SMTP 25:** Port 25 is used for Simple Mail Transfer Protocol (SMTP), 
+which is the standard protocol for sending emails across the Internet.
+
+- **IPSec 500:** Port 500 is used by Internet Protocol Security (IPSec). 
+It's primarily used for establishing mutual authentication and negotiating 
+cryptographic keys for VPN connections.
+
 
 
 
