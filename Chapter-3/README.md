@@ -40,16 +40,17 @@ We can see in the picture, even if the server send data into the same port
 the port then is being multiplexed into different sockets.
 
 ## UDP Questions
-### Explain the UDP packet format.
+### General Knowledge: UDP
 - **UDP (User datagram protocol):**
   - UDP is a no frill protocol.
     - It provides multiplexing and demultiplexing for the Transport layer
     and that's about it.
-    - Because it does not provide connected oriented services, it does not
+    - Because it does not provide connection oriented services, it does not
     need control messages which keep it dramatically simpler than TCP.
 
 So one might ask why we would need a transfer protocol without any
 reliability. Well, here are some reasons:
+#### Use cases for UDP:
 1. No connection is needed which makes the RTT lower. As a result, it makes
 it faster.
 2. It's low overhead, so clients and services can handle multiple connections
@@ -58,17 +59,19 @@ simultaneously.
 4. It will not be forced down because of connection. It can be positive or
 negative depending on the context.
 
-So UDP is suitable for:
+#### UDP is suitable for:
 - streaming multimedia apps which are loss tolerant and rate sensitive.
 - DNS, which sends very small messages and sensitive to delay.
 - SNMP (Simple network message protocol) which is another fast
 transactional protocol.
 - and most recently HTTP/3.0
 
+#### UDP without reliability
 Now one might ask HTTP needs reliability. How come UDP is used in there
 - A layer of reliability is added in the application layer.
 - It is used over TCP to be faster than TCP.
 
+#### UDP in action
 - **UDP sender actions:**
   - UDP receives a message from an application in the application layer.
   - It then adds the UDP header field. Combines it in a packet and
@@ -76,8 +79,8 @@ Now one might ask HTTP needs reliability. How come UDP is used in there
   - IP then does it's job and sends it to the network.
   
 - **UDP receiver actions:**
-  - On the receiver side, the IP layer removes it's header and passes the message
-  to the UDP side.
+  - On the receiver side, the IP layer removes it's header and passes the 
+  message to the UDP side.
   - When it receives the UDP layer, the UDP checks the checksum. Whether
   the message has been corrupted or not. If the check passes the UDP
   extracts the application message and extracts it to the correct socket.
@@ -93,7 +96,7 @@ Now one might ask HTTP needs reliability. How come UDP is used in there
 #### Checksum
 The purpose of the checksum is to detect errors
 
-<img src="images/UDP-Segment.png" style="width:50%;height:50%;"> <br>
+<img src="images/Checksum.png" style="width:50%;height:50%;"> <br>
 
 When checking the checksum:
 - The UDP layer does not know about the digits. It is only sent the sum.
@@ -125,7 +128,7 @@ adds them up.
 2. If there is a carry, then it's also been added to the summation.
 3. Then one's complement will be performed.
 
-<img src="images/checksum-method.png" style="width:50%;height:50%;"> <br>
+<img src="images/internet-checksum-weak-protection.png" style="width:50%;height:50%;"> <br>
 
 Now internet checksum can be weak way to check the authenticity of data.
 - Let's take one example
@@ -144,6 +147,17 @@ Now internet checksum can be weak way to check the authenticity of data.
 6. There is a field in the Header for flow control.
    (the number of bites it is willing to accept)
 7. There are RST, SYN, FIN (R,S,F) bits are used for connection management.
+   - **SYN(Synchronize):** This flag is used to initiate a TCP connection.
+   When a device wants to start a TCP connection, it sends a segment
+   with a SYN flag. The receiver responds with SYN-ACK if it's already
+   ready to establish the connection.
+   - **FIN (Finish):** This flag is used to gracefully close an established
+   TCP connection. When a device is finished sending data and wants to 
+   close the connection, it sends a segment with the FIN flag set.
+   - **RST (Reset):** This flag is used to abruptly terminate a connection.
+   It can be sent by a device if it receives a segment that is not expected,
+   indicating an error or immediate stop of the connection. It’s also used 
+   to reject an attempt to establish a connection
 8. Two bits in the header for congestion notification (C, E).
 9. There are 2 bits for urgent field, which are not used in practice.
 
@@ -167,12 +181,12 @@ connection plus one.
 ### TCP: Flow Control
 - Flow control is a mechanism to avoid the calamity of receiver being
 overrun by sender by sending way to fast. It allows receiver explicitly
-control the receiver so that the sender does not transmit too much too 
+control the sender so that the sender does not transmit too much too 
 fast.
 
 - The receiver tells how much free buffer space there is, and the sender
 will not send any more data than that. The limit that is set by the 
-receiver is notated by rwnd.
+receiver is notated by `rwnd`.
 
 - This information is sent to sender to receiver advertised window in the
 TCP header, and the value will change as the free buffer fluctuates overtime.
@@ -212,7 +226,7 @@ the sender and the receiver.
   - Now just before the connection is closed by the client, it send
   connection request x again and also retransmits the data (x+1) again.
   - The server sees, the connection request and data sequence to be correct.
-  - Now assume, this is a payment of subtraction 100 Euros for your acccount
+  - Now assume, this is a payment of subtraction 100 Euros for your account
   - It happened twice.
   - It's a duplicate request problem
 
@@ -226,6 +240,8 @@ the sender and the receiver.
 state. Not established state. In return it sends the SYN ACK message back.
 3. After getting the ACK message from the server, the client also sends a
 ACK message to the server back.
+
+<img src="images/3-way-handshake.png" style="width:50%;height:50%;"> <br>
 
 Then the `SERVER and CLIENT` both enters the `ESTAB(established state)`
 
