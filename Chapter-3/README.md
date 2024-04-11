@@ -96,7 +96,7 @@ Now one might ask HTTP needs reliability. How come UDP is used in there
 #### Checksum
 The purpose of the checksum is to detect errors
 
-<img src="images/Checksum.png" style="width:50%;height:50%;"> <br>
+<img src="images/checksum.png" style="width:50%;height:50%;"> <br>
 
 When checking the checksum:
 - The UDP layer does not know about the digits. It is only sent the sum.
@@ -323,7 +323,7 @@ router, the throughput has been lost in the first router.
 - Q. What happens if λ and λ(prime) increase?
 - A. When λ and λ(prime) increase, from `HOST-A` and the throughput
 increases from R/2, the second-hop(blue) router's packets are dropped.
-Hence, blue throughput gets close to 0. So, it cannot get any close
+Hence, blue throughput gets close to 0. So, it cannot get any worse
 than 0 throughput.
 - When packets dropped, any upstream transmission capacity used for
 buffering used for the packet, will be lost.
@@ -333,6 +333,7 @@ buffering used for the packet, will be lost.
   - Increase the sending rate until packet loss occurs.
   - Decrease the sending rate until loss of event happens.
 
+#### TCP: AIMD (Adaptive Increase Multiplicative Decrease)
 - The algorithm that controls the increase and decrease of the
 of sending the packet rates is called `Additive Increase Multiplicative
 Decrease (AIMD)`
@@ -391,7 +392,7 @@ the user's sending rate.
 - If the TCP sender sends faster, it still cannot deliver more than R/bits
 per second.
 - So we want to keep the router busy, but not too much busy as it starts to 
-loose packet.
+a loose packet.
 - That is the insight
 
 Here is short brief how delay-based congestion control works:
@@ -401,22 +402,31 @@ Here is short brief how delay-based congestion control works:
 throughput with no congestion)`
   - If measured throughput `very close` to uncongested throughput
   - Means in current throughput, we are absolutely sure that
-  there will be no congestion control.
+  there will be no congestion.
     - increase `cwnd` linearly
   - Else if measure throughput `far below` to uncongested throughput
   - Means, current throughput is very close to congestion
     - decrease `cwnd` linearly
 
 #### Explicit congestion notification
-ECN is a network assisted congestion control that involves TCP Header
-and Receiver as well as routers. It avoids congestion without letting
-the router drive into a loss scenario. 
+- **Purpose of ECN**:
+   - ECN allows end-to-end notification of network congestion **without 
+  dropping packets**. Unlike traditional congestion control methods that 
+  rely on packet drops to signal congestion, ECN provides a more efficient 
+  way to handle congestion.
+  - When congestion occurs, the receiver echoes this congestion indication back
+  to the sender, which then reduces its transmission rate as if it detected
+  a dropped packet.
 
-- As shown in figure below, ECN congested network router will set a bit
-in IP datagram Header, which will indicate if the router is congested or not.
-- TCP receiver then sends the TCP sender about this congestion information
-by setting
-- TCP sender then reacts to this congestion window.
+- **Implementation Details**:
+  - ECN uses two bits in both the TCP header and the IP header.
+  - The two bits are **CWR (Congestion Window Reduced)** and **ECE (ECN-Echo)**.
+  - When congestion is detected, the router sets the ECN field within an IP 
+packet to **CE (Congestion Experienced)**.
+  - The receiver echoes this indication to the sender by setting proper bits 
+in the transport protocol header.
+  - ECN avoids retransmissions, making it particularly useful for time-sensitive 
+packets.
 
 ### Closing TCP connection
 Closing a TCP connection is a four-step process, often referred to as the 
@@ -461,12 +471,3 @@ which is the standard protocol for sending emails across the Internet.
 - **IPSec 500:** Port 500 is used by Internet Protocol Security (IPSec). 
 It's primarily used for establishing mutual authentication and negotiating 
 cryptographic keys for VPN connections.
-
-
-
-
-
-
-  
-
-
