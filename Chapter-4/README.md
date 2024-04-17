@@ -280,3 +280,110 @@ the basis of Internet Content, application or service.
    portion of the IP datagram should be passed.
     - For example, a value of **6** indicates TCP, while **17** indicates 
    UDP.
+
+### Classful IP addressing
+**Classful IP addressing** is a method of **IP address allocation** in 
+which IP addresses are divided into predefined classes. These classes are 
+designated by the first few bits of the IP address, determining both the 
+network and host portions of the address. Let's explore the details of 
+class addressing:
+
+1. **Class Divisions**:
+    - Classful addressing divides the **IPv4 address space** (ranging from **0.0.0.0** 
+   to **255.255.255.255**) into five classes: **A, B, C, D, and E**.
+    - However, only classes **A, B, and C** are used for network hosts:
+        - **Class A**: Suitable for very large networks. The network ID is 
+      **8 bits** long, and the host ID is **24 bits** long. The first 
+      octet's higher-order bit is always set to **0**. The default subnet 
+      mask for Class A is **255.x.x.x**.
+        - **Class B**: Assigned to medium-sized to large-sized networks. 
+      The network ID is **16 bits** long, and the host ID is also **16 
+      bits** long. The first octet's higher-order bits are always set to 
+      **10**. The default subnet mask for Class B is **255.255.x.x**.
+        - **Class C**: Suitable for small networks. The network ID is 
+      **24 bits** long, and the host ID is **8 bits** long. The first 
+      octet's higher-order bits are always set to **110**. The default 
+      subnet mask for Class C is **255.255.255.x**.
+
+2. **Class D and E**:
+    - **Class D** (IP address range: **224.0.0.0 - 239.255.255.255**) is 
+   reserved for **multicast** purposes.
+    - **Class E** (IP address range: **240.0.0.0 - 255.255.255.255**) is 
+   reserved for **future use**.
+
+### Subnet
+A **subnet**, or **subnetwork**, is a logical subdivision of an IP network. 
+Here's how it works:
+
+- **Purpose**: Subnetting makes networks more efficient by dividing a 
+larger network into smaller segments.
+- **Addressing Within Subnets**:
+    - Computers within the same subnet share an identical group of the 
+  most significant bits of their IP addresses.
+    - This logical division results in two fields:
+        - **Network Number (Routing Prefix)**: The part that indicates the
+      network.
+        - **Host Identifier**: The part that specifies a specific device 
+      within that network.
+    - For example:
+        - The prefix **198.51.100.0/24** has a subnet mask of 
+      **255.255.255.0**.
+        - Addresses from **198.51.100.0** to **198.51.100.255** belong 
+      to this subnet.
+
+- **Routing and Efficiency**:
+    - Traffic between subnets is routed through routers.
+    - Subnetting ensures that packets take a direct route to their 
+  destination without unnecessary detours.
+
+### CIDR Address
+- **CIDR** is a method of representing IP addresses and their associated 
+subnet masks in a more flexible and concise way.
+- It allows for finer control over address allocation and efficient 
+utilization of IP address space.
+- In CIDR notation, an IP address is followed by a **slash (/)** and a 
+number (e.g., **192.168.0.0/24**).
+- The number after the slash represents the **prefix length** (also known 
+as the **subnet mask length**), indicating how many bits are used for the 
+network portion of the address.
+
+### How CIDR Is Used for Subnetting:
+1. **Variable-Length Subnet Masks**:
+    - CIDR allows for **variable-length subnet masks** (VLSMs) instead of 
+    the fixed-length masks used in classful addressing.
+    - With VLSMs, you can create subnets of different sizes within the 
+   same IP address range.
+    - For example, you can divide a Class C address into smaller subnets 
+   with varying numbers of hosts.
+
+2. **Efficient Address Allocation**:
+    - CIDR enables efficient allocation of IP addresses by allowing 
+   administrators to allocate only the necessary number of addresses for 
+    each subnet.
+    - Instead of allocating fixed blocks (e.g., Class A, B, or C), CIDR 
+   allows custom-sized subnets based on actual requirements.
+
+3. **Aggregation and Routing**:
+    - CIDR facilitates **route aggregation** by summarizing multiple 
+   smaller subnets into a single route.
+    - Routers can advertise summarized routes, reducing the size of 
+   routing tables and improving routing efficiency.
+
+4. **Example**:
+    - Suppose you have a block of IP addresses **192.168.0.0/24** 
+   (which means a subnet mask of **255.255.255.0**).
+    - You can further divide this into smaller subnets:
+        - **192.168.0.0/25** (subnet mask: **255.255.255.128**): 128 
+      addresses
+        - **192.168.0.128/26** (subnet mask: **255.255.255.192**): 64 
+      addresses
+        - And so on...
+
+5. **CIDR Cheat Sheet**:
+    - Here's a quick reference for CIDR notation and their corresponding 
+   subnet masks:
+        - /24: 255.255.255.0
+        - /25: 255.255.255.128
+        - /26: 255.255.255.192
+        - /27: 255.255.255.224
+        - And so forth...
