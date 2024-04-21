@@ -336,11 +336,9 @@ larger network into smaller segments.
     - Subnetting ensures that packets take a direct route to their 
   destination without unnecessary detours.
 
-### CIDR Address
+### CIDR (Classless Inter Domain Routing) Address
 - **CIDR** is a method of representing IP addresses and their associated 
 subnet masks in a more flexible and concise way.
-- It allows for finer control over address allocation and efficient 
-utilization of IP address space.
 - In CIDR notation, an IP address is followed by a **slash (/)** and a 
 number (e.g., **192.168.0.0/24**).
 - The number after the slash represents the **prefix length** (also known 
@@ -348,42 +346,233 @@ as the **subnet mask length**), indicating how many bits are used for the
 network portion of the address.
 
 ### How CIDR Is Used for Subnetting:
-1. **Variable-Length Subnet Masks**:
-    - CIDR allows for **variable-length subnet masks** (VLSMs) instead of 
-    the fixed-length masks used in classful addressing.
-    - With VLSMs, you can create subnets of different sizes within the 
-   same IP address range.
-    - For example, you can divide a Class C address into smaller subnets 
-   with varying numbers of hosts.
+Subnetting using CIDR involves borrowing bits from the host portion of 
+the IP address to create smaller subnets. The number of bits borrowed 
+determines the number of available subnets and the number of hosts per 
+subnet. For example:
 
-2. **Efficient Address Allocation**:
-    - CIDR enables efficient allocation of IP addresses by allowing 
-   administrators to allocate only the necessary number of addresses for 
-    each subnet.
-    - Instead of allocating fixed blocks (e.g., Class A, B, or C), CIDR 
-   allows custom-sized subnets based on actual requirements.
+- Determine the number of bits needed to represent the required number of 
+subnets.
+  - We need to create 4 subnets, which requires 2 bits (2^2 = 4).
+  
+- Subtract the number of subnet bits from the total number of bits in the 
+IP address to find out how many bits will remain for host addressing in 
+each subnet.
+  - Total bits: 32 (IPv4 address length)
+  - Subnet bits: 2 (as we borrowed 2 bits for subnetting)
+  - Host bits: 32 - 2 = 30 bits for host addressing in each subnet
+- Calculate the new subnet mask.
+  - The default subnet mask for a /24 network is 255.255.255.0.
+  - To create 4 subnets, we borrow 2 bits, so the new subnet mask will have 
+  two more bits set to 1. These bits represent the subnet portion.
+  - In binary, the subnet mask becomes 11111111.11111111.11111111.11000000, 
+  which translates to 255.255.255.192 in decimal notation (/26).
+  
+- Determine the ranges for the four subnets.
+  - Since we've borrowed 2 bits for subnetting, the subnet ranges will 
+  increment in multiples of 64 (2^6 = 64), as the last 6 bits 
+  (from 26 to 32) will represent host addresses within each subnet.
+  - Subnet 1: 192.168.1.0/26 (Range: 192.168.1.0 - 192.168.1.63)
+  - Subnet 2: 192.168.1.64/26 (Range: 192.168.1.64 - 192.168.1.127)
+  - Subnet 3: 192.168.1.128/26 (Range: 192.168.1.128 - 192.168.1.191)
+  - Subnet 4: 192.168.1.192/26 (Range: 192.168.1.192 - 192.168.1.255)
 
-3. **Aggregation and Routing**:
-    - CIDR facilitates **route aggregation** by summarizing multiple 
-   smaller subnets into a single route.
-    - Routers can advertise summarized routes, reducing the size of 
-   routing tables and improving routing efficiency.
+- P.S: In Every subnetwork, 2-bits are reserved for network address and
+broadcast address.
 
-4. **Example**:
-    - Suppose you have a block of IP addresses **192.168.0.0/24** 
-   (which means a subnet mask of **255.255.255.0**).
-    - You can further divide this into smaller subnets:
-        - **192.168.0.0/25** (subnet mask: **255.255.255.128**): 128 
-      addresses
-        - **192.168.0.128/26** (subnet mask: **255.255.255.192**): 64 
-      addresses
-        - And so on...
+### DHCP client-server handshake
+- **STEP-1** In the first step, the arriving client broadcasts a DHCP message which will
+be received on the interfaces on all of the hosts and routers in the subnet
+that it is attaching.
+  - The discovery message basically says, is there a DHCP message out
+  there? This is a form of service discovery. The host the service it
+  needs, DHCP. So it sends out the message to broadcast to discover the
+  server that can provide DHCP service.
+  - DHCP runs over UDP. The client uses port 68, and the server will use
+  port 67.
+  - In other words, the server will be listening to port 67 for incoming
+  DHCP messages.
+  - <img src="images/dhcp-discovery.png" style="width:80%;height:80%;"> <br>
+    - From the picture we can see, the source has an IP address of 0.0.0.0
+    with port 68.
+    - The destination has an IP address of 255.255.255.255 with port 67.
+    - The discovery message also has a transaction ID: 654
+    - This transaction ID is necessary as the DHCP server will also
+    respond to the subsequent message with this transaction ID.
+    
+- **STEP-2:** Then the DHCP server replies with offer message. The response
+is sort of like, `Hey I am a DHCP server and here is the IP address you can
+use.`
+  - <img src="images/dhcp-server-2.png" style="width:80%;height:80%;"> <br>
+    - The DHCP offer message comes from 223.1.2.5 and from port 67.
+    - The offer message has been broadcast on all interfaces on the
+    subnet which is notated by 255.255.255.255 destination server.
+    - The DHCP message contains the IP address (223.1.2.4) which the requesting host
+    can use.
+    - The lifetime of this IP address is 3600sec.
+    - Note that, the transaction ID matches the transaction ID of the
+    initial offer message.
+    
+- **STEP-3:** Now step two mentioned above could be optional.
+    - Now the client comes with his own IP address which he may get from
+  the previous request.
+    - It contains the IP address the HOST is proposing to use.
+    - Also, the lifetime it wants to have
+- **STEP-4:** The final message is the ACK message from the server saying
+    that you can use the IP address for the given lifetime.
 
-5. **CIDR Cheat Sheet**:
-    - Here's a quick reference for CIDR notation and their corresponding 
-   subnet masks:
-        - /24: 255.255.255.0
-        - /25: 255.255.255.128
-        - /26: 255.255.255.192
-        - /27: 255.255.255.224
-        - And so forth...
+#### Static vs DHCP Routing
+**Static IP Addressing**:
+- Involves manually assigning a fixed IP address to a device.
+- The IP address does not change even if the device reboots.
+- It's typically used for servers hosting websites, email, VPN, and FTP 
+services.
+- Each device has its own address with no overlap, and network 
+administrators must avoid using the same IP address again.
+- Requires manual configuration of the IP address, subnet mask, default 
+gateway, and DNS server.
+
+**DHCP**:
+- A protocol for assigning dynamic IP addresses to devices on a network.
+- The IP address can change when the device reconnects to the network.
+- Simplifies the process of connecting new devices to a network as the 
+DHCP server automatically provides the IP address, subnet mask, default 
+gateway, and DNS server.
+- Useful in environments with a large number of transient devices, like 
+Wi-Fi hotspots or BYOD workplaces.
+
+### Private vs Public IP address
+| Feature | Public IP Address | Private IP Address |
+|---------|-------------------|--------------------|
+| **Definition** | An IP address used to communicate outside the network, assigned by the ISP. | An IP address used to communicate within the same network, usually assigned by the router. |
+| **Assignment** | Provided by an Internet Service Provider (ISP). | Assigned by a local network's router to devices within its network. |
+| **Types** | Can be Dynamic (changes over time) or Static (permanent). | Unique within the local network but can be reused in different networks. |
+| **Visibility** | Visible on the Internet, can be traced back to the ISP. | Only visible within the local network, not on the Internet. |
+| **Security** | Subject to attacks, additional security measures needed. | More secure, as it's not exposed directly to the Internet. |
+| **Usage** | Used for communication over the Internet. | Used for communication within a private network. |
+| **Example Range** | 1.0.0.0 to 223.255.255.255. | 10.0.0.0 to 10.255.255.255, 172.16.0.0 to 172.31.255.255, 192.168.0.0 to 192.168.255.255. |
+
+### NAT (Network Address Translation)
+Network Address Translation (NAT) is a network protocol used to modify network 
+address information in the IP header of packets while they are in transit across 
+a traffic routing device. Here's a brief overview of NAT:
+
+- **Purpose**: NAT was originally designed to extend the life of IPv4 by 
+conserving the limited number of available public IP addresses. It allows 
+multiple devices on a local network to share a single public IP 
+address when accessing the internet.
+
+- **Function**: It translates the private IP addresses of devices within a 
+local network to a public IP address and vice versa. This process happens as 
+the data packets move between the network and the internet.
+
+- **Benefits**: NAT helps maintain privacy of the internal network and can aid 
+in network security by keeping internal IP addresses hidden from the external 
+network.
+
+### How does NAT work?
+<img src="images/dhcp-server-2.png" style="width:80%;height:80%;"> <br>
+
+1. Host 10.0.0.1 from port 3345 sends datagram to 128.119.40.186
+in the port 80. 
+2. Datagram then reaches the router which then changes the source
+IP address from 10.0.0.1, port number 3345 to 138.76.29.7, port
+number 5001.
+3. Then the remote host replied. Note that the reply arrived 138.76.29.7, 
+port number 5001 in the NAT router.
+4. Using the destination IP address, the router then looks into the
+forwarding table. Then it replaces the destination IP address with
+the local IP address. After replacing the datagram, it forwards
+the datagram to the device connected to the local network.
+
+### IPV6 Datagram format
+<img src="images/IPV6-DatagramFormat.png" style="width:80%;height:80%;"> <br>
+
+- **Version (4 bits)**: Indicates the version of the Internet Protocol 
+used, which is 6 for IPv6.
+- **Traffic Class (8 bits)**: Used to differentiate between packets with 
+different priorities and types of service.
+- **Flow Label (20 bits)**: Used to label packets belonging to the same 
+flow, allowing for special handling by routers.
+- **Payload Length (16 bits)**: Specifies the size of the payload, 
+including any extension headers.
+- **Next Header (8 bits)**: Identifies the type of header immediately 
+following the IPv6 header.
+- **Hop Limit (8 bits)**: Replaces the Time to Live (TTL) field from 
+IPv4, indicating the maximum number of hops allowed for the packet.
+- **Source Address (128 bits)**: The IP address of the sending node.
+- **Destination Address (128 bits)**: The IP address of the receiving 
+node.
+
+### Transitioning from IPV4 to IPV6
+- The transition from IPV4 to IPV6 turned out to be not so easy to
+implement.
+- The best methodology is to IPV4 and IPV6 coexist.
+- The key to IPV4 and IP6 to coexist together is **tunneling**.
+- Let's say there are two Routers connected with each other via IPV4
+network. They both can do IPV4 and IPV6.
+- The process is to put IPV6 datagram into IPV4 payload. This process
+is called tunneling.
+
+#### Example of tunneling
+- We have a multiple router situation.
+  - Router A and F only support IPV6.
+  - Router B and E support IPV4 and IPV6.
+  - Router C and D only support IPV4.
+
+- A's forwarding table says, A's next hop is router B. Hence, it is
+forwarded to B. Please note, in the source it says the source address is
+A, and the destination address is F. The flow is X, which only exists
+in IPV6.
+- When the packet arrives in router B, it looks in it's forwarding table
+and sees the next hop router is router E. Now, it sees that both routers
+B and E are connected via IPV4.
+  - As a matter of fact, in the forwarding table it will be written,
+   to get to router F, forward this packet to router E's IPV4 tunnel.
+  - Hence, it creates an IPV4 datagram, sends it to E while putting IPV6's
+  datagram into its payload. Then it forwards its datagram to the
+  tunnel.
+- Then the IPV4 datagram is forwarded from B to E with the mechanism
+we already knew before.
+- When the packet arrives router E, it sees the packet is meant for him
+  - Now, then it looks inside the packet and sees, the IPV6 datagram
+  into its payload.
+  - After seeing the IPV6 datagram, it sees that is it meant for router
+  F. It then looks into its forwarding table, and then forwards the
+  table to F.
+
+<img src="images/tunneling.png" style="width:80%;height:80%;"> <br>
+
+### Flow table abstraction
+Flow table abstraction refers to the simplification of 
+the complex process of packet-forwarding decisions into a set of rules 
+known as flow entries. These flow entries are stored in a flow table 
+within a network switch or router.
+
+#### Match plus action
+- **Match:** This part involves checking the incoming network packets against 
+predefined criteria in the flow table. The criteria can include various 
+packet fields such as source and destination IP addresses, TCP/UDP ports, 
+and more. If a packet’s header information matches the criteria, then the 
+corresponding action is taken.
+
+- **Action:** If there’s a match, the action part defines what to do with the 
+packet. Actions can include forwarding the packet to a specific port, 
+modifying the packet header, dropping the packet, or sending it to the 
+SDN controller for further processing.
+
+### Open Flow
+OpenFlow is a protocol that allows a network controller to interact directly 
+with the forwarding plane of network devices such as switches and routers, 
+both physical and virtual (hypervisor-based). 
+
+1. When the first packet from Host A arrives at the switch, the switch doesn't 
+know what to do with it, so it sends the packet to the SDN(Software Designed
+Network) controller.
+2. The controller uses its network-wide view to decide the best path for the 
+packet. It then installs a flow entry in the switch's flow table, telling it 
+how to handle such packets.
+3. The flow entry might say, "All packets from Host A to Host B with a 
+specific header pattern should be forwarded through port 3."
+4. The switch then processes the packet according to this rule and forwards 
+all subsequent similar packets without contacting the controller.
