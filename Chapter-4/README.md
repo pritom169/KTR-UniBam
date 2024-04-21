@@ -485,6 +485,36 @@ forwarding table. Then it replaces the destination IP address with
 the local IP address. After replacing the datagram, it forwards
 the datagram to the device connected to the local network.
 
+### IPV6
+#### Reason of IPV6
+IPv6 is essential because it addresses the limitation of IPv4 in terms 
+of address space. IPv4, which uses a 32-bit addressing scheme, can support 
+approximately **4.3 billion devices**. With the exponential growth of the 
+internet and the number of devices connected to it, this number of addresses
+is not sufficient. IPv6, with its 128-bit addressing, can support about 
+**340 undecillion IP addresses**, which is a virtually inexhaustible supply 
+for the foreseeable future.
+
+IPv6 also brings several improvements over IPv4, such as:
+- **Efficient packet handling**: IPv6 can handle packets more efficiently, 
+improve performance, and increase security.
+- **Hierarchical addressing**: This allows internet service providers to 
+reduce the size of their routing tables, making the internet more scalable.
+- **Enhanced security**: IPv6 was designed with internet security in mind, 
+including features that are optional in IPv4.
+
+#### Public IP and Private IP in IPV6.
+- **Public IPv6 Address**: These are globally unique and accessible from 
+anywhere on the internet. They are typically assigned to devices like 
+servers that need to be directly accessible from the internet.
+- **Private IPv6 Address**: These addresses are local to a specific link 
+or site and are not routed outside a particular network. They are 
+similar to the private IPv4 addresses used within local networks (LANs). 
+Private IPv6 addresses can be further divided into:
+    - **Site-local addresses**: Used within an entire site or organization.
+    - **Link-local addresses**: Used on a single network segment or link 
+  and are not routable outside of that link.
+
 ### IPV6 Datagram format
 <img src="images/IPV6-DatagramFormat.png" style="width:80%;height:80%;"> <br>
 
@@ -543,6 +573,62 @@ we already knew before.
 
 <img src="images/tunneling.png" style="width:80%;height:80%;"> <br>
 
+### IPv4 vs IPv6
+- **Address Size**:
+    - IPv4 addresses are **32-bit** long, allowing for about 4.3 billion 
+  unique addresses.
+    - IPv6 addresses are **128-bit** long, which supports a vastly larger 
+  number of addresses, enough for every grain of sand on Earth to have its 
+  own address!
+
+- **Address Notation**:
+    - IPv4 addresses are written in **dotted-decimal format** 
+  (e.g., 192.168.1.1).
+    - IPv6 addresses use **hexadecimal notation**, separated by colons 
+  (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334).
+
+- **Address Configuration**:
+    - IPv4 often requires manual configuration or DHCP (Dynamic Host 
+  Configuration Protocol).
+    - IPv6 supports **auto-configuration** and **renumbering**.
+
+- **Packet Handling**:
+    - IPv4 headers are more complex and can vary in length.
+    - IPv6 headers have a **simplified** and **fixed-length header**, 
+  which improves efficiency.
+
+- **Security**:
+    - IPv4 was not designed with security in mind, so it relies on 
+  applications like **IPSec** for security.
+    - IPv6 has **security features built-in**, including IPSec support, 
+  which is mandatory.
+
+- **Network Address Translation (NAT):**
+  - IPv4 often requires NAT due to the limited number of public 
+  IP addresses.
+  - IPv6 eliminates the need for NAT, allowing for end-to-end connectivity 
+  at the IP layer.
+
+### IPV6 Dropped Features
+- **Checksum**: IPv6 has **dropped the header checksum**. In IPv4, each 
+packet includes a checksum for error-checking of the header. IPv6 omits 
+this because most link-layer technologies already contain checksum and 
+error-control capabilities, making an additional checksum at the IP layer 
+redundant and a waste of processing power.
+
+- **Fragmentation**: In IPv4, routers can fragment packets if they are too 
+large for the next hop. IPv6 **removes the fragmentation feature** from 
+routers, placing the responsibility for packet fragmentation on the 
+originating node (the sender). This change reduces the complexity and 
+processing load on routers, improving overall network efficiency.
+
+- **Options**: IPv4 includes an options field in the header, which can be 
+used for various purposes but also complicates header processing. IPv6 
+**replaces the options field** with **Extension Headers**. These headers 
+are optional and are placed between the IPv6 header and the payload; they 
+are used only when necessary, which simplifies and speeds up the routing 
+process because most packets don't contain them.
+
 ### Flow table abstraction
 Flow table abstraction refers to the simplification of 
 the complex process of packet-forwarding decisions into a set of rules 
@@ -576,3 +662,9 @@ how to handle such packets.
 specific header pattern should be forwarded through port 3."
 4. The switch then processes the packet according to this rule and forwards 
 all subsequent similar packets without contacting the controller.
+
+### Architectural Principal of Internet
+There are three cornerstone beliefs of the Internet:
+1. Simple Connectivity
+2. IP Protocol: The narrow waist
+3. Intelligence, complexity at the network's edge.
