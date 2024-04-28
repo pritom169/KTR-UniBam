@@ -104,11 +104,11 @@ in-order and retransmission, congestion, and flow control. `***`
 - ~~Intra-AS routing protocols: OSPF and RIP.~~ `***`
 - ~~Areas in OSPF.~~ `***`
 - ~~Two-level Hierarchical OSPF.~~ `***`
-- Count-to-infinity problem in distance vector algorithm. Solution: split horizon and router poisoning. `***`
-- Count-to-infinity problem in OSPF. Solution: split horizon and router poisoning. `***`
+- ~~Count-to-infinity problem in distance vector algorithm. Solution: split horizon and router poisoning.~~ `***`
+- ~~Count-to-infinity problem in OSPF. Solution: split horizon and router poisoning.~~ `***`
 - ~~Inter-AS routing: BGP. eBGP vs. iBGP.~~ `***`
 - How BGP solves count-to-infinity problem? `***`
-- Hot potato routing in BGP.
+- ~~Hot potato routing in BGP.~~
 - DHCP attacks: DoS, and MITM.
 
 ## Chapter 6: The Link Layer

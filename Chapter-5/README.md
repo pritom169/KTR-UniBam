@@ -159,3 +159,82 @@ individual areas, thus improving overall network performance
 - eBGP is typically used to connect different ISPs, content providers, or 
 other organizations that need to exchange routing information.
 
+### How Potato Routing works in BGP
+- Hot Potato Routing is a technique used in Border Gateway Protocol (BGP) to 
+optimize the routing of IP packets. It's also known as "Hot Potato" or "Push 
+and Pull" routing.
+
+- In traditional BGP, when a router receives a BGP update message, it checks if 
+the update is more specific than the current best path. If it is, the router 
+updates its routing table. However, this can lead to suboptimal routing, 
+especially in networks with multiple paths to the same destination.
+
+- Hot Potato Routing addresses this issue by introducing a new concept called 
+"push and pull". When a router receives a BGP update, it checks if the update 
+is more specific than the current best path. If it is, the router "pushes" the 
+update to its neighbors, which then "pull" the update to update their own 
+routing tables. This process continues until the update reaches the destination 
+router.
+
+### Distance Vector Algorithm
+- Each router has its own routing table.
+- In its table it stores every router and cost, via for each particular router.
+- Each router sends its own table to its neighbors.
+- Each node then updates its own table.
+
+#### Count to infinity Problem
+
+<img src="images/DVA-count-to-infinity.png" style="width:50%;height:50%;"> <br>
+
+From the picture we can see, each router has its own table.
+- In each entry, it mentions the cost to go to one of the nodes.
+- It also mentions which routers it takes and the first node
+in that route, notating using 'via'
+
+Now let's say for some reason, router B lost its connection to
+C. So table for both Router B and C gets updated, as router B and C
+both know they lost their connection with each other. 
+- Router B then looks at the Table A and finds out there is a way
+to get to C which is via A. It then updates its values.
+- Router A, then gets the updated value from router B. It also then
+updates its values.
+
+As you can see, this updating value continues to persist. The corresponding
+values tend to go to the infinity. This phenomenon is called `Counting to 
+Infinity` problem.
+
+#### Solution 1: Split Horizon
+This technique prevents a router from advertising a route back out of the 
+interface from which it was learned. Essentially, it means that if a router 
+learns about a route from a particular neighbor, it will not advertise that 
+same route back to that neighbor. This helps to prevent loops where information 
+might otherwise bounce back and forth between routers, eventually stopping
+count to an infinity problem.
+
+#### Solution 2: Route Poisoning
+When a route becomes invalid, route poisoning involves advertising that route 
+with an infinite metric, effectively telling all other routers that the route 
+is unreachable. This is done immediately to all nodes in the network, ensuring 
+that the bad route is quickly invalidated and not used by mistake, which helps 
+to prevent the count-to-infinity problem.
+
+### Count to Infinity Problem: OSPF (Open shortest path first)
+In OSPF, the count to infinity problem does not exist in OSPF. Since:
+- OSPF builds a complete and accurate map of the network topology by 
+exchanging `LSA(Link Change Advertisements)` with other routers.
+- This map is then used to compute the shortest tree to each route.
+- Since, OSPF routers have complete knowledge of the network's topology,
+they can detect and avoid routing loops.
+- Hence, they do not rely on incremental path cost updates like distance
+vector protocols do.
+
+### Count to Infinity Problem: Border Gateway Protocol (BGP)
+BGP (Border Gateway Protocol) solves the count-to-infinity problem using its unique path vector protocol mechanism. Unlike distance vector protocols, BGP does not rely on hop count as a metric but instead uses path information to make routing decisions. Here's how BGP addresses the issue:
+
+- **Path Vector Protocol**: BGP advertises the complete path that a route has taken 
+through different autonomous systems (AS). If a BGP router receives a route that includes 
+its own AS number in the path, it will reject the route to prevent loops.
+
+- **Route Aggregation**: By aggregating routes, BGP reduces the number of routes exchanged 
+between peers, simplifying the network topology and minimizing the chance of loops.
+
