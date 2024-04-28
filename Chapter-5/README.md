@@ -229,12 +229,13 @@ they can detect and avoid routing loops.
 vector protocols do.
 
 ### Count to Infinity Problem: Border Gateway Protocol (BGP)
-BGP (Border Gateway Protocol) solves the count-to-infinity problem using its unique path vector protocol mechanism. Unlike distance vector protocols, BGP does not rely on hop count as a metric but instead uses path information to make routing decisions. Here's how BGP addresses the issue:
+BGP (Border Gateway Protocol) solves the count-to-infinity problem using its 
+unique path vector protocol mechanism. Unlike distance vector protocols, BGP 
+does not rely on hop count as a metric but instead uses path information to 
+make routing decisions. Here's how BGP addresses the issue:
 
-- **Path Vector Protocol**: BGP advertises the complete path that a route has taken 
-through different autonomous systems (AS). If a BGP router receives a route that includes 
-its own AS number in the path, it will reject the route to prevent loops.
-
-- **Route Aggregation**: By aggregating routes, BGP reduces the number of routes exchanged 
-between peers, simplifying the network topology and minimizing the chance of loops.
+- **Path Vector Protocol**: BGP advertises the complete path that a route has
+taken through different autonomous systems (AS). If a BGP router receives a 
+route that includes its own AS number in the path, it will reject the route 
+to prevent loops.
 
