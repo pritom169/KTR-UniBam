@@ -98,17 +98,17 @@ in-order and retransmission, congestion, and flow control. `***`
 
 ## Chapter 5: The Network Layer: the Control Plane
 
-- ~~Different types of DHCP - OSPF, RIP, and BGP.~~ `***`
-- ~~Routing algorithms: Dijkstra’s link-state routing algorithm, Bellman-Ford distance vector algorithm.~~ `***`
-- ~~Intra-Domain vs. Inter-Domain routing protocols.~~ `***`
-- ~~Intra-AS routing protocols: OSPF and RIP.~~ `***`
-- ~~Areas in OSPF.~~ `***`
-- ~~Two-level Hierarchical OSPF.~~ `***`
-- ~~Count-to-infinity problem in distance vector algorithm. Solution: split horizon and router poisoning.~~ `***`
-- ~~Count-to-infinity problem in OSPF. Solution: split horizon and router poisoning.~~ `***`
-- ~~Inter-AS routing: BGP. eBGP vs. iBGP.~~ `***`
+- Different types of DHCP - OSPF, RIP, and BGP. `***`
+- Routing algorithms: Dijkstra’s link-state routing algorithm, Bellman-Ford distance vector algorithm. `***`
+- Intra-Domain vs. Inter-Domain routing protocols. `***`
+- Intra-AS routing protocols: OSPF and RIP. `***`
+- Areas in OSPF. `***`
+- Two-level Hierarchical OSPF. `***`
+- Count-to-infinity problem in distance vector algorithm. Solution: split horizon and router poisoning. `***`
+- Count-to-infinity problem in OSPF. Solution: split horizon and router poisoning. `***`
+- Inter-AS routing: BGP. eBGP vs. iBGP. `***`
 - How BGP solves count-to-infinity problem? `***`
-- ~~Hot potato routing in BGP.~~
+- Hot potato routing in BGP.
 - DHCP attacks: DoS, and MITM.
 
 ## Chapter 6: The Link Layer
