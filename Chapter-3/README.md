@@ -471,3 +471,20 @@ which is the standard protocol for sending emails across the Internet.
 - **IPSec 500:** Port 500 is used by Internet Protocol Security (IPSec). 
 It's primarily used for establishing mutual authentication and negotiating 
 cryptographic keys for VPN connections.
+
+# Miscellaneous exam questions
+### Flow Control
+Flow control is a technique used to ensure that a sender does not overwhelm a receiver with too much data too quickly. It regulates the rate of data transmission between two nodes to prevent buffer overflow at the receiver's end. Here are some key points:
+
+- **Purpose**: To match the sender's data rate with the receiver's 
+processing capability.
+- **Mechanism**: Uses the **sliding window protocol**, where the receiver advertises a window size indicating how much data it can handle. 
+The sender can only send data within this window size.
+
+### Congestion Control
+Congestion control, on the other hand, deals with preventing congestion in the network itself. It ensures that the network does not get overloaded with too much data, which can lead to packet loss and delays. Key points include:
+
+- **Purpose**: To prevent network congestion and ensure efficient use of 
+network resources.
+- **Mechanism**: Uses algorithms like **TCP Tahoe, Reno, and NewReno** to adjust the rate of data transmission based on network conditions. It involves strategies like slow start, congestion 
+avoidance, fast retransmit, and fast recovery.
