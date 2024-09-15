@@ -8,8 +8,8 @@
   - **Control Plane:** Utilizes protocols like OSPF, BGP, and others.
   - **Data Plane:** Uses protocols like Internet Protocol (IP) and Ethernet.
 
-### Pre-Router Control Plane
-Pre-Router control refers to an approach where each router within 
+### Per-Router Control Plane
+Per-Router control refers to an approach where each router within 
 a network has its own dedicated control plane.
 
 - Inside every router there is a local forwarding table. The router operates
@@ -54,22 +54,54 @@ two parts.
 <img src="images/Router-structure.png" style="width:80%;height:80%;"> <br>
 
 ### Input port functions
-- **The line termination function:** This part is responsible for receiving
-bit level transmission for receiving over the physical medium which is copper,
-fiber or wireless. 
-- **Link Layer:** Then there are link level functions, where bits are 
-assembled in link layer frame. Like Ethernet.
+- **Physical Layer Functions:** The input port terminates the incoming 
+physical link at the router. This involves receiving the raw data bits 
+from the physical medium and converting them into a format suitable for 
+further processing. 
+- **Link Layer:** This includes tasks like error detection and correction, 
+as well as decapsulation, which involves removing the data link layers 
+headers and trailers to extract the network layer packet.
 - **Network layer function:** Finally, there are network layer functions here.
-Packet ques may form here.
   - The most important part of the input port is to look up and forwarding
   functions. Determining the output port. To which port it will be forwarded.
-
-<img src="images/Router-structure.png" style="width:80%;height:80%;"> <br>
+  - **Lookup:** The input port performs a lookup operation to determine the 
+  appropriate output port for the incoming packet. This is done using the forwarding table, 
+  which contains information about the network topology and the best paths 
+  to various destinations.
+  - **Forwarding:** Once the appropriate output port is determined, the packet 
+  is forwarded to the switch fabric, which connects the input ports to the 
+  output ports within the router.
+  - **Queuing:** If packets arrive at the input port faster than they 
+  can be processed and forwarded, they are temporarily stored in an input 
+  queue. This helps manage congestion and ensures that packets are 
+  processed in an orderly manner3. However, excessive queuing can lead 
+  to delays and packet loss if the input buffer overflows.
 
 This look up and forwarding is match plus action behavior. There are two
 types of forwarding:
-1. **Destination-based forwarding:** forward only based on destination
-IP address (traditional).
+1. **Destination-based forwarding:**
+
+   1. **Packet Arrival**: When a packet arrives at a router, the router 
+   examines the destination IP address in the packet header.
+
+   2. **Forwarding Table Lookup**: The router uses this destination IP 
+   address to perform a lookup in its forwarding table. The forwarding 
+   table contains entries that map destination addresses (or address 
+   prefixes) to the appropriate output ports or next-hop addresses.
+
+   3. **Longest Prefix Match**: The router typically uses the longest 
+   prefix match algorithm to find the most specific entry in the forwarding
+   table that matches the destination address. This ensures that the packet
+   is forwarded along the most precise route available.
+
+   4. **Forwarding Decision**: Based on the forwarding table entry, the 
+   router determines the best next hop for the packet and forwards it to 
+   the corresponding output port.
+
+   5. **Packet Forwarding**: The packet is then sent out through the 
+   selected output port towards its next hop, continuing this process 
+   until it reaches its final destination.
+
 2. **Generalized forwarding:** Forward based on any set of header field
 values.
 
@@ -117,10 +149,38 @@ that matches the destination IP address.
   - Among these, **10.4.1.32/27** is the closest match to the destination 
 IP address.
 
-- Longest Prefix Matching often performed in `Ternary content addressable
-memories (TCAM)`
-  - Matching with prefix and retrieving the proper addressing table is done
-  within one clock cycle.
+### **Longest Prefix Match (LPM)** is an algorithm used by routers to select the most specific route for forwarding packets. Here's how it works:
+
+1. **Prefix Matching**: When a router receives a packet, it compares 
+the destination IP address with the prefixes in its routing table. 
+The router looks for the longest prefix that matches the destination 
+address. This means the prefix with the most bits matching the destination
+IP address is chosen.
+
+2. **Example**: Suppose a router has the following entries in its routing table:
+    - 192.168.1.0/24
+    - 192.168.1.0/26
+    - 192.168.1.64/26
+
+   If a packet with the destination IP address 192.168.1.65 arrives, 
+the router will match it to the 192.168.1.64/26 prefix because it has the 
+longest matching prefix.
+
+### Routing Aggregation with LPM
+
+**Routing aggregation** (or route summarization) is a technique used to 
+reduce the size of routing tables by combining multiple routes into a 
+single, summarized route. This is particularly useful in large networks 
+to improve efficiency and manageability. Here's how it works with LPM:
+
+1. **Combining Routes**: Multiple IP address ranges that share the same 
+prefix can be combined into a single route. For example, the routes 
+192.168.1.0/24 and 192.168.2.0/24 can be aggregated into 192.168.0.0/22.
+
+2. **Efficiency**: By summarizing routes, routers can reduce the number 
+of entries in their routing tables, which simplifies the lookup process 
+and improves performance. This also reduces the amount of routing 
+information that needs to be exchanged between routers.
 
 ### Switching Fabric
 Switching Fabric is on the very heart of the router. Its job is to switch
@@ -128,48 +188,59 @@ packets from the input side to the output side of the switching fabric.
 In other words, its job is to move packets from input port to output port
 that has been determined by the longest prefix match.
 
-- **Switching Fabric:** One of the most important fabric of switching is 
+- **Switching Rate:** One of the most important fabric of switching is 
 the switching rate. It is the rate at which packets can be transferred
 from inputs to outputs.
 
-**Three major types of switching fabrics:**
-1. Memory:
-   - The first routers were traditionally computers.
-   - So the Switching between the input and output ports was direct
-   control of CPU. It was a sort of routing processor.
-   - The input port and output ports were operated as traditional IO
-   devices in a traditional operating system.
-   - The input port with an arriving packet will signal the CPU via
-   interrupt. So that, the packet could be buffered from input to
-   the processor memory.
-   - The CPU will look for the appropiate port in the forwarding table
-   - And write that content into the output buffer.
-2. Bus:
-   - Rather than taking a packet from input port to memory and from memory
-   to output port, switching via BUS switches that intermediary and allows
-   an input packet to directly write the output port buffer.
-   - In this case the switching speed is limited to BUS bandwidth.
-3. Interconnection network: This part is the most used switching fabric.
-   - In the interconnection network, there are crossbar switches which 
-   connect us from N input to N output.
-   - Multi-stage switching networks are used
-   - These multi-stage switch networks are made up by interconnecting smaller
-   size switch elements both serially with multiple linear stages and in
-   parallel across a given stage.
-   - Fragment datagram into fixed length cells on entry.
-   - switch cells through the fabric, reassemble datagram at exit.
-   - As we have learned, parallelism can be exploited to build high
-   performant switches such as a single router can habe 100's of Tbps
-   bandwidth.
+In networking, there are three major types of switching techniques used 
+within routers to forward packets from input ports to output ports: 
+**Memory**, **Bus**, and **Interconnection Network**.
+
+1. **Memory Switching**
+- **How it Works**: In memory switching, the router's CPU is responsible 
+for transferring packets from the input port to the output port. The 
+packet is first copied into the router's memory, and then the CPU reads 
+the packet and forwards it to the appropriate output port.
+- **Advantages**: Simple to implement and manage.
+- **Disadvantages**: Can become a bottleneck as the CPU must handle all 
+packet transfers, leading to slower performance in high-speed networks.
+
+2. **Bus Switching**
+- **How it Works**: In bus switching, all input ports share a common bus. 
+When a packet arrives at an input port, it is placed on the bus, and the 
+appropriate output port reads the packet from the bus.
+- **Advantages**: More efficient than memory switching as it allows direct
+transfer between input and output ports.
+- **Disadvantages**: The bus can become a bottleneck if multiple packets 
+need to be transferred simultaneously, leading to congestion.
+
+3. **Interconnection Network Switching**
+- **How it Works**: This method uses a more complex network of switches 
+to connect input ports to output ports. Examples include crossbar switches
+and multistage switching networks.
+- **Advantages**: Highly scalable and can handle multiple simultaneous 
+transfers without significant congestion.
+- **Disadvantages**: More complex and expensive to implement compared to 
+memory and bus switching.
 
 ### Input port queuing
-- When multiple input ports send packets to the same output port 
-simultaneously, we need to deal with the fact that the input arrival rate 
-is higher than the output departure rate. 
-- This phenomenon is also named as, Head of the line blocking. HOL occurs
-when packets from different input ports want to go the same output port.
+**Input port queuing** is a mechanism used in routers to manage packets 
+that arrive at the input port faster than they can be processed and 
+forwarded. Here's how it works:
 
-<img src="images/HOL-blocking.png" style="width:80%;height:80%;"> <br>
+### How Input Port Queuing Works
+1. **Packet Arrival**: When packets arrive at the input port, they are 
+temporarily stored in an input queue if the switch fabric or the output 
+port is busy.
+
+2. **Queue Management**: The input queue holds packets until they can be 
+processed. This helps prevent packet loss due to congestion and ensures 
+that packets are forwarded in an orderly manner.
+
+3. **Head-of-Line (HOL) Blocking**: One challenge with input port queuing
+is HOL blocking. This occurs when the packet at the front of the queue 
+cannot be forwarded because the output port it needs is busy. This can 
+cause delays for all packets in the queue.
 
 ### Output port queuing
 - In output, bits can arrive in the N*R rate to the switch fabric, but the
@@ -186,38 +257,42 @@ there can be packet loss.
   call it, `Schedule Decipline`.
 
 ### Packet Scheduling
-#### First come first serve (FCFS)
-- In FCFS, packets are transmitted in the order they arrive to the output
-port. 
-- It is also known as First in first out.
+Sure! Let's break down these four scheduling methods:
 
-#### Priority
-- Priority scheduling works as the name suggests.
-- In the priority scheduling, packets arriving in the output queue are
-classified in priority classes.
-- The priority queue discipline will transmit a packet from the highest
-priority class that has a non-empty queue. That is packet waiting for
-transmission in the same priority class are typically done, in first come
-first serve manner.
-- Now one might ask how the priority classes are decided. It mostly
-depends on the ISP.
+#### 1. First Come First Serve (FCFS)
+- **How it Works**: Packets or processes are handled in the order they arrive. 
+The first packet to arrive is the first to be processed and forwarded.
+- **Advantages**: Simple to implement and understand.
+- **Disadvantages**: Can lead to long wait times, especially if a large packet 
+or process arrives first, causing delays for subsequent packets.
 
-#### Round Robin Scheduling
-- Round Robin works almost as Priority scheduling
-- When a packet arrives at the output buffer, it also classifies the packets
-into different priority classes.
-- In the round bin, servers cyclically scan different classes. For example,
-RR will transmit a packet from priority class A, then B and then C. Say
-priority class B has no packets queuing, RR will go scanning from A to C.
+#### 2. Priority Scheduling
+- **How it Works**: Packets or processes are assigned different priority levels. 
+Higher priority packets are processed before lower priority ones, regardless of 
+their arrival time.
+- **Advantages**: Ensures that critical or time-sensitive packets are processed 
+first.
+- **Disadvantages**: Lower priority packets may experience significant delays or 
+even starvation if higher priority packets keep arriving.
 
-#### Weighted Fair Queuing
-- WFQ is a generalized version of Round Robin.
-- WFQ schedule serving classes in Round Robin manner. Say there are three
-classes. First serving class 1, then serving class 2 and then serving class 3.
-Repeating the service manner.
-- Say an output has R throughput. In WFQ, a specific priority class will
-receive at least `W(i)*R` throughput. 
-- WFQ allows some type of bandwidth to be made on a per-class basis.
+#### 3. Round Robin Scheduling
+- **How it Works**: Each packet or process is assigned a fixed time slot (quantum) 
+and is processed in a cyclic order. After its time slot expires, the next packet 
+in the queue is processed, and the previous packet waits for its next turn.
+- **Advantages**: Fair and simple, ensuring that all packets get a chance to 
+be processed without starvation.
+- **Disadvantages**: Can lead to higher context switching overhead and may not be 
+efficient for processes with varying execution times.
+
+#### 4. Weighted Fair Queueing (WFQ)
+- **How it Works**: Each packet flow is assigned a weight, determining its 
+share of the bandwidth. Packets are scheduled based on their weights, 
+ensuring that each flow gets a fair share of the network resources proportional 
+to its weight.
+- **Advantages**: Provides a fair distribution of bandwidth and can be used to 
+guarantee quality of service (QoS) for different types of traffic.
+- **Disadvantages**: More complex to implement compared to simpler 
+scheduling methods.
 
 ### Network Neutrality
 Network neutrality, often referred to as net neutrality, is the principle 
@@ -232,54 +307,33 @@ the basis of Internet Content, application or service.
 ### IPV4 Datagram
 <img src="images/IP-Datagram.png" style="width:80%;height:80%;"> <br>
 
-1. **Version Number**:
-    - The first **4 bits** specify the IP protocol version of the datagram. 
-   For IPv4, this value is set to **4**.
-    - Different IP versions (such as IPv6) have distinct datagram formats.
-    - The version number helps routers interpret the rest of the IP datagram.
+1. Version (4 bits): Always 4 for IPv4
+2. Internet Header Length (IHL) (4 bits): Length of the header in 32-bit words
+3. Type of Service (8 bits): Specifies quality of service
+4. Total Length (16 bits): Length of entire datagram in bytes
+5. Identification (16 bits): Helps reassemble fragmented packets
+6. Flags (3 bits): Control fragmentation
+7. Fragment Offset (13 bits): Indicates fragment position
+8. Time to Live (TTL) (8 bits): Limits packet lifetime
+9. Protocol (8 bits): Indicates the next level protocol
+10. Header Checksum (16 bits): Error-checking of the header
+11. Source IP Address (32 bits)
+12. Destination IP Address (32 bits)
+13. Options (variable): Optional fields
 
-2. **Header Length**:
-    - These next **4 bits** determine where the actual data begins within 
-   the IP datagram.
-    - Since IPv4 datagrams can include variable-length options, this field 
-   specifies the start of the data.
-    - Most typical IPv4 datagrams have a **20-byte header**.
-
-3. **Type of Service (TOS)**:
-    - The TOS bits allow differentiation between various types of IP 
-   datagrams.
-    - For example, real-time datagrams (used by IP telephony) can be 
-   distinguished from non-real-time traffic (like FTP).
-    - The specific level of service is determined by the router's 
-   administrator.
-
-4. **Datagram Length**:
-    - This field represents the total length of the IP datagram (including 
-   both header and data), measured in **bytes**.
-    - It is a **16-bit** value, allowing a theoretical maximum size of 
-   **65,535 bytes**.
-    - However, actual datagrams are rarely larger than **1,500 bytes**.
-
-5. **Identifier, Flags, and Fragmentation Offset**:
-    - These three fields relate to **IP fragmentation**:
-        - **Identifier**: Helps reassemble fragmented datagrams.
-        - **Flags**: Indicate whether fragmentation is needed or if more 
-      fragments follow.
-        - **Fragmentation Offset**: Specifies the position of each 
-      fragment within the original datagram.
-
-6. **Time-to-Live (TTL)**:
-    - The TTL field ensures that datagrams do not circulate indefinitely 
-   due to routing loops.
-    - Each router decrements the TTL by one; if it reaches **0**, the 
-   datagram is dropped.
-
-7. **Protocol**:
-    - Used only at the final destination.
-    - Indicates the specific transport-layer protocol to which the data 
-   portion of the IP datagram should be passed.
-    - For example, a value of **6** indicates TCP, while **17** indicates 
-   UDP.
+> Remembering technique: "Very Important Travelers Take Flights Frequently To Protest 
+> Highway Speed Detectors Safely"
+> V - Version
+I - IHL (Internet Header Length)
+T - Type of Service
+T - Total Length
+F - Flags and Fragment Offset
+F - Fragmentation
+T - Time to Live
+P - Protocol
+H - Header Checksum
+S - Source IP Address
+D - Destination IP Address
 
 ### Classful IP addressing
 **Classful IP addressing** is a method of **IP address allocation** in 
@@ -346,80 +400,86 @@ as the **subnet mask length**), indicating how many bits are used for the
 network portion of the address.
 
 ### How CIDR Is Used for Subnetting:
-Subnetting using CIDR involves borrowing bits from the host portion of 
-the IP address to create smaller subnets. The number of bits borrowed 
-determines the number of available subnets and the number of hosts per 
-subnet. For example:
+#### 1 Subnet
+1. IP breakdown:
+    - 192.168.1.0 is the network address
+    - /24 means the first 24 bits are used for the network portion
 
-- Determine the number of bits needed to represent the required number of 
-subnets.
-  - We need to create 4 subnets, which requires 2 bits (2^2 = 4).
-  
-- Subtract the number of subnet bits from the total number of bits in the 
-IP address to find out how many bits will remain for host addressing in 
-each subnet.
-  - Total bits: 32 (IPv4 address length)
-  - Subnet bits: 2 (as we borrowed 2 bits for subnetting)
-  - Host bits: 32 - 2 = 30 bits for host addressing in each subnet
-- Calculate the new subnet mask.
-  - The default subnet mask for a /24 network is 255.255.255.0.
-  - To create 4 subnets, we borrow 2 bits, so the new subnet mask will have 
-  two more bits set to 1. These bits represent the subnet portion.
-  - In binary, the subnet mask becomes 11111111.11111111.11111111.11000000, 
-  which translates to 255.255.255.192 in decimal notation (/26).
-  
-- Determine the ranges for the four subnets.
-  - Since we've borrowed 2 bits for subnetting, the subnet ranges will 
-  increment in multiples of 64 (2^6 = 64), as the last 6 bits 
-  (from 26 to 32) will represent host addresses within each subnet.
-  - Subnet 1: 192.168.1.0/26 (Range: 192.168.1.0 - 192.168.1.63)
-  - Subnet 2: 192.168.1.64/26 (Range: 192.168.1.64 - 192.168.1.127)
-  - Subnet 3: 192.168.1.128/26 (Range: 192.168.1.128 - 192.168.1.191)
-  - Subnet 4: 192.168.1.192/26 (Range: 192.168.1.192 - 192.168.1.255)
+2. Binary representation:
+    - 192.168.1.0 = 11000000.10101000.00000001.00000000
+    - The first 24 bits (3 octets) are fixed for the network
 
-- P.S: In Every subnetwork, 2-bits are reserved for network address and
-broadcast address.
+3. Subnet mask:
+    - /24 corresponds to 255.255.255.0
+    - In binary: 11111111.11111111.11111111.00000000
+
+4. Available IPs:
+    - The last 8 bits are for host addresses
+    - 2^8 = 256 total IP addresses
+    - Usable range: 192.168.1.1 to 192.168.1.254
+    - 192.168.1.0 is the network address
+    - 192.168.1.255 is the broadcast address
+
+5. Subnetting flexibility:
+    - If we needed smaller subnets, we could use /25, which would split this into two subnets of 128 IPs each
+    - If we needed larger networks, we could use /23, which would combine two /24 networks, giving 512 IPs
+
+#### 4 Subnets
+1. Determine bits needed for subnets:
+    - We need 2 bits to represent 4 subnets (2^2 = 4)
+
+2. New subnet mask:
+    - Add 2 bits to the original /24
+    - New mask is /26 (24 + 2)
+
+3. Calculate subnet sizes:
+    - Total bits for hosts: 32 - 26 = 6 bits
+    - IPs per subnet: 2^6 = 64 (62 usable, plus network and broadcast)
+
+4. Subnet breakdown:
+   Subnet 1: 192.168.1.0/26   (0-63)
+   Subnet 2: 192.168.1.64/26  (64-127)
+   Subnet 3: 192.168.1.128/26 (128-191)
+   Subnet 4: 192.168.1.192/26 (192-255)
+
+5. Usable IP ranges:
+   Subnet 1: 192.168.1.1 - 192.168.1.62
+   Subnet 2: 192.168.1.65 - 192.168.1.126
+   Subnet 3: 192.168.1.129 - 192.168.1.190
+   Subnet 4: 192.168.1.193 - 192.168.1.254
+
+Each subnet has its own network and broadcast address (first and last IP of each range).
+
+This division allows for 4 separate networks, each with 62 usable IP addresses.
 
 ### DHCP client-server handshake
-- **STEP-1** In the first step, the arriving client broadcasts a DHCP message which will
-be received on the interfaces on all of the hosts and routers in the subnet
-that it is attaching.
-  - The discovery message basically says, is there a DHCP message out
-  there? This is a form of service discovery. The host the service it
-  needs, DHCP. So it sends out the message to broadcast to discover the
-  server that can provide DHCP service.
-  - DHCP runs over UDP. The client uses port 68, and the server will use
-  port 67.
-  - In other words, the server will be listening to port 67 for incoming
-  DHCP messages.
-  - <img src="images/dhcp-discovery.png" style="width:80%;height:80%;"> <br>
-    - From the picture we can see, the source has an IP address of 0.0.0.0
-    with port 68.
-    - The destination has an IP address of 255.255.255.255 with port 67.
-    - The discovery message also has a transaction ID: 654
-    - This transaction ID is necessary as the DHCP server will also
-    respond to the subsequent message with this transaction ID.
-    
-- **STEP-2:** Then the DHCP server replies with offer message. The response
-is sort of like, `Hey I am a DHCP server and here is the IP address you can
-use.`
-  - <img src="images/dhcp-server-2.png" style="width:80%;height:80%;"> <br>
-    - The DHCP offer message comes from 223.1.2.5 and from port 67.
-    - The offer message has been broadcast on all interfaces on the
-    subnet which is notated by 255.255.255.255 destination server.
-    - The DHCP message contains the IP address (223.1.2.4) which the requesting host
-    can use.
-    - The lifetime of this IP address is 3600sec.
-    - Note that, the transaction ID matches the transaction ID of the
-    initial offer message.
-    
-- **STEP-3:** Now step two mentioned above could be optional.
-    - Now the client comes with his own IP address which he may get from
-  the previous request.
-    - It contains the IP address the HOST is proposing to use.
-    - Also, the lifetime it wants to have
-- **STEP-4:** The final message is the ACK message from the server saying
-    that you can use the IP address for the given lifetime.
+The **DHCP handshake** is a four-step process that allows a client to obtain an IP address and other 
+network configuration parameters from a DHCP server. Here’s how it works:
+
+#### 1. DHCP Discover
+- **Client Action**: When a device (client) wants to join a network, it sends out a 
+DHCPDISCOVER message. This message is broadcast to all devices on the local network 
+because the client does not yet have an IP address.
+- **Purpose**: The goal is to find any available DHCP servers on the network.
+
+#### 2. DHCP Offer
+- **Server Action**: Any DHCP server that receives the DHCPDISCOVER message responds with a 
+DHCPOFFER message. This message includes an available IP address and other network 
+configuration details such as the subnet mask, default gateway, and DNS servers.
+- **Purpose**: The server offers an IP address to the client.
+
+#### 3. DHCP Request
+- **Client Action**: The client receives one or more DHCPOFFER messages and responds 
+with a DHCPREQUEST message. This message indicates which offer the client is accepting. 
+It also serves as a broadcast to inform all DHCP servers that it has accepted an offer.
+- **Purpose**: The client requests the offered IP address from the chosen server.
+
+#### 4. DHCP Acknowledgment
+- **Server Action**: The chosen DHCP server responds with a DHCPACK message, confirming 
+that the IP address has been allocated to the client. This message may also include 
+additional configuration parameters.
+- **Purpose**: The server acknowledges the client's request and finalizes the IP 
+address assignment.
 
 #### Static vs DHCP Routing
 **Static IP Addressing**:
@@ -453,37 +513,37 @@ Wi-Fi hotspots or BYOD workplaces.
 | **Example Range** | 1.0.0.0 to 223.255.255.255. | 10.0.0.0 to 10.255.255.255, 172.16.0.0 to 172.31.255.255, 192.168.0.0 to 192.168.255.255. |
 
 ### NAT (Network Address Translation)
-Network Address Translation (NAT) is a network protocol used to modify network 
-address information in the IP header of packets while they are in transit across 
-a traffic routing device. Here's a brief overview of NAT:
+**Network Address Translation (NAT)** is a technique used to map multiple private IP 
+addresses to a single public IP address, allowing devices on a private network to 
+communicate with devices on a public network, such as the internet. 
+Here's how it works:
 
-- **Purpose**: NAT was originally designed to extend the life of IPv4 by 
-conserving the limited number of available public IP addresses. It allows 
-multiple devices on a local network to share a single public IP 
-address when accessing the internet.
+### How does NAT Works
 
-- **Function**: It translates the private IP addresses of devices within a 
-local network to a public IP address and vice versa. This process happens as 
-the data packets move between the network and the internet.
+1. **Private Network Setup**: Devices within a private network are assigned private IP 
+addresses, which are not routable on the public internet. These addresses are typically 
+in the ranges defined by RFC 1918 (e.g., 192.168.x.x, 10.x.x.x, 172.16.x.x to 172.31.x.x).
 
-- **Benefits**: NAT helps maintain privacy of the internal network and can aid 
-in network security by keeping internal IP addresses hidden from the external 
-network.
+2. **Outgoing Traffic**: When a device on the private network wants to communicate 
+with a device on the public network, it sends a packet to the NAT-enabled router. 
+The packet contains the private IP address of the source device and the destination 
+IP address of the public device.
 
-### How does NAT work?
-<img src="images/dhcp-server-2.png" style="width:80%;height:80%;"> <br>
+3. **Address Translation**: The NAT router intercepts the packet and replaces the 
+source private IP address with its own public IP address. It also modifies the 
+source port number to ensure that return traffic can be correctly routed back 
+to the originating device³.
 
-1. Host 10.0.0.1 from port 3345 sends datagram to 128.119.40.186
-in the port 80. 
-2. Datagram then reaches the router which then changes the source
-IP address from 10.0.0.1, port number 3345 to 138.76.29.7, port
-number 5001.
-3. Then the remote host replied. Note that the reply arrived 138.76.29.7, 
-port number 5001 in the NAT router.
-4. Using the destination IP address, the router then looks into the
-forwarding table. Then it replaces the destination IP address with
-the local IP address. After replacing the datagram, it forwards
-the datagram to the device connected to the local network.
+4. **Maintaining a Translation Table**: The NAT router maintains a translation 
+table that keeps track of the mappings between private IP addresses and port 
+numbers to the public IP address and port numbers. This table is used to 
+correctly route incoming packets back to the appropriate device on the private network.
+
+5. **Incoming Traffic**: When a response packet arrives from the public 
+network, the NAT router uses the translation table to determine which private 
+IP address and port number the packet should be forwarded to. It then replaces 
+the destination public IP address with the corresponding private IP address 
+and forwards the packet to the appropriate device.
 
 ### IPV6
 #### Reason of IPV6
