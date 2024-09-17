@@ -52,18 +52,18 @@
 <img src="images/djk-routing-table.png" style="width:50%;height:50%;"> <br>
 
 - **algorithm complexity:**
-- n nodes
-- for each n iteration: need to check all nodes, w not in n
-- **n(n+1)/2** comparisons: O(n^2) complexity.
-- More efficient implementation possible.
+  - n nodes
+  - for each n iteration: need to check all nodes, w not in n
+  - **n(n+1)/2** comparisons: O(n^2) complexity.
+  - More efficient implementation possible.
 
 - **message complexity:**
-- each router must broadcast its link state information to other n
-routers.
-- efficient (and interesting!) broadcast algorithms: O(n) link crossing
-to disseminate a broadcast message from one source to another.
-- each router's message crosses O(n) links: overall message complexity:
-O(n^2).
+  - each router must broadcast its link state information to other n
+  routers.
+  - efficient (and interesting!) broadcast algorithms: O(n) link crossing
+  to disseminate a broadcast message from one source to another.
+  - each router's message crosses O(n) links: overall message complexity:
+  O(n^2).
 
 ### Bellman Ford Algorithm
 - If I am an algorithm, I am going to wait. I will wait until I get a
@@ -135,7 +135,7 @@ smaller, more manageable pieces. Each area is identified by a unique area ID.
 ### Two level Hierarchical OSPF
 - In OSPF (Open Shortest Path First), a two-level hierarchy is used to optimize 
 and scale network routing. This hierarchy consists of:
-- **Level 1 routers (Intra-Area):** These routers have knowledge of their own 
+- **Level 1 routers (Non-Backbone or Intra-Area):** These routers have knowledge of their own 
 area’s topology and route traffic within the area using OSPF.
 - **Level 2 routers (Backbone or Inter-Area):** These routers form the backbone 
 of the OSPF network, known as Area 0. They are responsible for routing 
@@ -221,7 +221,7 @@ to prevent the count-to-infinity problem.
 ### Count to Infinity Problem: OSPF (Open shortest path first)
 In OSPF, the count to infinity problem does not exist in OSPF. Since:
 - OSPF builds a complete and accurate map of the network topology by 
-exchanging `LSA(Link Change Advertisements)` with other routers.
+exchanging `LSA(Link State Advertisements)` with other routers.
 - This map is then used to compute the shortest tree to each route.
 - Since, OSPF routers have complete knowledge of the network's topology,
 they can detect and avoid routing loops.

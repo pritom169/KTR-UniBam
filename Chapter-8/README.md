@@ -28,25 +28,28 @@ to encrypt data, and the corresponding private key is used to decrypt it. This
 ensures that only the intended recipient, who possesses the private key, can 
 access the original data.
 
-In the context of IPSec, asymmetric encryption is primarily used during the 
-**Internet Key Exchange (IKE)** phase, which is the initial setup of the IPSec 
-connection. Here's how it works in IPSec:
+### How Asymmetric Encryption is Used in IPSec
 
-1. **Establishing a Secure Channel**: When two devices initiate communication, they use 
-asymmetric encryption to securely exchange the symmetric keys that will be used for the 
-session.
-2. **Authentication**: Asymmetric encryption helps in authenticating the devices to each 
-other, confirming that the data is being sent and received by the correct parties.
-3. **Key Exchange**: The public key encrypts the symmetric keys, and only the holder of the 
-private key can decrypt them, ensuring the security of the key exchange process.
+IPSec (Internet Protocol Security) uses both asymmetric and symmetric 
+encryption to secure data transmission over IP networks. Here's how it 
+works:
 
-Once the secure channel is established and the symmetric keys are exchanged, IPSec typically 
-switches to **symmetric encryption** for the actual data transfer because it's faster and 
-more efficient for continuous data encryption and decryption.
+1. **Initial Key Exchange**:
+    - During the initial phase of establishing an IPSec connection, 
+   asymmetric encryption is used to securely exchange keys between 
+   the communicating parties. This is typically done using the Internet 
+   Key Exchange (IKE) protocol.
 
-This combination of asymmetric and symmetric encryption allows IPSec to provide a balance 
-between strong security during the key exchange and efficient data transfer during the 
-communication session.
+2. **Establishing a Secure Connection**:
+    - Once the keys are exchanged, a secure channel is established. 
+   This phase involves creating a Security Association (SA), which 
+   includes the agreed-upon encryption and authentication methods.
+
+3. **Switching to Symmetric Encryption**:
+    - After the secure connection is established, IPSec switches to 
+   symmetric encryption for the actual data transmission. Symmetric 
+   encryption is faster and more efficient for encrypting large amounts 
+   of data.
 
 ### How does IPsec work? Key exchange, packet headers and trailers, authentication, encryption, transmission, and decryption.
 IPsec (Internet Protocol Security) is a suite of protocols that ensures secure communications 
@@ -148,19 +151,43 @@ used for securing the data flow in IPsec.
 which provides connectionless integrity and data origin authentication for 
 IP datagrams.
 
-### How does IPSec impact MSU and MTU?
-IPsec affects the Maximum Segment Size (MSS) and the Maximum Transmission Unit (MTU) due 
-to the additional headers it introduces for security purposes:
+### How does IPSec impact MSS and MTU?
+IPSec (Internet Protocol Security) impacts the Maximum Segment Size 
+(MSS) and Maximum Transmission Unit (MTU) due to the additional overhead 
+introduced by its encryption and encapsulation processes. Here's how it 
+works:
 
-- **Maximum Segment Size (MSS)**: IPsec adds overhead to the original packet size, which 
-includes the IPsec headers and trailers. Therefore, when using IPsec, the MSS must be 
-adjusted to account for this overhead to avoid fragmentation.
-  - MSS = MTU - (TCP header + IP header + IPSec overhead)
+### Impact on MTU
 
-- **Maximum Transmission Unit (MTU)**: When IPsec is used, the MTU must be reduced
-to accommodate the IPsec overhead, which includes the ESP(Encapsulating Security Payload) 
-header, trailer, and any additional padding. This reduction ensures that packets do not 
-exceed the MTU of the network path, which could lead to fragmentation.
+1. **IPSec Overhead**:
+    - IPSec adds extra headers to each packet for encryption and 
+   authentication. These headers can include the ESP (Encapsulating Security Payload) header, AH (Authentication Header), and additional padding¹.
+    - The added overhead can cause the packet size to exceed the MTU 
+   of the network, leading to fragmentation.
+
+2. **Fragmentation**:
+    - If the packet size exceeds the MTU, it may need to be fragmented. 
+   Fragmentation can occur either before or after encryption:
+        - **Pre-fragmentation**: The packet is fragmented before 
+      encryption, ensuring that each fragment is encrypted separately.
+        - **Post-fragmentation**: The packet is encrypted first and 
+      then fragmented, which can be less efficient as the receiving end must reassemble the fragments before decryption².
+
+3. **Adjusting MTU**:
+    - To avoid fragmentation, the MTU can be adjusted to account for 
+   the IPSec overhead. This involves reducing the MTU on the sending 
+   device so that the total packet size, including IPSec headers, does 
+   not exceed the network's MTU.
+
+### Impact on MSS
+
+1. **MSS Adjustment**:
+    - MSS (Maximum Segment Size) defines the largest segment of data 
+   that a device is willing to receive in a single TCP segment.
+    - When IPSec is used, the MSS should be adjusted to ensure that 
+   the total packet size, including IPSec headers, does not exceed 
+   the MTU. This prevents fragmentation and ensures efficient data 
+   transmission.
 
 ### Security Features
 #### Authentication
