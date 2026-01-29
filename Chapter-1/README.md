@@ -1,362 +1,551 @@
-# Lecture-1
-##### Internet
-- The Internet is an interconnected network of networks.
+# Chapter 1: Introduction to Computer Networks
+
+## 1.1 What is the Internet?
+
+### Internet
+- The Internet is a global interconnected network of networks that connects billions of computing devices worldwide.
+- These connected devices are called **hosts** or **end systems**.
+- End systems are connected together by a network of **communication links** and **packet switches**.
+
 > Exam Question: What is Internet?
 
-##### Protocol
-- Sending and Receiving information between Router, Switches and Many other end
-devices is controlled by protocol. Protocol governs everything that happens in a 
-network.
-- Protocols define the format, order of messages sent and received among network
-entities, and actions taken on message transmission, receipt.
+### Protocol
+- Sending and receiving information between routers, switches, and other end devices is controlled by protocols. Protocols govern everything that happens in a network.
+- Protocols define the **format**, **order of messages** sent and received among network entities, and **actions taken** on message transmission and receipt.
+- Examples: TCP, IP, HTTP, FTP, PPP, Ethernet
+
 > Exam Question: What is Protocol?
 
-> IETF: **Internet Engineering Task Force** governs the Internet standards using
-**Request for Comments**
+> **IETF:** The **Internet Engineering Task Force** governs the Internet standards using documents called **RFC (Request for Comments)**.
 
-###### Access network
-Access network is the host, (the device or the end system) that connects to
-the internet. <br>
-**How to connect host systems to edge router?** <br>
-*Answer:* Here are some ways:
-- Residential access nets
-- institutional access nets(school, company)
-- mobile access network(Wifi/4G)
-**What to look for**
-- transmission rate (bits per second) of access network. AKA how fast is the network.
-- shared or dedicated access among the users (AKA to what degree the network is shared)
+---
 
-##### Access Networks: cable-based access
-In access network, a single cable headed connects multiple homes. The signal from and
-to those houses are sent at different frequencies. Different frequencies do not interpret
-with each other just like FM radio frequencies.
+## 1.2 Network Edge
 
-- *Frequency division multiplexing(FDM):* Different channels multiplied in a different frequency
-band.
-- *HFC: Hybrid fiber coax:* They are asymmetric, which means they provide data in a downstream
-manner rather than upstream. Which means we are consumer of data rather than producer of
-data. Typical cable transmission rates are 40MBPS - 1.2GBs downstream transmission rate,
-30-100Mbps upstream transmission rate. Usually your modem will limit the upstream and the
-downstream limit. Basically, you get what you pay for.
+### Access Networks
+An access network is the network that physically connects an end system (host) to the first router (edge router) on a path from the end system to any other distant end system.
 
-##### Access networks: digital subscriber line(DSL)
-- Use existing telephone line to central office DSLAM
-    - data over DSL phone line goes to the Internet
-    - voice over DSL phone line goes to telephone net
-- 24-52 Mbps dedicated downstream transmission rate
-- 3.5-16 Mbps dedicated upstream transmission rate
+**How to connect host systems to edge router?**
 
-#### Access networks
-##### Home networks
-Traditional home network which has a device. It is connected with router and modems.
+There are several ways:
+- Residential access networks (DSL, Cable, FTTH, 5G Fixed Wireless)
+- Institutional access networks (school, company)
+- Mobile access networks (WiFi, 4G/5G cellular)
 
-##### Wireless access networks
-1. Wireless local area network (WLANs)
-- Typically, within or around building (100ft)
-- Typically, standardized by IEEE under the protocols of 802.11 b/g/n.
+**Key characteristics to consider:**
+- **Transmission rate** (bits per second) - how fast is the network
+- **Shared or dedicated access** - to what degree the network bandwidth is shared among users
 
-##### Wide-area cellular access networks
-- provided my mobile, cellular network operator (10's km)
-- 10's Mbps
-- 4G cellular networks (5G coming)
+### Access Networks: Cable-based Access
+In cable-based access networks, a single cable head-end connects multiple homes. The signals from and to those houses are sent at different frequencies. Different frequencies do not interfere with each other, similar to FM radio frequencies.
 
-Other access networks are:
-1. Enterprise networks
-2. Data center networks
+- **Frequency Division Multiplexing (FDM):** Different channels are transmitted in different frequency bands simultaneously.
+- **HFC (Hybrid Fiber Coax):** A network architecture that uses fiber optic cables for the backbone and coaxial cables for the "last mile" to homes.
+  - **Asymmetric:** Provides higher data rates downstream (to the user) than upstream (from the user)
+  - Downstream: 40 Mbps - 1.2 Gbps
+  - Upstream: 30-100 Mbps
+  - Bandwidth is **shared** among users in the same neighborhood
 
-#### Host: Sends packets of data
-host sending function:
-- take an application message
-- breaks into smaller chunks, known as packets, of length L bits
-- transmits packet into access network at `transmission rate R`
-    - link transmission rate, aka link `capacity, aka link bandwidth`
-> packet transmission delay = time needed to transmit an L-bit packet into 
-a link = L(bits)/R(bits/sec)
+### Access Networks: Digital Subscriber Line (DSL)
+- Uses existing telephone line to central office **DSLAM (Digital Subscriber Line Access Multiplexer)**
+  - **DSLAM:** A network device located at the telephone company's central office that receives signals from multiple DSL connections and aggregates them onto a high-speed backbone
+- Data over DSL phone line goes to the Internet
+- Voice over DSL phone line goes to the telephone network
+- Uses different frequencies for voice and data:
+  - 0-4 kHz: Voice (traditional phone)
+  - 4-50 kHz: Upstream data
+  - 50 kHz - 1 MHz: Downstream data
+- **Dedicated** connection (not shared with neighbors)
+- Speeds:
+  - 24-52 Mbps dedicated downstream transmission rate
+  - 3.5-16 Mbps dedicated upstream transmission rate
 
-#### Links: Physical Media
-- `bit:` We transfer bits from transmitter to receiver using a physical media.
-- `physical link:` what lies between transmitter & receiver.
-1. `Guided media`: Signals propagate in solid media: copper, fiber, coax. There are
-couple of guided medias. Some examples of guided media are the following:
-- `Coaxial cable:`
-  - two concentric copper conductors
-    - bidirectional
-    - broadband, old fashioned internet used to run on this method.
-        - multiple frequency channels on cable
-        - 100's Mbps per channel
-- `Twisted pair(TP)`: two insulated copper wires
-    - Category 5: 100 Mbps, 1Gbps Ethernet
-    - Category 6: 10 Gbps Ethernet
-- `Fiber optic cable:`
-  - glass fiber carrying light pulses, each pulse a bit
-    - high-speed operation:
-        - high-speed point-to-point transmission (10's - 100's Gbps)
-    - low error rate:
-        - repeaters spaced far apart
-        - immune to electromagnetic noise
-2. `Unguided Media:` signals propagate freely e.g., radio <br>
-`Wireless Radio`:
-- signal carried in various "bands" in electro-magnetic spectrum.
-- no physical "wire"
-- broadcast, "half-duplex" (sender to receiver)
-- propagation environment effects:
-    - reflection
-    - obstruction by objects
-    - Interference/noise
-`Radio link types:`
-  - `Wireless LAN(WiFi):` 10-100's Mbps; 10's of meters.
-  - `Wide-area (e.g., 4G cellular):` 10's Mbps over ˜10 Km
-  - `Bluetooth:` cable replacement
-    - short distances, limited rates
-  - `Terrestrial microwave:` point-to-point; 45 Mbps channels
-  - `Satelite`:
-    - upto 45 Mbps per channel
-    - 270 msec end-end delay
+### Access Networks: Fiber to the Home (FTTH)
+- Provides fiber optic connection directly to the home
+- Much higher speeds than DSL or cable (up to 1 Gbps or more)
+- Two competing optical distribution architectures:
+  - **AON (Active Optical Network):** Uses electrically powered switching equipment
+  - **PON (Passive Optical Network):** Uses unpowered optical splitters
 
-#### The network core
-- The network core consists of interconnected routers which are interconnected
-by communication links.
-- The internet's core operation consists of a concept called `packet switching`
-    - **Packet Switching:** The end host takes application of messages, devides
-    those messages into chunks of data, puts those data inside a package and sends
-    those packages into the internet.
-    - After that, network forwards packets from one router to the next, across
-    links on path from source to destination.
+### Home Networks
+A typical home network consists of:
+- **Modem:** Converts signals between the ISP's network and your home network
+  - Cable modem for cable internet
+  - DSL modem for DSL internet
+- **Router:** Routes packets between your home network and the Internet
+  - Performs NAT (Network Address Translation)
+  - Contains a firewall for security
+- **Wireless Access Point (WAP):** Provides WiFi connectivity
+- **Switch/Hub:** Connects multiple wired devices (often integrated into the router)
 
-There are two network-core functions
-1. **Forwarding:** It is essentially taking a packet of data and sending it to the
-appropriate customer. In more details, when data arrrives it comes with a value.
-The router then looks into the forwarding table. When data matches with one table
-it forwards the data into the proper router. <br>
+Most home networks today use a combined device (modem-router combo or gateway) that integrates all these functions.
 
-Now you might be wondering how the content of the forwarding table is created. That's
-where routing comes into the equation.
+### Wireless Access Networks
 
-2. **Routing:** Routing is the `global action` that determines source-destination paths
-taken by packets. Routing algorithms compute the local per-router forwarding tables needed
-to realize to find the end to end paths.
+#### 1. Wireless Local Area Networks (WLANs) - WiFi
+- Range: Typically within or around a building (~100 ft / 30 meters)
+- Standardized by IEEE under the 802.11 family of protocols:
+  - 802.11b: 11 Mbps, 2.4 GHz
+  - 802.11g: 54 Mbps, 2.4 GHz
+  - 802.11n (WiFi 4): up to 600 Mbps, 2.4/5 GHz
+  - 802.11ac (WiFi 5): up to 3.5 Gbps, 5 GHz
+  - 802.11ax (WiFi 6): up to 9.6 Gbps, 2.4/5/6 GHz
 
-> Exam Question: What are routing and forwarding.
+#### 2. Wide-Area Cellular Access Networks
+- Provided by mobile/cellular network operators
+- Range: 10's of kilometers
+- Technologies:
+  - 3G: Few Mbps
+  - 4G/LTE: 10's of Mbps (up to 100+ Mbps)
+  - 5G: 100's of Mbps to multi-Gbps, low latency
 
-#### Packet-switching
-##### Store and forward
-- **packet transmission delay:** takes L/R seconds to transmit (push-out) L-bit packet into
-a link at R bps
-> One-hop numerical example: L = 10 Kbits, R = 100 Mbps, one-hop transmission delay = 0.1 msec
+### Other Access Networks
+1. **Enterprise Networks:** Mix of wired (Ethernet) and wireless (WiFi) technologies, connecting hundreds or thousands of hosts to each other and to the Internet
+2. **Data Center Networks:** High-bandwidth networks connecting thousands of servers, often with 10-100 Gbps links
 
-- **store and forward:** In store and forward method, the entire packet must arrive at router
-before it can be transmitted on next link.
+---
 
-##### Queuing
+## 1.3 Host: Sending and Receiving Data
+
+**Host sending function:**
+1. Takes an application message
+2. Breaks it into smaller chunks called **packets** of length **L bits**
+3. Transmits packets into the access network at **transmission rate R**
+   - Transmission rate is also called **link capacity** or **link bandwidth**
+
+> **Packet transmission delay** = time needed to transmit an L-bit packet into a link = **L (bits) / R (bits/sec)**
+
+---
+
+## 1.4 Physical Media (Links)
+
+- **Bit:** The basic unit of data propagated from transmitter to receiver
+- **Physical link:** The medium that lies between transmitter and receiver
+
+### 1. Guided Media
+Signals propagate in solid media (copper, fiber, coax).
+
+#### Coaxial Cable
+- Two concentric copper conductors
+- **Bidirectional** transmission
+- **Broadband:** Multiple frequency channels on cable
+- Speed: 100's Mbps per channel
+- Used in: Cable TV, older Ethernet networks
+
+#### Twisted Pair (TP)
+- Two insulated copper wires twisted together
+- Most common guided transmission medium
+- Categories:
+  - **Category 5 (Cat5):** 100 Mbps, 1 Gbps Ethernet
+  - **Category 5e (Cat5e):** 1 Gbps Ethernet
+  - **Category 6 (Cat6):** 10 Gbps Ethernet (up to 55m)
+  - **Category 6a (Cat6a):** 10 Gbps Ethernet (up to 100m)
+
+#### Fiber Optic Cable
+- Glass fiber carrying light pulses; each pulse represents a bit
+- **Advantages:**
+  - High-speed point-to-point transmission (10's - 100's Gbps)
+  - Low error rate
+  - Repeaters can be spaced far apart (up to 100 km)
+  - Immune to electromagnetic noise/interference
+  - Very thin and lightweight
+- **Disadvantages:**
+  - Higher cost
+  - More difficult to install and splice
+
+### 2. Unguided Media
+Signals propagate freely through the air (e.g., radio waves).
+
+#### Wireless Radio
+- Signal carried in various "bands" in the electromagnetic spectrum
+- No physical "wire"
+- Broadcast and "half-duplex" (sender to receiver)
+- **Propagation environment effects:**
+  - Reflection (off surfaces)
+  - Obstruction by objects
+  - Interference/noise
+  - Multipath propagation
+
+**Radio Link Types:**
+| Type | Range | Speed |
+|------|-------|-------|
+| Wireless LAN (WiFi) | 10's of meters | 10-100's Mbps |
+| Wide-area (4G/5G cellular) | ~10 km | 10's-100's Mbps |
+| Bluetooth | Short distances (<10m) | 1-3 Mbps |
+| Terrestrial microwave | Point-to-point | 45 Mbps channels |
+| Satellite | Global coverage | Up to 45 Mbps per channel |
+
+**Satellite Communications:**
+- **Geostationary satellites:** 36,000 km altitude, 270 msec round-trip delay
+- **Low Earth Orbit (LEO) satellites:** 500-2000 km altitude, 20-40 msec delay (e.g., Starlink)
+
+---
+
+## 1.5 The Network Core
+
+The network core consists of interconnected routers which are connected by communication links. The network core's primary function is to move data among hosts.
+
+### Packet Switching
+The Internet uses **packet switching** to move data:
+1. End hosts divide application messages into smaller chunks called **packets**
+2. Packets are transmitted into the network
+3. The network forwards packets from one router to the next, across links on the path from source to destination
+
+### Two Key Network-Core Functions
+
+#### 1. Forwarding (Data Plane)
+- **Local action:** Moving packets from router's input to appropriate router output
+- When data arrives, it comes with a header containing a destination address
+- The router looks up this address in its **forwarding table**
+- Based on the match, forwards the packet to the appropriate output link/next router
+
+#### 2. Routing (Control Plane)
+- **Global action:** Determining the source-destination paths that packets take
+- Routing algorithms compute the local per-router forwarding tables
+- These algorithms determine end-to-end paths through the network
+
+> Exam Question: What are routing and forwarding?
+
+---
+
+## 1.6 Packet Switching
+
+### Store and Forward
+- **Store and Forward:** The entire packet must arrive at a router before it can be transmitted on the next link
+- The router stores the packet in its buffer, then forwards it
+
+**Packet transmission delay:** L/R seconds to transmit (push out) an L-bit packet into a link at R bps
+
+> **Example:** L = 10 Kbits, R = 100 Mbps
+> One-hop transmission delay = 10,000 bits / 100,000,000 bps = 0.1 msec
+
+**End-to-end delay (ignoring propagation and processing):**
+- For N links: delay = N × (L/R)
+
+### Queuing
 <img src="images/queuing.png" style="width:50%;height:auto;">
-Let's say host A is sending package to host C and host B is sending package to host E. Now in the
-first router, there is a queue of packets waiting for transmission over output link. Which leads
-us to:
-- `Packet queuing and loss:` if arrival rate (in bps) to link exceeds transmission rate (bps) of
-link for some period of time we find:
-    - packets will queue, waiting to be transmitted on output link
-    - packets can be dropped(aka lost) if memory(buffer queue) in router fills up
 
-Packet switching is not the only way to build a network. Long before internet existed for telephone
-network, we used circuit switching.
-##### Circuit switching
-- end-end resources allocated to, reserved for "call" between source and destination <br>
+When multiple packets arrive at a router simultaneously (e.g., Host A sending to Host C while Host B sends to Host E), they must wait in a queue for transmission.
+
+**Packet Queuing and Loss:**
+- If arrival rate (in bps) to a link exceeds transmission rate (bps) for some period:
+  - Packets will **queue** (wait) for transmission on the output link
+  - Packets can be **dropped (lost)** if the memory (buffer) in the router fills up
+
+### Circuit Switching
+Before the Internet, telephone networks used **circuit switching**.
+
 <img src="images/circuit.png" style="width:50%;height:auto;">
 
-- in diagram, each link has four circuits.
-  - call gets 2nd cirucit in top link and 1st circuit in the right link
-- dedicated resources: no sharing
-  - circuit-like (guranteed) performance
-- circuit segment idle if not used by call (no sharing)
-- commonly used in traditional telephone networks
+**Characteristics:**
+- End-to-end resources are **allocated and reserved** for the "call" between source and destination
+- In the diagram, each link has four circuits
+  - A call gets the 2nd circuit in the top link and 1st circuit in the right link
+- **Dedicated resources:** No sharing with other calls
+  - Provides **guaranteed** performance (bandwidth, no queuing delay)
+- **Inefficient:** Circuit segment is idle if not used by the call (resources wasted)
+- Commonly used in traditional telephone networks
 
 <img src="images/FDM&TDM.png" style="width:50%;height:50%;">
 
-There are two types of circuit switching: FDM and TDM
-1. `Frequency Division Multiplexing (FDM):` 
-- optical, electromagnetic frequencies divided into (narrow)
-frequency bands.
-- each call allocated its own band, can transmit at max rate of that
-narrow band
+### Types of Circuit Switching
 
-2. `Time Division Multiplexing(TDM):`
-- time divided into slots
-- each call allocated periodic slot(s), can transmit at maximum rate of
-  (wider) frequency band during its time slot(s)
+#### 1. Frequency Division Multiplexing (FDM)
+- Electromagnetic frequencies are divided into (narrow) frequency bands
+- Each call is allocated its own band
+- Can transmit at the maximum rate of that narrow band continuously
 
-##### Packet switching vs Circuit Switching
-Example:
+#### 2. Time Division Multiplexing (TDM)
+- Time is divided into slots (frames)
+- Each call is allocated periodic slot(s)
+- Can transmit at the maximum rate of the (wider) frequency band during its time slot(s)
+
+### Packet Switching vs Circuit Switching
+
+| Feature | Packet Switching | Circuit Switching |
+|---------|------------------|-------------------|
+| Resource allocation | On-demand, shared | Pre-allocated, dedicated |
+| Efficiency | High (statistical multiplexing) | Lower (resources idle when unused) |
+| Delay | Variable (queuing delay) | Constant, predictable |
+| Congestion | Possible (packet loss) | No congestion once connected |
+| Setup time | None | Required before communication |
+| Best for | Bursty data (web, email) | Continuous streams (voice calls) |
+
+**Example:**
 - 1 Gb/s link
-- each user:
-  - 100 Mb/s when "active"
-  - active 10% of time
+- Each user: 100 Mb/s when "active", active 10% of the time
 
-Q. How many users can use this network under circuit-switching and packet switching?
-- **circuit switching** 10.
-- **packet switching**: with 35 users, probability > 10 active
-at same time is less than .0004*
+**Q: How many users can use this network?**
+- **Circuit switching:** 10 users (1000 Mbps / 100 Mbps per user)
+- **Packet switching:** With 35 users, probability that more than 10 are active simultaneously is less than 0.0004 (statistical multiplexing gain)
 
-##### Internet structure: a "network of networks"
-- Question: given millions of access ISPs, how to connect them together?
-- Answer: Having some transit ISP <br>
+> Packet switching allows more users because it exploits the fact that users are typically not active all the time.
+
+### Internet Structure: A "Network of Networks"
+
+**Question:** Given millions of access ISPs, how do we connect them together?
+
+**Answer:** Through a hierarchical structure of ISPs and Internet Exchange Points.
 
 <img src="images/ISP.png" style="width:50%;height:50%;">
 <img src="images/network-map.png" style="width:50%;height:50%;">
 
-## Performance
-- How do packet delay and loss occur?
-- Packet queue in router buffers, waiting to turn for transmission. It is also known
-as **transmission delay.**
-  - queue length grows when the arrival rate to link (temporarily) exceeds output
-  link capacity. AKA **queueing delay**.
-- packet loss occurs when memory to hold queued packets fills up
+**ISP Hierarchy:**
+- **Tier 1 ISPs:** Global reach, peer with each other (e.g., AT&T, NTT, Level 3)
+  - Do not pay for transit; settlement-free peering
+- **Tier 2 ISPs:** Regional/national coverage, pay Tier 1 for transit
+  - May peer with other Tier 2 ISPs
+- **Tier 3 ISPs / Access ISPs:** Local coverage, pay Tier 2 (or Tier 1) for connectivity
+  - Provide access to end users
 
-### Packet delays
-1. **d(PROC): Processing delay:**
-- It is associated with forwarding table look up.
-- Putting packets into the correct switch
-- Also doing some integrity checks.
-- This delays are in the orders of microseconds or less.
-2. **d(QUEUE): Queueing delay:**
-- Queuing delay occurs the packets wait for transmission the router.
-In other words, time spent at output link for transmission.
-- depends on congestion level.
-3. **d(Tran):Transmission delay:**
-- L: packet length (bits)
-- R: link transmission rate (bps)
-- d(Trans) = L/R
-4. **d(Prop): Propagation delay:** This is the delay when a bit enters the sending side of
-the link and pops out from the receiving side of the link. Propagation delay in a network refers 
-to the time it takes for a signal to travel from the sender to the receiver through the 
-communication medium.
-- d: length of a physical link
-- s: propagation speed(˜2x10ˆ8 m/sec)
-- d(prop) = d/s
+**Internet Exchange Points (IXP):**
+- Physical locations where multiple ISPs connect and exchange traffic directly
+- Reduces the need to pay for transit through higher-tier ISPs
+- Examples: DE-CIX (Frankfurt), AMS-IX (Amsterdam), LINX (London)
 
-### Packet queueing delay (revisited)
-- a: average packet arrival rate
-- L: packet length(bits)
-- R: link bandwidth (bit transmission rate)
+**Content Provider Networks (e.g., Google, Facebook, Netflix):**
+- Build their own networks to connect their data centers
+- Peer directly with lower-tier ISPs and at IXPs
+- Reduces reliance on Tier 1 ISPs, improves performance
 
-La/R = (arrival rate of bits/service rate of bits) ("traffic intensity")
+---
 
-- La/R~0: avg. queuing delay small
-- La/R->1: avg. queueing delay large
-- La/R>1: more "work" arriving is more than can be serviced - average
-delay infinite!
+## 1.7 Performance
 
-### Real Internet delays and routes
-traceroute: gaia.cs.umass.edu to www.eurecom.fr <br>
+### How do packet delay and loss occur?
+- Packets queue in router buffers, waiting for their turn for transmission
+- Queue length grows when the arrival rate to a link temporarily exceeds output link capacity
+- **Packet loss** occurs when the buffer (memory) to hold queued packets fills up
+
+### Four Sources of Packet Delay
+
+**Total nodal delay:** d_nodal = d_proc + d_queue + d_trans + d_prop
+
 <img src="images/packet-delays.png" style="width:50%;height:50%;">
 
-### Packet loss
-We have to remember that packet loss can occur when the router buffer
-fills up and the arriving package has no place to be stored.
-- In congestion scenarios, the losses can be high.
+#### 1. d_proc: Processing Delay
+- Time to examine packet header and determine where to direct the packet
+- Check for bit-level errors
+- Typically in the order of **microseconds or less**
+
+#### 2. d_queue: Queuing Delay
+- Time spent waiting at the output link for transmission
+- Depends on **congestion level** (how many packets are already queued)
+- Can range from microseconds to milliseconds
+
+#### 3. d_trans: Transmission Delay
+- Time to push all packet's bits onto the link
+- **L:** packet length (bits)
+- **R:** link transmission rate (bps)
+- **d_trans = L / R**
+
+#### 4. d_prop: Propagation Delay
+- Time for a bit to travel from the beginning to the end of the link
+- **d:** length of the physical link (meters)
+- **s:** propagation speed (~2×10⁸ m/sec in copper/fiber, ~3×10⁸ m/sec in air)
+- **d_prop = d / s**
+
+> **Important:** Don't confuse transmission delay (pushing bits onto link) with propagation delay (bits traveling through link).
+
+### Traffic Intensity and Queuing Delay
+
+**Traffic Intensity = La/R**
+- **a:** average packet arrival rate (packets/sec)
+- **L:** packet length (bits)
+- **R:** link bandwidth (bits/sec)
+
+**La/R** represents the ratio of "work arriving" to "service capacity":
+
+| Traffic Intensity | Queuing Behavior |
+|-------------------|------------------|
+| La/R ≈ 0 | Average queuing delay is small |
+| La/R → 1 | Average queuing delay grows large (exponentially) |
+| La/R > 1 | More "work" arriving than can be serviced → average delay → ∞ |
+
+> **Design principle:** Traffic intensity should be kept well below 1 for good performance.
+
+### Real Internet Delays: Traceroute
+
+**Traceroute** is a diagnostic tool that shows the path packets take through the network and the delay at each hop.
+
+How it works:
+1. Sends packets with incrementing TTL (Time-To-Live) values
+2. Each router decrements TTL; when TTL=0, router returns an error message
+3. Round-trip time to each router is measured
+
+### Packet Loss
+- Router buffers have finite capacity
+- When a packet arrives at a full queue, the packet is **dropped (lost)**
+- Lost packets may be retransmitted by the previous node, by the source, or not at all
+- In congestion scenarios, packet losses can be significant
 
 ### Throughput
-Throughput in a network refers to the rate at which data is successfully
-transmitted within the network. It is a measure of the amount of data that
-can be transferred over the network in a given amount of time.
+
+**Throughput:** The rate (bits/time) at which data is successfully transferred between sender and receiver.
+- **Instantaneous throughput:** Rate at a given point in time
+- **Average throughput:** Rate over a longer period (total bits / total time)
 
 <img src="images/Throughput.png" style="width:50%;height:50%;">
 
-From the picture we can see that the throughput in this connection is
-min(Rc, Rs, R / 10)
+**Bottleneck link:** The link on the end-to-end path that constrains throughput.
 
-> Exam Question: What are delay, loss and throughput
+**End-to-end throughput:**
+- For a path with links R1, R2, ..., Rn: Throughput = **min(R1, R2, ..., Rn)**
+- In practice, the bottleneck is often the access network (first or last link)
+- For shared links (like network core): Throughput = min(Rc, Rs, R/N) where N is the number of connections sharing link R
 
-## Layering
-Approach to designing/discussing complex systems:
-- Layering helps us in identifying in different pieces of the systems and
-relationship to each other. In other words, we have a clear reference
-how the systems interact with each other.
-- We have really modularized the design by layering. When we think in a
-concrete term, the layer takes information from above (internet), and uses
-the services one layer below to implement it's own service.
+> Exam Question: What are delay, loss, and throughput?
 
-### Layered Internet Protocol stack
-There are 5 layers in the Internet.
-1. **Application:** Application layer consists of protocols which are responsible
-for sending and receiving of applications. e.g. HTTP, IMAP, SMTP, DNS
-2. **Transport:** Transport layer transports application layer messages from one layer
-to another. We saw earlier packets could be lost due to buffer in routers.
-- TCP, UDP
-- Transport layer provides a reliable data transfer guarantee on top of a layer
-which has the possibility of losing the data. That's what internet's TCP protocol
-does.
-3. **Network:** Network layer routes the data from one network device to another sometimes
-reliably and sometimes not. In other words, the network layer does not provide reliable
-transfer from one host to another.
-- IP, routing protocols.
-4. **Link:** Link layer transports data between two network devices that are either ends
-of the same communication link. 
-- Ethernet, 802.11(Wifi), PPP
-5. **Physical:** bits `on the wire`
+---
 
-### Servicing, Layering and Encapsulation
-1. **Application:** On application layer, the data it exchanges are called message.
-2. **Transport:** What transport layer does is that, it takes a message from application
-layer and adds some additional part. In more concrete terms, Transport layer protocol
-encapsulates an application-layer message, M, with transport layer header H(t) to create a
-transport-layer segment. It also notated as H(t)M
-> Taking data from one network layer and adding more information to the current message 
-is called encapsulation.
-3. **Network:** Network layer protocol `encapsulates` transport layer segment H(t)M with
-network layer header H(n) to create a network layer `datagram`.
-- H(n) used by network layer protocol to implements in service. So the final term is H(n)H(t)M
-4. **Link:** Just like the layers above, link layer adds also adds it's own header and makes
-it, `H(i)H(n)H(t)M`.
+## 1.8 Protocol Layering
+
+### Why Layering?
+Layering is an approach to designing and discussing complex systems:
+- **Modularity:** Each layer provides a specific service and has a well-defined interface
+- **Abstraction:** Each layer uses services from the layer below and provides services to the layer above
+- **Flexibility:** Changes in one layer don't affect other layers (as long as the interface remains the same)
+- **Standardization:** Allows different vendors to create interoperable products
+
+### The Internet Protocol Stack (5 Layers)
+
+| Layer | Function | Protocols | Data Unit |
+|-------|----------|-----------|-----------|
+| **5. Application** | Network applications and their protocols | HTTP, SMTP, FTP, DNS, IMAP | Message |
+| **4. Transport** | Process-to-process data transfer | TCP, UDP | Segment |
+| **3. Network** | Routing of datagrams from source to destination | IP, ICMP, routing protocols | Datagram |
+| **2. Link** | Data transfer between neighboring network elements | Ethernet, WiFi (802.11), PPP | Frame |
+| **1. Physical** | Bits "on the wire" | Copper, fiber, radio | Bits |
+
+#### Layer Details:
+
+1. **Application Layer:**
+   - Provides protocols for network applications
+   - HTTP (web), SMTP (email), DNS (domain names), FTP (file transfer)
+   - Applications exchange **messages**
+
+2. **Transport Layer:**
+   - Transports application-layer messages between application endpoints
+   - **TCP:** Reliable, ordered delivery with congestion control
+   - **UDP:** Unreliable, unordered delivery (best-effort)
+   - Provides **multiplexing/demultiplexing** using port numbers
+
+3. **Network Layer:**
+   - Routes datagrams from source to destination across multiple links
+   - **IP protocol:** Defines datagram format, addressing (IP addresses)
+   - **Routing protocols:** Determine paths through the network
+   - Does NOT provide reliable transfer (best-effort delivery)
+
+4. **Link Layer:**
+   - Transfers data between two devices on the same link
+   - **Ethernet:** Wired LAN
+   - **802.11 (WiFi):** Wireless LAN
+   - **PPP:** Point-to-point links
+   - Provides error detection, sometimes error correction
+
+5. **Physical Layer:**
+   - Transmits individual bits across the physical medium
+   - Defines electrical/optical/radio specifications
+   - Encoding schemes for bits (voltages, light pulses, etc.)
+
+### ISO/OSI Reference Model (7 Layers)
+The OSI model adds two layers between Application and Transport:
+- **Presentation:** Data compression, encryption, data format conversion
+- **Session:** Synchronization, checkpointing, recovery of data exchange
+
+These services, if needed, are typically implemented at the application layer in the Internet model.
+
+### Encapsulation
 
 <img src="images/data-flow-diagram.png" style="width:50%;height:50%;">
 
-> As data flows down the stack, headers are progressively added to the segment, and then
-to the datagram and then to the frame and going across the wire. As data goes up the stack,
-those data are progressively read, acted upon and removed.
+As data moves down the protocol stack, each layer adds its own header (and sometimes trailer):
 
-> Exam Question: How does packet travels with every layer. 
+1. **Application Layer:** Creates **message** (M)
+2. **Transport Layer:** Adds transport header → **segment** (Ht | M)
+3. **Network Layer:** Adds network header → **datagram** (Hn | Ht | M)
+4. **Link Layer:** Adds link header (and trailer) → **frame** (Hl | Hn | Ht | M | Lt)
+5. **Physical Layer:** Transmits bits
 
-## Network Security
-- Internet was not originally designed with (much) security in mind.
-  - `original vision`: A group of mutually trusting users attached to a transparent network.
-  - Hence, we are still catching up for the network security.
+At the receiving end:
+- As data moves UP the stack, each layer reads, processes, and removes its header
+- This is called **decapsulation**
 
-- We now need to think about:
-  - how bad guys can attack computer networks
-  - how we can defend networks against attacks
-  - last but not the least, how we can design the architecture so that they
-  are immune to attacks.
+> Exam Question: How does a packet travel through each layer? Explain encapsulation.
 
-There are multiple ways bad guys can do harm:
-#### 1. Bad Guys: Packet "sniffing"
-Bad actors can stay between sender and receiver to sniff packets. Such packet sniffing can be
-done using `Wireshark (a packet sniffing tool)`
+---
 
-#### 2. Bad Guys: fake identity
-- `IP Spoofing:` Say, B is sending the data to A. C can stay in between and send the data
-to A and pretend like B is sending the data. This phenomena is called `IP Spoofing
+## 1.9 Network Security
 
-#### 3. Bad guys: denial of service
-- `Denial of service(DoS)`: DoS attack happens when a bad actor bombards the server with fake
-requests that servers memory runs out. Hence, it cannot process new request as the memory is
-full.
+### Historical Context
+- The Internet was not originally designed with (much) security in mind
+- **Original vision:** A group of mutually trusting users attached to a transparent network
+- Security has been retrofitted as the Internet grew and threats emerged
 
-#### Lines of defense
-The above-mentioned operations could be a couple of ways to do bad activities on the internet. In
-order to develop a shield against the attack, we can take a couple of ways:
-1. **authentication:** Proving you are who you say you are
-2. **confidentiality:** We can protect data being sniffed via encryption.
-3. **Integrity checks:** We can also check if the data was being tempered with using 
-digital signatures to prevent/detect tampering.
-4. **Access restrictions:** Password-protected VPNs
-5. **Firewall:** There are specialized pieces of hardware known as firewall, which sets in
-between to detect and mitigate attacks.
-- Firewall sets in between to let specific packets from restricted senders and
-receivers to do applications.
-- detecting/reacting to DOS attacks
+### Security Considerations
+We need to think about:
+- How attackers can compromise computer networks
+- How we can defend networks against attacks
+- How we can design architectures that are more secure by default
 
-> Remembering Technique: AC IAF
+### Types of Network Attacks
 
-> Exam Question: Explain different lines of defenses. e.g., Authentication, Confidentiality,
-> Integrity checks, Access restrictions and Firewall.
+#### 1. Packet Sniffing
+- Attacker passively captures packets as they pass through the network
+- Works especially well on broadcast media (WiFi, shared Ethernet)
+- Tools: Wireshark, tcpdump
+- **Countermeasure:** Encryption (HTTPS, VPN, WPA3)
 
+#### 2. IP Spoofing (Fake Identity)
+- Attacker sends packets with a false (spoofed) source IP address
+- Used to impersonate another host or hide the attacker's identity
+- Example: C sends packets to A pretending to be B
+- **Countermeasure:** Ingress filtering, authentication protocols
+
+#### 3. Denial of Service (DoS)
+- Attacker overwhelms a target with fake requests
+- Server's resources (memory, CPU, bandwidth) are exhausted
+- Legitimate users cannot access the service
+- **DDoS (Distributed DoS):** Attack launched from many compromised machines (botnet)
+- **Countermeasure:** Rate limiting, traffic filtering, CDNs, DDoS mitigation services
+
+#### 4. Man-in-the-Middle (MitM) Attack
+- Attacker intercepts communication between two parties
+- Can read, modify, or inject messages
+- **Countermeasure:** End-to-end encryption, certificate validation
+
+#### 5. Malware
+- Viruses, worms, trojans, ransomware
+- **Countermeasure:** Antivirus, keeping systems updated, user education
+
+### Lines of Defense
+
+> **Mnemonic: AC-IAF** (Authentication, Confidentiality, Integrity, Access restrictions, Firewall)
+
+1. **Authentication:**
+   - Proving you are who you say you are
+   - Methods: Passwords, digital certificates, biometrics, multi-factor authentication
+
+2. **Confidentiality:**
+   - Protecting data from being read by unauthorized parties
+   - Method: **Encryption** (symmetric: AES, asymmetric: RSA, protocols: TLS/SSL)
+
+3. **Integrity Checks:**
+   - Detecting if data has been tampered with during transmission
+   - Methods: **Digital signatures**, message authentication codes (MAC), hash functions (SHA-256)
+
+4. **Access Restrictions:**
+   - Limiting who can access network resources
+   - Methods: Password-protected systems, VPNs, access control lists (ACLs)
+
+5. **Firewalls:**
+   - Specialized hardware/software that monitors and filters network traffic
+   - Sits between internal network and the Internet
+   - Functions:
+     - Allows/blocks packets based on rules (source/destination IP, ports, protocols)
+     - Detects and reacts to suspicious patterns
+     - Provides logging and auditing
+
+> Exam Question: Explain different lines of defense: Authentication, Confidentiality, Integrity checks, Access restrictions, and Firewall.
+
+---
